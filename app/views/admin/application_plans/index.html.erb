@@ -1,0 +1,73 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", admin_application_plans_path%>
+				
+			</li>
+		<li>
+			<%= link_to "#{t("web-app-theme.list", :default => t("views.links.add"))}", new_admin_application_plan_path%></li>
+		</ul>
+	</div>
+	<div class="content">  
+		<div class="inner">
+			<table class="table">
+				<tr>
+					<%= sortable_table_header :name => t("views.titles.id"),  :sort => "id", :class => "first" %>
+					<%= sortable_table_header :name => t("views.titles.application_name"),  :sort => "application_name" %>
+					<%= sortable_table_header :name => t("views.titles.plan_name"),  :sort => "code" %>
+					<th>App Type</th>
+					<%= sortable_table_header :name => t("views.titles.active"),  :sort => "active" %>
+					<%= sortable_table_header :name => t("views.titles.amount"),  :sort => "amount" %>
+					<%= sortable_table_header :name => t("views.titles.currency"),  :sort => "currency" %>
+					<%= sortable_table_header :name => t("views.titles.payment_type"),  :sort => "payment_type" %>
+					<%= sortable_table_header :name => t("views.titles.application_nature"),  :sort => "application_nature" %>
+					<th class="last"><%= t("views.titles.action")%></th>
+				</tr>
+				
+				<% @application_plans.each do |application_plan| -%>
+				<% if Application.find_by_id(application_plan.application_id)==nil
+								next
+							end %>
+<%
+app = Application.find_by_id(application_plan.application_id)
+app_type = Application::AppType::TO_LIST[app.app_type]
+if app_type == "Private"
+	app_type = "<span style=\"color:red;\">#{app_type}</span>"
+end
+%>
+				<% application_name = Application.find_by_id(application_plan.application_id).name %>
+				<tr class="<%= cycle("odd", "even") %>">
+					<td class="first"> <%= application_plan.id %> </td>
+					<td class="first"> <%= application_name %> </td>
+					<td class="first"> <%= application_plan.code %> </td>
+					<td><%= app_type %></td>
+					<%if application_plan.active == 1%>
+					<td><%= "Active"%> </td>
+					<% else %>
+					<td><%= "Inactive"%> </td>
+					<% end %>
+					<td align="right" style="padding-right:50px;"><%= sprintf("%.2f",application_plan.amount) %></td>
+					<td><%= application_plan.currency %> </td>
+					<td><%= application_plan.payment_type %> </td>
+					<td><%= application_plan.application_nature %> </td>
+					<td>
+<% if app_type == "Public"%>
+						<%= link_to "#{t("web-app-theme.show", :default => t("views.links.edit"))}",  edit_admin_application_plan_path(application_plan.id)%> |
+<% end %>
+						<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  admin_application_plan_path(application_plan.id) , :method => "delete", :confirm => t("views.notices.admin_delete_application_plan")%>
+						 
+					
+					</td>
+				</tr>
+					<%end%>
+
+
+			</table>
+
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+			</div>
+		</div>
+	</div>

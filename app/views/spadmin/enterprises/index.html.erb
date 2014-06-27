@@ -1,0 +1,62 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.portal_ents"))}", spadmin_enterprises_path   %>
+			</li>
+			<li >
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.ippbx_ents"))}", ippbx_spadmin_enterprises_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<br>
+		<% form_tag "", {:method => :get} do %> <span>&nbsp;</span>
+		<div class="admin-filter">
+			<span><%= t("views.labels.name")%>:</span><%= text_field_tag("search", params[:search], :id =>"spadmin_enterprises_search", :class => "text_border") %> <span><%= submit_tag t("views.buttons.search") %></span>
+			<% end %>
+		</div>
+		<div class="inner">
+			<div align="right" style="font-weight: bold">
+				<%if params[:search]!=nil%>
+				<%= @result%><%if @result == 1%>&nbsp;<%= t("views.titles.result")%><%else%>&nbsp;<%= t("views.titles.results")%><%end%>
+				<%end%>
+			</div>
+			<table id="sortableTable" class="tablesorter">
+				<thead>
+					<tr>
+						<th><%= t("views.titles.name")%></th>
+						<th><%= t("views.titles.location")%></th>
+						<th><%= t("views.titles.type")%></th>
+						<th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @companies.each do |company| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"> <%= company.name%> </td>
+						<td><%= company.city%> </td>
+						<td><%= company.company_type%></td>
+						<% form_for :enterprise, :url => new_spadmin_enterprise_path(:form => 1) do |f| -%> <td>
+						<input type="hidden" name="_method" value="get" />
+						<input type="hidden" name="company_id" id ="company_id" value="<%= CGI::escape(company.id.to_s)%>"/>
+						<input type="hidden" name="company_name" id ="company_name" value="<%= CGI::escape(company.name)%>"/>
+						<input type="hidden" name="city" id ="city" value="<%= CGI::escape(company.city)%>"/>
+						<input type="hidden" name="state" id ="state" value="<%= CGI::escape(company.state)%>"/>
+						<input type="hidden" name="country" id ="country" value="<%= CGI::escape(company.country)%>" />
+						<input type="hidden" name="address" id ="address" value="<%= CGI::escape(company.address)%>" />
+						<input type="hidden" name="phone" id ="phone" value="<%= company.company_phone!=nil ? CGI::escape(company.company_phone) : "" %>"/>
+						<input type="hidden" name="website" id ="website" value="<%= CGI::escape(company.website)%>" />
+						<input type="submit" value= <%= t("views.buttons.add")%> />
+						</td>
+						<%end%>
+					</tr>
+					<%end%>
+				</tbody>
+			</table>
+			<%= will_paginate @companies%>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>

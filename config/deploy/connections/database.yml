@@ -1,0 +1,8 @@
+production:
+  adapter: mysql
+  encoding: utf8
+  host: db1.pelesend.com
+  # host: localhost
+  database: connectionsprd01
+  username: connectionsusr01
+  password: usr01c0nnections!

@@ -1,0 +1,51 @@
+<% if current_user %>
+  <ul class="main-menu">
+  <%
+    @current_index_main_menu = 0
+    application_main_menu.each_with_index do |item, index|  %>
+      <% if menu_item_permited?(current_user, item )
+        controller_names = []
+        controller_actions = {}
+        unless item[:controllers].blank?
+          controller_names += item[:controllers].keys
+          item[:controllers].each do |k,v|
+            controller_actions[k] = v
+          end
+        end
+
+        item[:submenu].each do |i|
+          controller_names += i[:controllers].keys
+        end
+
+        class_item = application_main_menu.size - 1 == index ? "last " : ""
+
+        if controller_names.include?(controller.controller_path) &&
+           (controller_actions[controller.controller_path].blank? || controller_actions[controller.controller_path].include?(controller.action_name))
+            @current_index_main_menu = index
+            class_item += "selected"
+        end %>
+        <% if item[:submenu].blank? %>
+          <li class="<%= class_item %>"><%= link_to(menu_tab(item[:name]), eval( item[:path] ), :class => "main-link") %></li>
+        <%else%>
+          <li class="<%= class_item %>">
+            <%= image_tag "last_menu.png", :class=>"absolute-img" %>
+            <%= link_to(menu_tab(item[:name]), eval( item[:path] ), :class => "main-link") %>
+            <div class="sub-box">
+              <div class="top-part"></div>
+              <div class="center-part">
+                <ul class="sub-ul">
+                  <% item[:submenu].each do |submenu| %>
+                    <li><%= link_to(submenu[:name], eval( submenu[:path] )) %></li>
+                  <%end%>
+                </ul>
+                <div class="clear"></div>
+              </div>
+              <div class="bottom-part"></div>
+            </div>
+          </li>
+        <% end %>
+      <%  end %>
+    <%  end %>
+  </ul>
+<%  end %>
+

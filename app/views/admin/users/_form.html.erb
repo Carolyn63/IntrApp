@@ -1,0 +1,90 @@
+
+  <div class="group">
+    <%= f.label :firstname, t("views.users.first_name"), :class => :label %>
+    <%= f.text_field :firstname, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :lastname, t("views.users.last_name"), :class => :label %>
+    <%= f.text_field :lastname, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :login, t("views.users.username"), :class => :label %>
+    <%= f.text_field :login, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :email, t("views.users.alt_email"), :class => :label %>
+    <%= f.text_field :email, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :privacy, t("views.users.privacy"), :class => :label %>
+    <%= f.select :privacy, User::Privacy::LIST, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <div class="img-box">
+      <%= image_tag @user.avatar.url(:medium) %>
+    </div>
+    <%= f.file_field :avatar, :size => 15 %>
+  </div>
+
+  <div class="group">
+    <%= f.label :address, t("views.users.address"), :class => :label %>
+    <%= f.text_field :address, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :phone, t("views.users.phone"), :class => :label %>
+    <%= f.text_field :phone, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :cellphone, t("views.users.cellphone"), :class => :label %>
+    <%= f.text_field :cellphone, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :age, t("views.users.age"), :class => :label %>
+    <%= f.text_field :age, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :sex, t("views.users.sex"), :class => :label %>
+    <label><%= "Male:" %></label><%= f.radio_button :sex, "Male", :class => "checkbox" %>&nbsp;&nbsp;
+    <label><%= "Female:" %></label><%= f.radio_button :sex, "Female", :class => "checkbox" %>
+  </div>
+
+  <div class="group">
+    <%= f.label :site, t("views.users.site"), :class => :label %>
+    <%= f.text_field :site, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :description, t("views.users.description"), :class => :label %>
+    <%= f.text_area :description, :class => 'text_area', :rows => 5 %>
+  </div>
+
+  <div class="group">
+    <label style="width:280px">
+       <span><%= t("views.users.receive_notification_friendship") %></span>
+    </label>
+    <%= f.check_box :friendship_notification, :class => "checkbox" %>
+  </div>
+
+  <!--br/>
+  <div class="group">
+    <label style="width:280px">
+       <span><%#= "Send new login and password to user" %></span>
+    </label>
+    <%#= check_box_tag :send_password_to_user, "", false,:class => "checkbox" %>
+  </div-->
+        
+<div class="group navform wat-cf">
+  <button class="button" type="submit">
+    <%= image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+  </button>  
+  <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")} #{t("web-app-theme.cancel", :default => "Cancel")}", admin_users_path, :class => "button" %> 
+</div>

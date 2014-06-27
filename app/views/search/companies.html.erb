@@ -1,0 +1,28 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container">
+    <% form_tag companies_search_path, :method => "get", :id => "company-search" do %>
+      <div class="search-box" style="float:none;margin-top:0px">
+        <%= text_field_tag 'search', params[:search].blank? ? "Search" : params[:search], :id => "company_search", :class=>"field long", :placeholder=>"Search" %>
+        <%= image_tag "search_button.gif", :onclick => "$('#company-search').submit();", :class=>"search-button" %>
+      </div>
+    <%end%>
+    <div class="clear"></div>
+    <h1><%= params[:search].blank? ? "Companies" : "Search results for '#{params[:search]}'" %></h1>
+    <ul class="list left-list community-company-list">
+      <% unless @companies.blank? %>
+        <%= render :partial => "companies/company", :collection => @companies %>
+      <%else%>
+        <h2><%= "No results" %></h2>
+      <%end%>
+    </ul>
+    <% if @companies.total_pages > 1 %>
+      <div class="bottom-gradient-box">
+        <%= will_paginate @companies, :class => 'pagination float-right', :renderer => 'CustomLinkRenderer' %>
+      </div>
+    <%end%>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->
+

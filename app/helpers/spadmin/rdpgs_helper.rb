@@ -1,0 +1,2 @@
+module Spadmin::RdpgsHelper
+end

@@ -1,0 +1,47 @@
+<div class="content left-column applications-layout">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container" style="padding-top: 25px;">
+ 		<div class="secondary-navigation">
+			<ul class="wat-cf">
+				<li class="first active"><%=link_to "List", list_plan_company_company_application_path(current_own_company, params[:id])%></li>
+				<li><%=link_to "New", new_plan_company_company_application_path(current_own_company, params[:id])%></li>
+			</ul>
+		</div>
+
+		<% application_name = Application.find_by_id(params[:id]).name %>
+		<h1> Application Plans for <%=application_name%> </h1>
+		<table class="ca_table">
+			<tr>
+				<th>plan name</th>
+				<th>amount</th>
+				<th>payment type</th>
+				<th>plan type</th>
+				<th class="action" style="min-width:100px;">action</th>
+			</tr>
+			<% @application_plans.each do |application_plan| -%>
+			<% if Application.find_by_id(application_plan.application_id)==nil
+							next
+						end %>
+			<tr class="<%= cycle("odd", "even") %>">
+				<td class="first"><%= application_plan.code %></td>
+				<td align="right" style="padding-right:50px;"><%= sprintf("%.2f",application_plan.amount) %></td>
+				<td><%= application_plan.payment_type %> </td>
+				<td><%= application_plan.application_nature %> </td>
+				<td class="action">
+					 <%= link_to "#{t("web-app-theme.edit", :default => t("views.links.edit"))}",  edit_plan_company_company_application_path(current_own_company, application_plan.application_id, :plan_id => application_plan.id)%> | 
+						<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  delete_plan_company_company_application_path(current_own_company, @applcation.id, :plan_id => application_plan.id) , :method => "put", :confirm => t("views.notices.admin_delete_application_plan")%>
+					 
+				
+				</td>
+			</tr>
+			<%end%>
+
+
+		</table>
+
+		<%= will_paginate @application_plans%>
+
+	</div>
+	<div class="clear"></div>
+</div>

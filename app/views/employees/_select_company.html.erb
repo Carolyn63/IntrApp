@@ -1,0 +1,17 @@
+<%if current_user.companies.size > 1 && property(:multi_company) %>
+  <div id="company-filter">
+    <% form_tag company_employees_path(@company.id), :method => "get", :id => "manage_employee_company_form" do %>
+      <span style="display:inline;margin-left:15px;">
+        <i class="orange-color"><b><%= t("views.users.select_company") %></b></i>&nbsp;&nbsp;
+        <%  if current_page?(new_company_employee_path) %>
+          <%= select_tag "", options_for_select(current_user.companies.map{|c| [c.name, new_company_employee_path(c.id)]}, new_company_employee_path(@company.id)),
+                           :class=>"field", :style => "width:165px;", :id => "manage_employee_company_select" %>
+        <%else%>
+          <%= hidden_field_tag "status", params[:status] %>
+          <%= select_tag "", options_for_select(current_user.companies.map{|c| [c.name, company_employees_path(c.id)]}, company_employees_path(@company.id)),
+                           :class=>"field", :style => "width:165px;", :id => "manage_employee_company_select" %>
+        <%end%>
+      </span>
+    <%end%>
+  </div>
+<%end%>

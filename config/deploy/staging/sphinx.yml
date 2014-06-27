@@ -1,0 +1,9 @@
+production:
+  # bin_path: "/usr/bin"
+  # searchd_binary_name: "/usr/bin/searchd"
+  # indexer_binary_name: "/usr/bin/indexer"
+  mem_limit: 128M
+  port: 9312
+  mem_limit: 64M
+  enable_star: 1
+  min_infix_len: 3

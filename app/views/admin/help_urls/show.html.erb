@@ -1,0 +1,38 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_help_urls_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_help_url_path %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_help_url_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+        <p>
+          <b><%= t("views.help_urls.name") %>:</b>
+          <%= h(@help_url.name) %>
+        </p>
+
+        <p>
+          <b><%= t("views.help_urls.portal_url") %>:</b>
+          <%= h(@help_url.portal_url) %>
+        </p>
+
+        <p>
+          <b><%= t("views.help_urls.help_system_url") %>:</b>
+          <%= @help_url.help_url %>
+        </p>
+
+        <p>
+          <b><%= t("views.help_urls.date") %>:</b>
+          <%= @help_url.created_at %>
+        </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_admin_help_url_path(@help_url), :class => "button" %> 
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", admin_help_url_path(@help_url), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<% content_for :sidebar, render(:partial => 'sidebar') -%>

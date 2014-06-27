@@ -1,0 +1,58 @@
+<h1>DigiData rest API</h1>
+
+<%=link_to "Get all users (unavailable)", :controller => "digidata", :action=>"index", :to_do => "Get_All_Users" %>
+</br>
+<% if @to_do.eql?"Get_All_Users" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+<%=link_to "Get all collections (unavailable)", :controller => "digidata", :action=>"index", :to_do => "Get_All_Collections" %>
+</br>
+<% if @to_do.eql?"Get_All_Collections" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+<%=link_to "Get my collection", :controller => "digidata", :action=>"index", :to_do => "Get_My_Collection" %>
+</br>
+<% if @to_do.eql?"Get_My_Collection" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+<%=link_to "Get my profile", :controller => "digidata", :action=>"index", :to_do => "Get_Me" %>
+</br>
+<% if @to_do.eql?"Get_Me" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+<%=link_to "Create a collection (unavailable)", :controller => "digidata", :action=>"index", :to_do => "Create_Collection" %>
+</br>
+<% if @to_do.eql?"Create_Collection" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+<%=link_to "Create a user (unavailable)", :controller => "digidata", :action=>"index", :to_do => "Create_User" %>
+</br>
+<% if @to_do.eql?"Create_User" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+<%=link_to "Assign user to a collection (unavailable)", :controller => "digidata", :action=>"index", :to_do => "Assign_User_to_Collection" %>
+</br>
+<% if @to_do.eql?"Assign_User_to_Collection" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>
+
+
+<%=link_to "Assign admin to a collection (unavailable)", :controller => "digidata", :action=>"index", :to_do => "Assign_Admin_to_Collection" %>
+</br>
+<% if @to_do.eql?"Assign_Admin_to_Collection" and @api_result != nil%>
+<p><%=@api_result%></p>
+<%end%>
+</br>

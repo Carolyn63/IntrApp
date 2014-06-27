@@ -1,0 +1,25 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container">
+    <% form_tag users_search_path, :method => "get", :id => "user-search" do %>
+      <div class="search-box" style="float:left;margin-top:0px">
+        <%= text_field_tag 'search', params[:search].blank? ? "Search" : params[:search], :id => "user_search", :class=>"field long", :placeholder=>"Search" %>
+        <%= image_tag "search_button.gif", :onclick => "$('#user-search').submit();", :class=>"search-button" %>
+      </div>
+      <span style="display:inline;margin-left:15px;"><i>Filter by company:</i> <%= select_tag "company_id", options_for_select(@companies, params[:company_id].to_i), :class=>"field", :style => "width:160px", :onchange => "this.form.submit();" %></span>
+    <%end%>
+    <div class="clear"></div>
+    <h1><%= params[:search].blank? ? "Community user" : "Search results for '#{params[:search]}'" %></h1>
+    <ul class="list left-list community-company-list">
+      <%= render :partial => "users/user", :collection => @users %>
+    </ul>
+    <% if @users.total_pages > 1 %>
+      <div class="bottom-gradient-box">
+        <%= will_paginate @users, :class => 'pagination float-right', :renderer => 'CustomLinkRenderer' %>
+      </div>
+    <%end%>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->
+

@@ -1,0 +1,28 @@
+<% form_tag  do %>
+  <div class="employees-box">
+    <h3><img src="employees-account_files/down_grey_arrow.png" title="" alt=""/><%= "&nbsp;&nbsp;#{t("views.employees.pending_employees")}" %></h3>
+    <ul class="list-employees">
+      <% employees.each do |employee| -%>
+        <li>
+          <span class="name">
+               <input type="checkbox" value="" name="" id="in_1">
+               <%#= check_box_tag "employees_#{employee.id}",""  %>
+            <%end%>
+            <%= link_to employee.user.name, user_path(employee.user) %>
+          </span>
+          <a href="mailto:<%= employee.user.email %>" class="email"><%= employee.user.email %></a>
+          <div class="clear"></div>
+        </li>
+      <% end -%>
+    </ul>
+     <div class="clear"></div>
+     <%#= will_paginate employees, :status => params[:status] %>
+  </div>
+  <div class="button-box">
+    <%#= link_to_function link_name("Delete Selected Ones"), "#", :class=>"standart-button standart-button-orange"%>
+    <%= link_to_function link_name(t("views.employees.send_invitations")), "", :class=>"standart-button"%>
+    <br/>
+    <span><%= t("views.employees.edit_selected") %></span>
+  </div>
+<%end%>
+

@@ -1,0 +1,38 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+pending_employee_url:
+  id: 1
+  name: Main
+  portal_url: "/users/1/employers?status=pending"
+  help_url: "http://docs.futurewei.ebento.net/display/eBento/pending"
+  action_name: index
+  controller_name: employers
+
+url_002:
+  id: 2
+  name: Home
+  portal_url: "/users/1/companies"
+  help_url: "http://docs.futurewei.ebento.net/display/eBento/Portal+Home"
+  action_name: index
+  controller_name: companies
+
+users_url:
+  id: 3
+  name: Users
+  portal_url: "/users"
+  help_url: "http://docs.futurewei.ebento.net/display/eBento/Portal+Home"
+  action_name: index
+  controller_name: users
+
+active_employee_url:
+  id: 5
+  name: ActiveEmployee
+  portal_url: "/users/1/employers"
+  help_url: "http://docs.futurewei.ebento.net/display/eBento/active"
+  action_name: index
+  controller_name: employers
+  url_params: "status=active"

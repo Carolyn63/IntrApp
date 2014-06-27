@@ -1,0 +1,11 @@
+############################################################
+## Puppet managed file
+## Filename: robots_disallow.txt
+#############################################################
+User-agent: no_tags_no_glory
+Disallow:
+
+
+#this site should not be searched
+User-agent: *
+Disallow: /

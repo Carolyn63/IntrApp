@@ -1,0 +1,2 @@
+module Sysadmin::RoutingactionsHelper
+end

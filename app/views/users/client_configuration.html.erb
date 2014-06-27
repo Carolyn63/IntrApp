@@ -1,0 +1,44 @@
+<%#%>
+<div class="content">
+<div style="margin-left:50px;width:60%;color:#333333;font-family:arial,Georgia,tahoma,verdana,"Times New Roman",sans-serif,"Trebuchet MS";" class="text">
+    <p style="font-color:#365F91">
+   <h2 style="align:center">VoIP Client Configuration for IP PBX service</h2>
+   <h4 >Linphone configuration<h4>
+   </p>  
+ <ul>
+ <li style="list-style:none;" ><img src = "/images/docs/image312.jpg" class="image"/> </li>
+ <li style="list-style:none;"><p>The above screen shot is the main screen of Linphone. To configure SIP user account, follow the below steps. </p></li>
+ <li><p>Click on Linphone button at the top. Then select "Preferences" from the drop down list to enter the settings screen</p></li>
+ <li style="list-style:none;"> <img src = "/images/docs/image301.jpg" class="image"/> </li>
+ <li><p>At the Nework settings tab select the "Behind NAT/Firewall (use STUN to resolve)" option under NAT and Firewall settings. Also enter "stunserver.org" in the text box provided as shown in the screenshot. Click on the Manage SIP Accounts tab at the top to configure SIP account details.</p></li>
+ <li style="list-style:none;"> <img src = "/images/docs/image308.jpg" class="image"/> </li>
+ <li><p>At the Proxy accounts section click on "Add" to add a new SIP account. </p></li>
+ <li style="list-style:none;"> <img src = "/images/docs/image291.jpg" class="image"/> </li>
+ <li><p>Enter the information as shown in the screenshot. </p></li>
+ <li><p>The SIP identity field should have the phone number that is specified as your "Work Number" in your employee profile.</p></li>
+ <li><p>Select the "Register at startup" option as shown in the screenshot. Then click OK. At this point Linphone registers this SIP user account with the IP PBX server.</p></li>
+ <li style="list-style:none;"> <img src = "/images/docs/image312.jpg" class="image"/> </li>
+ <li><p>"Registration on sip:12.133.183.111:6123 successful" message at the bottom of the screen confirms that the registration of this SIP user account with IP PBX server is successful.</p></li>
+ <li><p>Once the registration is complete then we can make and receive calls.</p></li>
+ <li><p>Click on the options tab at the top and select "Audio only".</p></li>
+ </ul>
+ </div>
+ <br />
+
+</div>
+
+<style>
+.image{
+	padding:10px 10px;
+}
+
+p{
+	text-align: justify;
+	color: #333333;
+	margin-top:10px;
+	margin-bottom:10px;
+	font-size: 12px;
+	line-height:20px;
+}
+</style>
+

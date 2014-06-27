@@ -1,0 +1,190 @@
+<%= render :partial => "nav_menu" %>
+
+<div class="right-wider-side">
+  <% if (session[:app_current_tab] || controller.action_name) == 'my_applications' %>
+    <div class="filter-title-holder">
+      <h1><%= t("views.applications.list_of_default_applications") %></h1>
+      <div class="clear"></div>
+    </div>
+    <% company = current_employee.try(:company) %>
+    <% appcentral_url = "" %>
+    <% if current_employee.ondeego_connect? %>
+      <% appcentral_url = login_user_ondeego_path(current_user, :company_id => company.id) %>
+    <%else%>
+      <% if company.owner?(current_user) %>
+        <%  appcentral_url = company_create_user_ondeego_path(current_user, :company_id => company.id) %>
+      <% else %>
+        <% if company.ondeego_connect? %>
+          <% appcentral_url = employee_create_user_ondeego_path(current_user, :company_id => company.id) %>
+        <%else%>
+        <%end%>
+      <%end%>
+    <%end%>
+    <% sogo_url = "" %>
+    <%  if current_employee.sogo_connect? %>
+      <% sogo_url = login_user_sogo_path(current_user, :company_id => company.id) %>
+    <% else %>
+      <% sogo_url = sogo_connect_company_employee_path(company, current_employee) unless current_employee.company_email.blank? %>
+    <% end %>
+    <ul class="list applications-list profiles-list">
+      <li>
+        <div class="img-box img-box-size-135">
+          <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td><%= link_to(image_tag("Groupware Logo3.png"), sogo_url, :target => "_blank")  %></td>
+            </tr>
+          </table>
+        </div>
+        <div class="right-box">
+          <%if sogo_url.blank? %>
+            <%= content_tag(:h2,t("views.companies.not_connect_with_sogo")) %>
+          <%else%>
+            <%= link_to(content_tag(:h2,t("views.companies.corporate_email_calendar")), sogo_url, :target => "_blank") %>
+          <%end%>
+          <ul class="application-details-list">
+            <li><b><%= t("views.companies.corporate_email_calendar_header") %></b></li>
+          </ul>
+          <p class="description">
+            <%= t("views.companies.corporate_email_calendar_description", :sp_name => property(:sp_name)) %>
+          </p>
+        </div>
+      </li>
+      <% if property(:use_ondeego) %>
+        <li>
+          <div class="img-box img-box-size-135">
+            <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td><%= link_to(image_tag("AppCentral Logo.png"), appcentral_url, :target => "_blank")  %></td>
+              </tr>
+            </table>
+          </div>
+          <div class="right-box">
+            <%if appcentral_url.blank? %>
+              <%= content_tag(:h2,t("views.companies.not_connect_with_company_in_appcentral")) %>
+            <%else%>
+              <%= link_to(content_tag(:h2,t("views.companies.mobile_app_store")), appcentral_url, :target => "_blank") %>
+            <%end%>
+            <ul class="application-details-list">
+              <li><b><%= t("views.companies.appcentral_header") %></b></li>
+            </ul>
+            <p class="description">
+              <%= t("views.companies.appcentral_description") %>
+            </p>
+          </div>
+        </li>
+      <%end%>
+      <% if property(:use_mobile_tribe) %>
+        <li>
+          <div class="img-box img-box-size-135">
+            <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td><%= link_to(image_tag("mobile_client.png"), property(:mobile_client_link), :target => "_blank")  %></td>
+              </tr>
+            </table>
+          </div>
+          <div class="right-box">
+              <%= link_to(content_tag(:h2,t("views.companies.mobile_client_title")), property(:mobile_client_link), :target => "_blank") %>
+            <ul class="application-details-list">
+              <li><b><%= t("views.companies.mobile_client_header") %></b></li>
+            </ul>
+            <p class="description">
+              <%= t("views.companies.mobile_client_description") %>
+            </p>
+          </div>
+        </li>
+      <%end%>
+			</ul>
+  <%end%>
+  <br/>
+  <div class="filter-title-holder">
+    <h1><%= applications_page_title %></h1>
+     <%= will_paginate(applications, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if applications && applications.total_pages > 1 %>
+    <div class="clear"></div>
+  </div>
+  <% unless applications.blank? %>
+    <ul class="list applications-list profiles-list">
+      <% applications.each do |application| %>
+        <li>
+          <div class="img-box img-box-size-135">
+            <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <% if application.logo.present? %>
+                  <td><%= image_tag application.logo.normal.url -%></td>
+                <% else %>
+                  <td><a href="#"></a></td>
+                <% end %>
+              </tr>
+            </table>
+          </div>
+          <div class="right-box">
+          	
+            <% request = application.request_for(current_own_company, current_employee, application.basic_plan.payment_type) %>
+    
+           
+            <%= link_to(content_tag(:h2,h(application.name)), user_application_path(current_user, application)) -%>
+            <ul class="application-details-list">
+          <%if current_own_company or ((session[:app_current_tab] || controller.action_name) == 'my_applications')%>
+          <%if application.basic_plan.payment_type == "free" or !current_own_company%>
+              <%= status_li(request.status) if request.present? && !request.approved? %>
+          <%else%>
+              <%= status_li1(request.status) if request.present? && request.pending? %>
+          <%end%>
+          <%end%>
+              <li><strong>Provider:</strong> <%= h application.provider -%></li>
+            </ul>
+            <p class="description">
+              <%= h application.description -%>
+                  <%logger.info("1111111111111111")%>
+            </p>
+            
+           <%if current_own_company%>
+            <%logger.info("222222222222222222222")%>
+		           <%if application.basic_plan.payment_type == "free" or request.blank?%> 
+                           <%logger.info("company Blank>.>>>>>>>>>>")%>
+		           <%= request_links(application, request) %> 
+		           <%end%>
+		           <%if !request.blank?%>
+		                   <%logger.info("1111111111111111#{request.status}")%>
+				           <%if request.cancelled?%>
+				            <%= request_links(application, request) %> 
+				           <%elsif request.paid? or request.approved? or request.trial?%>
+				           <%logger.info("!1111111111111111111111111111111111xxx")%>
+				           <p> <b><%="Purchased"%></b> &nbsp;&nbsp;
+                                           
+                                           <%if ((session[:app_current_tab] || controller.action_name) == 'my_applications')%>      
+                                           <%=content_tag(:span, link_to(link_name(t("views.application_requests.remove_application")), remove_application_user_application_path(current_user, application, :employee_id => current_employee.id), :method => :put, :class => 'standart-button', :confirm => t("views.applications.warning_remove_user_applocation"))) %>         
+                                           <%elsif application.basic_plan.payment_type == "monthly" and !((session[:app_current_tab] || controller.action_name) == 'my_applications')%>  
+                                           <%logger.info("My application company>>>>>>>>>>>>>>>>>>>>>")%>
+                                           <%=content_tag(:span, link_to(link_name("Cancel Subscription"), send_cancel_request_user_application_path(current_user, application, :company_id => current_own_company.id), :method => :put, :class => 'standart-button', :confirm => t("views.applications.warning_cancel_subscription")))%>
+                                           <%end%>
+                                           </p>
+				           <%end%>
+				 
+           		   <%end%>
+               <%else%>
+                                <%logger.info("emp>>>> 1111111")%>
+
+                                      <%logger.info("emp>>>>4444444444444")%>
+				      <%= request_links(application, request) %>
+				 
+                        <%if request.present? and request.approved?%>
+                                <%=content_tag(:span, link_to(link_name(t("views.application_requests.remove_application")), remove_application_user_application_path(current_user, application, :employee_id => current_employee.id), :method => :put, :class => 'standart-button', :confirm => t("views.applications.warning_remove_user_applocation"))) %>         
+                        <%end%>
+                      
+
+               <%end%>
+  
+
+
+           
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <%= will_paginate(applications, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if applications.total_pages > 1 %>
+  <% else %>
+    <%= no_items_title(t("views.no_applications")) %>
+  <% end %>
+  <div class="clear"></div>
+</div>
+ 

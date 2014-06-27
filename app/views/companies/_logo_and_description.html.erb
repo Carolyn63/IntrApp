@@ -1,0 +1,22 @@
+<h2><%= t("views.companies.logo") %></h2>
+<div class="w255">
+  <% unless @company.new_record? %>
+    <%= image_tag @company.logo.url(:big) %>
+  <%else%>
+    <div class="img-box img-big-box">
+      <table class="verticalMiddle" border="0" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+            <td><a href="#"></a></td>
+          </tr>
+        </tbody></table>
+    </div>
+  <%end%>
+  <%= f.file_field :logo, :size => 15 %>
+  <div class="hor-line"></div>
+  <div class="desc-box">
+    <div class="input-row green-row">
+      <label><span><%= t("views.companies.company_description") %></span></label>
+      <%= f.text_area :description, :value =>  default_value(@company.description, t("views.companies.enter_description_your_company")), :placeholder => t("views.companies.enter_description_your_company") %>
+    </div>
+  </div>
+</div>

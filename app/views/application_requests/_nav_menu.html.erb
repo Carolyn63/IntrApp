@@ -1,0 +1,18 @@
+<div class="left-short-side left-back">
+  <div class="head">
+    <h1><%= t("views.application_requests.company_app_requests") %></h1>
+  </div>
+  <ul class="left-menu" style="min-height: 150px">
+    <% unless current_own_company.blank? %>
+      <li class="<%= controller.action_name == "index" && controller.controller_name == "application_requests" ? 'selected' : ''%>">
+        <%= link_to("#{t("views.application_requests.company_request")}", company_application_requests_path(current_own_company)) %>
+      </li>
+      <li class="<%= controller.action_name == 'incoming_employee_requests' && controller.controller_name == "application_requests" ? 'selected' : ''%>">
+        <%= link_to("#{t("views.application_requests.employee_app_request")}", incoming_employee_requests_company_application_requests_path(current_own_company)) %>
+      </li>
+	  <li class="<%= controller.controller_name == 'company_applications' ? 'selected' : ''%>">
+        <%= link_to("#{t("views.application_requests.company_applications")}", company_company_applications_path(current_own_company)) %>
+      </li>
+    <%end%>
+  </ul>
+</div><!-- .left-short-side -->

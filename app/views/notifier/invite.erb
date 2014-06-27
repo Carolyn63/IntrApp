@@ -1,0 +1,11 @@
+<p><%= @employee.user.name %>, a new account has been created for you as an employee of company <%= @employee.company.name %>.<br />
+
+You need to click the following link to activate your account and set your password:  <%= link_to @invitation_url,@invitation_url%><br />
+
+If the above link does not work, try copying it and pasting it into your browser.<br />
+
+Your username (which can also be used to login) is: <%= @employee.user.login %><br />
+
+Your external email address (which can also be used to login) is:  <%= @employee.user.email %><br />
+
+Your new corporate email address (which will be created after you accept this invitation) is: <%= @employee.company_email %></p>

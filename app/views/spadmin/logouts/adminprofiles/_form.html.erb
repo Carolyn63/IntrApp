@@ -1,0 +1,41 @@
+<table cellspacing="12px;">
+	<tr >
+		<td > <%= f.label :label_name, t("views.spadmin.spprofiles.name"), :class => :label %> </td>
+		<td><%= f.text_field :loginName, :value => @loginName, :disabled => true%></td>
+		<td > <%= f.label :label_email, t("views.spadmin.spprofiles.email"), :class => :label %></td>
+		<td><%= f.text_field :emailId, :value => @emailId%></td>
+	</tr>
+	<tr>
+		<td ><%= f.label :label_address1, t("views.spadmin.spprofiles.address1"), :class => :label %></td>
+		<td><%= f.text_field :addressLine1, :value => @addressLine1 %></td>
+	</tr>
+	<tr>
+		<td ><%= f.label :label_address2, t("views.spadmin.spprofiles.address1"), :class => :label %></td>
+		<td><%= f.text_field :addressLine2, :value => @addressLine2%></td>
+	</tr>
+	<tr>
+		<td ><%= f.label :label_city, t("views.spadmin.spprofiles.city"), :class => :label %></td>
+		<td><%= f.text_field :city, :value => @city, :size=>"17px;"  %></td>
+		<td ><%= f.label :label_state, t("views.spadmin.spprofiles.state"), :class => :label %></td>
+		<td><%= f.text_field :state, :value => @state, :size=>"17px;" %></td>
+	</tr>
+	<tr>
+		<td > <%= f.label :label_zipCode, t("views.spadmin.spprofiles.zipCode"), :class => :label %></td>
+		<td><%= f.text_field :zipCode, :value => @zipCode, :size=>"17px;" %></td>
+		<td ><%= f.label :label_country, t("views.spadmin.spprofiles.country"), :class => :label %></td>
+		<td><%= f.select :country, enterprise_countries, :selected => @country %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :label_timezone, t("views.spadmin.enterprises.timezone"), :class => :label %></td>
+		<td><%= f.select :timezone, time_zones, :selected => @timezone %></td>
+	</tr>
+</table>
+<div class="group navform wat-cf">
+	<button>
+		<%= image_submit_tag 'web-app-theme/finish.png',  :name => 'commit', :value => 'finish' %>
+	</button>
+	<button>
+		<%= image_submit_tag 'web-app-theme/cancel.png', :name => 'commit', :value => 'cancel' %>
+	</button>
+</div>
+<%= hidden_field("geographicDetails", "uid", :value=>@geographic_details_uid)%>

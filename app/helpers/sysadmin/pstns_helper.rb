@@ -1,0 +1,2 @@
+module Sysadmin::PstnsHelper
+end

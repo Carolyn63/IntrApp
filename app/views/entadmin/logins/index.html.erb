@@ -1,0 +1,25 @@
+<div class="block">
+	<div class="content" align="center" style="background-color: #EBEBEB;">
+		<div class="inner" style="margin: 20px;width: 70%">
+			<div style="border: 4px double #999;" >
+				<% form_for :do_login,:url => entadmin_logins_path, :html => { :class => :form, :method => :post } do |f| -%> <h2 class="title"><%= t("web-app-theme.new", :default => t("views.titles.ent_admin_login"))%> </h2>
+				<table cellspacing="30">
+					</tr>
+					<tr>
+						<td ><%= f.label :label_username, t("views.labels.login_username"), :class => :label %></td>
+						<td><%= f.text_field :username,:size=>"17px;" ,:class=>:text_border %></td>
+					</tr>
+					<tr>
+						<td ><%= f.label :label_password, t("views.labels.login_password"), :class => :label %></td>
+						<td><%= f.password_field :password,:size=>"17px;" ,:class=>:text_border %></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td align="left"><%= submit_tag t("views.labels.login_login"), :class=> "button_border" %></td>
+					</tr>
+				</table>
+				<% end -%>
+			</div>
+		</div>
+	</div>
+</div>

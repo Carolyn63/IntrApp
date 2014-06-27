@@ -1,0 +1,32 @@
+<div id="main-navigation">
+  <ul class="wat-cf">
+    <%
+      @current_index_main_menu = 0
+      application_sysadmin_main_menu.each_with_index do |item, index|
+        if menu_item_permited?(current_user, item )
+          controller_names = []
+          controller_actions = {}
+          unless item[:controllers].blank?
+            controller_names += item[:controllers].keys
+            item[:controllers].each do |k,v|
+              controller_actions[k] = v
+            end
+          end
+
+          item[:submenu].each do |i|
+            controller_names += i[:controllers].keys
+          end
+
+          class_item = index == 0 ? "first " : ""
+
+          if controller_names.include?(controller.controller_path) &&
+                (controller_actions[controller.controller_path].blank? || controller_actions[controller.controller_path].include?(controller.action_name))
+              @current_index_main_menu = index
+              class_item += "active"
+          end %>
+
+          <li class="<%= class_item %>"><%= link_to item[:name], eval( item[:path] ) %></li>
+        <% end %>
+    <% end %>
+  </ul>
+</div>

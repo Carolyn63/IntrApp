@@ -1,0 +1,470 @@
+class ApplicationsController < ApplicationController
+  before_filter :require_user
+  before_filter :find_user
+  before_filter :prepare_tabs, :except => [:bin_file_download, :assign_employees_or_departments, :send_request, :send_employee_request]
+  before_filter :find_application, :only => [:show, :bin_file_download,:send_bin_file, :assign_employees_or_departments, :send_request, :send_employee_request, :download_application, :download_link, :send_download_link]
+  before_filter :save_current_tab, :only => [:index, :company_catalog, :my_applications]
+
+  before_filter :ensure_current_user_company, :only => [:index, :company_catalog, :my_applications]
+
+  def index
+    #@applications = Application.search_or_filter_applications(current_user, params)
+     @applications = Application.public.search_or_filter_applications(current_user, params)
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @applications.to_xml(:only => [:id, :name, :description, :price, :provider, :external_url, :status],
+                                                       :include => { :devices => { :only => [:id, :name, :description] },
+                                                         :application_types => { :only => [ :id, :name, :description ] },
+                                                         :categories => { :only => [:id, :name, :description] } }) }
+    end
+  end
+
+  def show
+    if current_own_company.present?
+    @addon_count    = 0
+    @employee_count = 0
+    orders = Order.purchased_extras(current_user.id, @application.id)
+    orders.each do |order|
+    if order.application_nature == "addon"
+      @addon_count += order.quantity
+    elsif order.application_nature == "employee"
+      @employee_count += order.quantity
+    end
+    end
+    
+    logger.info("application_id#{@application.id}")
+		ippbxed = Ippbx.find_by_company_id( current_user.companies[0].id)
+    if @application.name.delete(' ').downcase.include?("ippbx") && ippbxed!=nil
+      @public_numbers = "" 
+      public_numbers = PortalIppbxController.new.availble_public_number current_user.companies[0].id
+      public_numbers.each do |pn|
+				@public_numbers += pn["number"] + ","
+      end
+      @public_numbers = @public_numbers.chop
+      @pn_size = public_numbers.size
+    end
+    end
+  end
+
+  def company_catalog
+    # report_maflormed_data if current_own_company.blank?
+    @applications = Application.search_or_filter_applications(current_user, params.merge(:company_id => current_user_company.id))
+  end
+
+  def my_applications
+    #ids = property(:multi_company) ? current_user.active_employees.all.map(&:id) : [current_user.first_active_employee.try(:id)]
+    ids = current_user.active_employees.all.map(&:id)
+    #@applications = Application.search_or_filter_applications(current_user, params.merge(:employees_in => ids)) unless ids.blank?
+    @applications = Application.available.for_employees(ids).paginate(:page => params[:page], :per_page => 5) unless ids.blank?
+    @applications = Application.search_or_filter_applications(current_user, params.merge(:employees_in => ids)) unless ids.blank?
+  end
+
+  def bin_file_download
+    @bin_file_filename = File.basename(@application.bin_file.path.to_s)
+    send_file @application.bin_file.path.to_s, { :filename => @bin_file_filename, :disposition => 'attachment',
+     # :type => 'text; charset=utf-8',
+     :status => 200 }
+  end
+
+	def assign_employees_or_departments
+		logger.info "assign_employees_or_departments 1"
+
+		report_maflormed_data and return if current_own_company.blank?
+
+		if params.has_key?(:department_ids) # for dept
+			if @application.update_attributes({:department_ids => params[:department_ids]})
+				flash[:notice] = t("controllers.application_success_assign")
+			else
+				flash[:error] = t("controllers.application_assign_failed")
+			end
+		else
+			logger.info "assign_employees_or_departments 2"
+
+			ids = (params[:employee_ids] || []).reject(&:blank?).map(&:to_i)
+			#ippbxed_user = Ippbx.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			#cloud_user   = Cloudstorage.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			if ids.blank?
+				employees = Employee.find_all_by_company_id(current_own_company.id)
+				employees.each do  |employee|
+					employee_application = EmployeeApplication.find_by_employee_id_and_application_id(employee.id, @application.id)
+					employee_application.destroy unless employee_application.blank?
+				end
+				#employee_applications = @application.employees.all(:conditions => ["company_id = ?", current_own_company.id]).delete
+				#employee_applications = @application.employees.find_by_company_id(current_own_company.id).delete
+				delete_all_services 
+			else
+				logger.info "assign_employees_or_departments 3"
+				failed_ids = Array.new
+				if @application.basic_plan.default_employees_count == 0
+					@application.update_attributes({:employee_ids => ids})
+					add_or_delete_services ids, false
+				else
+					logger.info "assign_employees_or_departments 4"
+					#delete_ippbx_by_ids ids
+					delete_service_by_ids ids
+					employee_apps = EmployeeApplication.by_employee_ids(ids, @application.id)
+					employee_apps.each do |emp_app|
+						company_emp = Employee.find_by_id(emp_app.employee_id)
+						if company_emp.company_id == current_own_company.id
+							emp_app.destroy
+						end
+					end
+					company_cloud = Cloudstorage.find_by_company_id_and_admin_type(current_own_company.id, "enterprise")
+					ids.each do  |emp_id|
+						companification = Companification.find_by_plan_id_and_company_id(@application.basic_plan.id,current_own_company.id)
+						employee = Employee.find_by_id(emp_id)
+						if employee.can_request_application?(@application) 
+							logger.info "assign_employees_or_departments 5"
+
+							if companification.max_employees_count > 0 and @application.name.delete(' ').downcase.include?("ippbx")
+								request = employee.employee_applications.build(:application => @application, :status => EmployeeApplication::Status::APPROVED, :requested_at => Time.now)
+								if request.save
+									PortalIppbxController.new.add_user_ippbx(employee.user_id, true) #unless employee.user_id == current_own_company.user_id
+								#Companification.decrement_counter(:max_employees_count, companification.id)
+								end
+							elsif company_cloud.quota.to_i > 1024 and @application.name.delete(' ').downcase.include?("cloud")
+								logger.info "assign_employees_or_departments 6"
+
+								request = employee.employee_applications.build(:application => @application, :status => EmployeeApplication::Status::APPROVED, :requested_at => Time.now)
+								if request.save
+									logger.info "assign_employees_or_departments 7"
+									PortalCloudstorageController.new.add_user(employee.user_id)
+								#Companification.decrement_counter(:max_employees_count, companification.id)
+								end
+							else
+								failed_ids << emp_id
+							end
+						end
+					end
+					if failed_ids.blank?
+						flash[:notice] = t("controllers.application_success_assign")
+					else
+						name = ""
+						failed_ids.each do |failed_id|
+							name = name + Employee.find_by_id(failed_id).user.name + ","
+						end
+						name = name.chop
+						flash[:error] = t("controllers.application_assign_failed") + "for #{name}. Please buy Application for Extra Employees"
+					end
+				end
+			end
+		end
+		redirect_to user_application_path(current_user, @application)
+	end
+
+
+	def delete_all_services
+		if @application.name.delete(' ').downcase.include?("ippbx")
+			ippbxed_users = Ippbx.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			ippbxed_users.each do |ippbxed_user|
+				if ippbxed_user.employee_id=="" # added by jhlee on 20120611
+					next
+				end
+				employee = Employee.find_by_id(ippbxed_user.employee_id)
+				PortalIppbxController.new.remove_user_ippbx(employee.user_id) # unless employee.user_id == current_own_company.user_id
+			end
+		elsif @application.name.delete(' ').downcase.include?("cloud")
+			cloud_users = Cloudstorage.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			cloud_users.each do |cloud_user|
+				if cloud_user.employee_id=="" # added by jhlee on 20120611
+					next
+				end
+				employee = Employee.find_by_id(cloud_user.employee_id)
+				PortalCloudstorageController.new.remove_user(employee.id)
+			end
+		end
+	end
+  
+  def add_ippbx_by_id (ids, count)
+      if @application.name.delete(' ').downcase.include?("ippbx")
+           ids.each do |emp_id|
+               employee = Employee.find_by_id(emp_id)
+               PortalIppbxController.new.add_user_ippbx(employee.user_id, count)# unless employee.user_id == current_own_company.user_id
+          end
+       end
+  end
+
+  
+	def add_or_delete_services ids, count
+		if @application.name.delete(' ').downcase.include?("ippbx")
+			ippbxed_users = Ippbx.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			unless ippbxed_users.blank?
+				ippbxed_ids = Array.new
+				ippbxed_users.each do |ippbxed_user| # remove ippbx
+					employee_id = ippbxed_user.employee_id
+					if !ids.include? employee_id
+						employee = Employee.find_by_id(employee_id)
+						PortalIppbxController.new.remove_user_ippbx(employee.user_id)# unless employee.user_id == current_own_company.user_id
+					end
+					ippbxed_ids << employee_id
+				end
+
+				ids.each do |emp_id|  # create ippbx
+					if !ippbxed_ids.include? emp_id
+						employee = Employee.find_by_id(emp_id)
+						PortalIppbxController.new.add_user_ippbx(employee.user_id, count)#unless employee.user_id == current_own_company.user_id
+					end 
+				end #ids.each
+
+			end #unless
+
+		elsif @application.name.delete(' ').downcase.include?("cloud")
+			cloud_users = Cloudstorage.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			unless cloud_users.blank?
+				cloud_ids = Array.new
+				cloud_users.each do |cloud_user| 
+					employee_id = cloud_user.employee_id
+					if !ids.include? employee_id
+						employee = Employee.find_by_id(employee_id)
+						PortalCloudstorageController.new.remove_user(employee.id)
+					end
+					cloud_ids << employee_id
+				end
+
+				ids.each do |emp_id|  # create cloud storage
+					if !cloud_ids.include? emp_id
+						employee = Employee.find_by_id(emp_id)
+						PortalCloudstorageController.new.add_user(employee.user_id)
+					end 
+				end 
+			end
+		end
+	end
+ 
+	def delete_service_by_ids ids
+		if @application.name.delete(' ').downcase.include?("ippbx")
+			ippbxed_users = Ippbx.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+			unless ippbxed_users.blank?
+				ippbxed_users.each do |ippbxed_user| # remove ippbx
+					if !ids.include? ippbxed_user.employee_id
+						employee = Employee.find_by_id(ippbxed_user.employee_id)
+						PortalIppbxController.new.remove_user_ippbx(employee.user_id) #unless employee.user_id == current_own_company.user_id
+					end
+				end
+			end 
+		elsif @application.name.delete(' ').downcase.include?("cloud")
+			cloud_users = Cloudstorage.find_all_by_company_id_and_admin_type(current_own_company.id, "user")
+						unless cloud_users.blank?
+				cloud_users.each do |cloud_user| # remove ippbx
+					if !ids.include? cloud_user.employee_id
+						employee = Employee.find_by_id(cloud_user.employee_id)
+								PortalCloudstorageController.new.remove_user(employee.id)
+					end
+				end
+			end
+		end
+	end
+
+  def send_request
+    auto_approve = "off"
+    @company = current_user.employers.find params[:company_id]
+    plan = @application.basic_plan
+    if @company.can_request_application?(@application)
+      if @application.auto_approve == Application::Approve::ON
+        request = @company.companifications.build(:application => @application, :status => Companification::Status::APPROVED, :requested_at => Time.now, :plan_id => plan.id)
+        auto_approve = "on"
+      else
+        request = @company.companifications.build(:application => @application, :status => Companification::Status::PENDING, :requested_at => Time.now, :plan_id => plan.id)
+      end
+      if request.save
+        if @application.auto_approve == Application::Approve::ON
+          Application.increment_counter(:approved_companies_count, @application.id)
+        end
+         auto_approve == "off" ? flash[:notice] = t("controllers.application_request_sent") :  flash[:notice] = t("controllers.purchase_success")
+      else
+         auto_approve == "off" ? flash[:error] = t("controllers.application_request_failed") :  flash[:notice] = t("controllers.purchase_failed")
+      end
+    end
+    redirect_to :back
+  end
+
+  def send_employee_request
+    @employee = current_user.active_employees.find params[:employee_id]
+    if @employee.can_request_application?(@application)
+      request = @employee.employee_applications.build(:application => @application, :status => EmployeeApplication::Status::PENDING, :requested_at => Time.now)
+      if request.save
+        flash[:notice] = t("controllers.application_request_success")
+      else
+        flash[:error] = t("controllers.application_request_failed")
+      end
+    end
+    redirect_to :back
+  end
+  
+  def add_user_ippbx 
+    @employee = current_user.active_employees.find params[:employee_id]
+    application = Application.find_by_id(params[:id])
+    logger.info("111111111111111111111")
+    logger.info(application.name)
+    if @employee.can_request_application?(application)
+       logger.info("222222")
+	  request = @employee.employee_applications.build(:application => application, :status => EmployeeApplication::Status::APPROVED, :requested_at => Time.now, :assigned_by => EmployeeApplication::Assign::BY_EMP)
+	  
+	  if request.save
+	    #Application.increment_counter(:approved_employees_count, application.id)
+		  PortalIppbxController.new.add_user_ippbx(current_user.id, false)
+		  flash[:notice] = t("controllers.create.ok.ippbx")
+	  else
+		  flash[:error] = t("controllers.create.error.ippbx")
+	  end
+    end
+    redirect_to :back
+  end
+  
+  def remove_user_ippbx
+      @employee = current_user.active_employees.find params[:employee_id]
+      application = Application.find_by_id(params[:id])
+      employee_application = @employee.employee_applications.find_by_application_id(application.id)
+      unless employee_application.blank?
+        if employee_application.destroy
+	PortalIppbxController.new.remove_user_ippbx(current_user.id)
+	flash[:notice] = t("controllers.delete.ok.ippbx")
+	else
+	flash[:error] = t("controllers.delete.error.ippbx")
+	end
+      end
+       redirect_to :back
+  end
+  
+	def send_cancel_request
+		report_maflormed_data and return if current_own_company.blank?
+		application = Application.find_by_id(params[:id])
+		companification = Companification.find_by_plan_id_and_company_id(application.basic_plan.id, current_own_company.id) 
+		cancel_request_fields = {:user_id=> current_user.id, :resource_type => "payments", :resource_id => companification.payment_id, :request => "cancel", :requested_at => Time.now}
+		logger.info(cancel_request_fields)
+		@request = UserRequest.new(cancel_request_fields)
+		if @request.save
+			employees = Employee.find_all_by_company_id(companification.company_id)
+			if application.name.delete(' ').downcase.include?("ippbx")
+				PortalIppbxController.new.remove_company_ippbx(companification.company_id)
+			elsif application.name.delete(' ').downcase.include?("cloud")
+				PortalCloudstorageController.new.remove_company(companification.company_id)
+			end
+			
+			employees.each do  |emp|
+				employee_app = EmployeeApplication.find_by_employee_id_and_application_id(emp.id,companification.application_id)
+				employee_app.destroy unless employee_app.blank?
+				User.find_by_id(emp.user_id).update_attributes(:phone => "") if application.name.delete(' ').downcase.include?("ippbx")
+			end
+			
+			Order.find_by_id(companification.order_id).update_attributes(:status => "cancelled")
+			addon_companifications = Companification.find_all_by_company_id_and_application_id(companification.company_id, companification.application_id)
+			addon_companifications.each do  |addon_companification|
+			if !companification.plan_id == addon_companification.plan_id
+				addon_fileds = {:user_id=> current_user.id, :resource_type => "payments", :resource_id => addon_companification.payment_id, :request => params[:request], :requested_at => Time.now}
+				addon_request = UserRequest.new(addon_fileds)
+				addon_request.save
+			end
+			addon_companification.destroy
+			end
+			#companification.destroy
+			
+			# commented by jhlee on 20120611
+			# update orders table status=>cancelled
+			# phone (work phone) should be empty in user's profile page
+
+			flash[:notice] = t("controllers.delete.ok.applications")
+		else
+			flash[:notice] = t("controllers.delete.error.applications")
+		end
+
+		# should go to applications page 
+		# edited by jhlee on 20120611
+		#redirect_to :back
+		redirect_to user_application_path(current_user)
+	end
+  
+  def remove_application
+  report_maflormed_data and return if current_employee.blank?
+  employee_application = EmployeeApplication.find_by_employee_id_and_application_id(current_employee.id, params[:id])
+  if employee_application.present?
+          if employee_application.destroy
+	  application = Application.find_by_id(params[:id])
+	  PortalIppbxController.new.remove_user_ippbx(current_employee.user_id) if application.name.delete(' ').downcase.include?("ippbx")
+	  PortalCloudstorageController.new.remove_user(current_employee.id) if application.name.delete(' ').downcase.include?("cloud")
+	  flash[:notice] = t("controllers.delete.ok.remove_application")
+	  else
+	    flash[:notice] = t("controllers.delete.ok.remove_application")
+	  end
+  end
+  redirect_to :back
+  end
+  
+  def download_application
+    logger.info("Download Application>>>>>>>>>>>>>>>>>>>*************>>")
+    render :partial => "download_application"
+  end  
+  
+  def device_bin_file_download
+    devicefication = Devicefication.find_by_id(params[:devicefication_id])
+    @bin_file_filename = File.basename(devicefication.bin_file.path.to_s)
+    send_file devicefication.bin_file.path.to_s, { :filename => @bin_file_filename, :disposition => 'attachment',
+     # :type => 'text; charset=utf-8',
+     :status => 200 }
+     #redirect_to :back
+  end
+  
+  def send_download_link
+    devicefication = Devicefication.find_by_id(params[:devicefication_id])
+		@download_url = devicefication.download_url
+		unless @download_url.starts_with? 'http'
+			@download_url = "http://" + @download_url
+		end
+    Notifier.deliver_application_download_url(@application,current_user, current_user.email, @download_url)
+    Notifier.deliver_application_download_url(@application,current_user, current_user.service_email, @download_url)
+    redirect_to :back
+  end
+  
+  def send_bin_file
+    logger.info("Applicatio Name>>>>>>>#{@application.name}")
+
+    devicefication = Devicefication.find_by_id(params[:devicefication_id])
+		logger.info(devicefication.bin_file.path.to_s)
+    @bin_file_filename = devicefication.bin_file.path.to_s
+    Notifier.deliver_application_bin_file(@application,current_user, current_user.email, @bin_file_filename)      
+    Notifier.deliver_application_bin_file(@application,current_user, current_user.service_email, @bin_file_filename)      
+    redirect_to :back
+  end
+  
+  def download_link
+      logger.info("Download Application>>>>>>>>>>>>>>>>>>>*************>>")
+      render :partial => "download_link"
+  end
+  
+  protected
+  def find_application
+    @application = Application.find_by_id params[:id]
+    report_maflormed_data if @application.blank?
+  end
+
+  def find_user
+    unless params[:user_id].blank?
+      @user = User.find_by_id params[:user_id]
+      report_maflormed_data unless @user == current_user
+    end
+  end
+
+  def save_current_tab
+    session[:app_current_tab] = self.action_name
+  end
+
+  def ensure_current_user_company
+    unless current_user_company?
+      report_maflormed_data('In order to see available applications please create a company or contact your employer')
+    end
+  end
+
+  def prepare_tabs
+		default_app_count = (property(:use_mtclient) ? 1 : 0) + (property(:use_ondeego) ? 1 : 0) + (property(:use_sogo) ? 1 : 0)
+    @market_place_count = Application.available.count
+    @my_applications_count = Application.available.for_employees(current_user.active_employees.all.map(&:id)).count + default_app_count
+    fields = {:company_id => current_user_company.id}
+    #@company_catalog_count = current_user_company ? Application.search_or_filter_applications(current_user, fields).count : 0 # if current_own_company.present?
+		if current_own_company.present?
+			@company_catalog_count = Companification.count_by_sql("SELECT COUNT(*) as cnt FROM companifications WHERE company_id = #{current_user_company.id}")
+		else
+			@company_catalog_count = Companification.count_by_sql("SELECT COUNT(*) as cnt FROM companifications WHERE company_id = #{current_user_company.id} AND status NOT IN ('pending','rejected')")
+		end
+  end
+
+end

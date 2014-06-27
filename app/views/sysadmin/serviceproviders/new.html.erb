@@ -1,0 +1,20 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li>
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", sysadmin_serviceproviders_path  %>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.add"))}", new_sysadmin_serviceprovider_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">		
+		<br> 
+		<div class="inner">
+			<% form_for :serviceprovider, :url => sysadmin_serviceproviders_path(:form => @form), :html => { :class => :form } do |f| -%>
+			<%= render :partial => @which_form, :locals => {:f => f} %>
+			<% end -%>
+		</div>
+	</div>
+</div>

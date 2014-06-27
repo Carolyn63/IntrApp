@@ -1,0 +1,34 @@
+<h3 class="title"><%= "Companies" %></h3>
+<% unless @companies.blank? %>
+  <table class="table">
+    <tr>
+      <th class="first">ID</th>
+      <th><%= t("views.companies.name") %></th>
+      <th><%= t("views.companies.address") %></th>
+      <th><%= t("views.companies.city") %></th>
+      <th><%= t("views.companies.phone") %></th>
+      <th><%= t("views.companies.industry") %></th>
+      <th><%= t("views.companies.team") %></th>
+      <th><%= t("views.companies.user_status") %></th>
+      <th><%= t("views.companies.user_role") %></th>
+      <th class="last">&nbsp;</th>
+    </tr>
+    <% @companies.each do |company| -%>
+    <tr class="<%= cycle("odd", "even") %>">
+      <td class="first"><%= company.id %></td>
+      <td><%= link_to company.name, admin_company_path(company) %></td>
+      <td><%= company.address %></td>
+      <td><%= company.city %></td>
+      <td><%= company.phone %></td>
+      <td><%= company.industry %></td>
+      <td><%= company.team %></td>
+      <td><%= company.employee(@user).blank? ? "-" : Employee::Status::TO_LIST[company.employee(@user).status] %></td>
+      <td><%= company.owner?(@user) ? t("views.owner") : t("views.employee") %></td>
+      <td class="last">&nbsp;</td>
+    </tr>
+    <% end -%>
+  </table>
+<%else%>
+  <p><%= t("views.no_companies")  %></p>
+<%end%>
+

@@ -1,0 +1,101 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to_collection %></li>
+      <li><%= link_to_new_resource %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> <%= pluralized_resource_class_name %></h2>
+<div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <span><%= t("views.company") %>:</span>
+        <%= select("", "", Company.ordered.map{|c| [c.name, c.id]}, {:selected => params[:company_id].to_i,
+                    :include_blank => true}, {:name => "company_id", :onchange => "this.form.submit();"}) %>
+        <span>Category:</span>
+        <%= select("", "", Category.ordered.map{|c| [c.name, c.id]}, {:selected => params[:category_id].to_i,
+                    :include_blank => true}, {:name => "category_id", :onchange => "this.form.submit();"}) %>
+        <span>Type:</span>
+        <%= select("", "", ApplicationType.ordered.map{|c| [c.name, c.id]}, {:selected => params[:application_type_id].to_i,
+                    :include_blank => true}, {:name => "application_type_id", :onchange => "this.form.submit();"}) %>
+        <span>Device:</span>
+        <%= select("", "", Device.ordered.map{|c| [c.name, c.id]}, {:selected => params[:device_id].to_i,
+                    :include_blank => true}, {:name => "device_id", :onchange => "this.form.submit();"}) %>
+        <span>Status:</span>
+        <%= select("", "", Application::Status::LIST, {:selected => params[:status].blank? ? nil : params[:status].to_i,
+                    :include_blank => true}, {:name => "status", :onchange => "this.form.submit();"}) %> <br /> <br /> 
+        <span>Industry:</span>
+        <%= select("", "", Industry.ordered.map{|c| [c.industry, c.id]}, {:selected => params[:industry_id].to_i,
+                    :include_blank => true}, {:name => "industry_id", :onchange => "this.form.submit();"}) %>
+                    
+        <span>Country:</span>
+        <%= select("", "", Country.ordered.map{|c| [c.country, c.id]}, {:selected => params[:country_id].to_i,
+                    :include_blank => true}, {:name => "country_id", :onchange => "this.form.submit();"}) %>
+                    
+
+        <%= text_field_tag("search", params[:search], :id => "admin_application_search") %>
+        <%= submit_tag "Search" %>
+      <% end %>
+    </div>
+    <script>
+   /* $("input#admin_application_search").autocomplete("/search/auto_complete_for_application_name", {
+      minChars:3,
+      cacheLength:6
+    });*/
+    </script>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <%= sortable_table_header :name => 'Id',  :sort => "id", :class => "first" %>
+          <th> Logo </th>
+          <%= sortable_table_header :name => 'Name',  :sort => "name" %>
+          <th>Basic Price</th>
+          <th>Provider</th>
+          <th>External Url</th>
+          <th>Status</th>
+          <th>App Type</th>
+          <%= sortable_table_header :name => 'Approved companies count',  :sort => "approved_companies_count" %>
+          <%= sortable_table_header :name => 'Departments count',  :sort => "departments_count" %>
+          <%= sortable_table_header :name => 'Approved employees count',  :sort => "approved_employees_count" %>
+           <th>Auto Approve</th>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% collection.each do |app| -%>
+					<!-- basic_plan not needed as application has initial amount -->
+				<% basic_plan = ApplicationPlan.find_by_application_id_and_application_nature(app.id, 'basic')%>
+<% 
+app_type = Application::AppType::TO_LIST[app.app_type]
+if app_type == "Private"
+	app_type = "<span style=\"color:red;\">#{app_type}</span>"
+end
+%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="first"><%= app.id %></td>
+            <td> <%= app.logo.present? ? image_tag(app.logo.thumb.url) : '' -%>  </td>
+            <td><%= link_to app.name, admin_application_path(app) %></td>
+            <td><%= sprintf("%.2f",basic_plan.amount) -%></td>
+            <td><%= app.provider -%></td>
+            <td><%= truncate(app.external_url, :length => 75) -%></td>
+            <td><%= Application::Status::TO_LIST[app.status] -%></td>
+            <td><%= app_type %></td>
+            <td><%= app.approved_companies_count %></td>
+            <td><%= app.departments_count %></td>
+            <td><%= app.approved_employees_count %></td>
+            <td><%= Application::Approve::TO_LIST[app.auto_approve] -%></td>
+            <td class="last">
+              <%= link_to_show app %> |
+<% if app_type == "Public"%>
+              <%= link_to_edit app -%> |
+<% end %>
+              <%= link_to_delete app -%>
+            </td>
+          </tr>
+        <% end -%>
+      </table>
+      <%= will_paginate collection, :search => params[:search]  %>
+      <div class="actions-bar wat-cf">
+        <div class="actions"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="content left-column applications-layout">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+
+  <div class="right-wider-side">
+    <div class="filter-title-holder">
+      <h1><%= t("views.application_requests.company_request") %></h1>
+      <%= will_paginate(@company_application_requests, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if @company_application_requests && @company_application_requests.total_pages > 1 %>
+      <div class="clear"></div>
+    </div>
+    <% unless @company_application_requests.blank? %>
+      <ul class="list applications-list profiles-list">
+        <% @company_application_requests.each do |request| %>
+          <li>
+            <div class="img-box img-box-size-135">
+              <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <% if request.application.logo.present? %>
+                    <td><%= image_tag request.application.logo.normal.url -%></td>
+                  <% else %>
+                    <td><a href="#"></a></td>
+                  <% end %>
+                </tr>
+              </table>
+            </div>
+            <div class="right-box">
+              <%= link_to(content_tag(:h2,h(request.application.name)), user_application_path(current_user, request.application)) -%>
+              <ul class="application-details-list">
+                <%= status_li(request.status) %>
+                <li><strong><%= t("views.applications.requested_date") %></strong> <%= request.requested_at.to_s(:long) -%></li>
+              </ul>
+              <p>&nbsp;</p>
+              <% if request.rejected? %>
+                <p>
+                  <%= link_to link_name(t("views.application_requests.resend_request")), resend_company_request_company_application_request_path(@company, request), :method => :put, :class => 'standart-button' %>
+                </p>
+              <%end%>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <%= will_paginate(@company_application_requests, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if @company_application_requests.total_pages > 1 %>
+    <% else %>
+      <%= no_items_title(t("views.no_requests")) %>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->

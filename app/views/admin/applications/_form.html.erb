@@ -1,0 +1,246 @@
+<%= error_messages_for_resource %>
+<%
+ basic_plan = ApplicationPlan.find_by_application_id_and_application_nature(@application.id, 'basic')
+%>
+<div class="columns wat-cf">
+	<div class="column left">
+		<%= f.text_field :name, :class => 'text_field' %>
+		<%= f.text_field :provider, :class => 'text_field' %>
+	</div>
+	<div class="column right">
+		<%= f.text_area :description, :class => 'text_area', :rows => 4 %>
+		<%= f.text_field :external_url, :class => 'text_field' %>
+	</div>
+</div>
+
+<div class="columns wat-cf">
+	<div class="column left">
+		<%= f.file_field :logo, :class => 'file_field' %>
+		<% if f.object.logo.present? %>
+		<p>
+			<%= image_tag f.object.logo.thumb.url -%>
+		</p>
+		<% end %>
+	</div>
+</div>
+
+<div class="columns wat-cf">
+	<div class="column left">
+		<%= f.select :payment_type, Application::PaymentType::LIST %>
+	</div>
+	<div class="column right">
+		<%= f.select :auto_approve, Application::Approve::LIST %>
+	</div>
+</div>
+
+<div class="columns wat-cf">
+	<div class="column left" id = "price_field">
+		<%= f.text_field :price, :class => 'text_field', :value=> @application.price ? sprintf("%.2f",@application.price) : "0.00"%>
+		<div id="price_error" style="display:none;color:red;"></div>
+	</div>
+	<div class="column right">
+		<%= f.select :status, Application::Status::LIST ,:id => "payment_type"%>
+	</div>
+</div>
+
+<% if basic_plan.blank? || basic_plan.payment_type == 'monthly' %>
+<br />
+<div class="group">
+	<label class="label " for="application_trial_period">Trial Period</label>
+	<input id="application_trial_period" style="border: 1px solid #ddd;text-align:right;padding-right:2px;" size="2" type="text" value="<%=@application.trial_period%>" name="application[trial_period]" />&nbsp; days
+</div>
+<% end %>
+
+<br />
+<br />
+<h2> Screenshots </h2>
+<%= f.file_field :screenshot0, :label => false, :class => 'file_field' %>
+<%= f.file_field :screenshot1, :label => false, :class => 'file_field' %>
+<%= f.file_field :screenshot2, :label => false, :class => 'file_field' %>
+
+<% if f.object.screenshot0.present? %>
+<%= image_tag f.object.screenshot0.thumb.url -%> </p>
+<% end %>
+
+<% if f.object.screenshot1.present? %>
+<%= image_tag f.object.screenshot1.thumb.url -%> </p>
+<% end %>
+
+<% if f.object.screenshot2.present? %>
+<%= image_tag f.object.screenshot2.thumb.url -%> </p>
+<% end %>
+
+
+<div class="columns wat-cf">
+	<div class="column left">
+		<h2> Types </h2>
+		<% for atype in ApplicationType.find(:all, :order => "name asc") %>
+		<div>
+			<%= check_box_tag "application[application_type_ids][]", atype.id, @application.application_types.include?(atype) %>
+			<%= atype.name %>
+		</div>
+		<% end %>
+	</div>
+	<div class="column right">
+		<h2> Categories </h2>
+		<% for category in Category.find(:all, :order => "name asc") %>
+		<div>
+			<%= check_box_tag "application[category_ids][]", category.id, @application.categories.include?(category) %>
+			<%= category.name %>
+		</div>
+		<% end %>
+	</div>
+</div>
+
+<br />
+<div class="columns wat-cf"> <!-- Industry and Country-->
+	<div class="column left">
+		<h2> Industries </h2>
+		<div style="height:300px;width:200px;overflow:auto;border:1px solid #CCCCCC;border-right: 0px;border-left: 0px;"> 
+<% for industry in Industry.find(:all, :order => "industry asc") %>
+			<%= check_box_tag "application[industry_ids][]", industry.id, @application.industries.include?(industry) %>
+			<%= industry.industry %> <br>
+<% end %>
+		</div>
+	</div>
+	<div class="column right">
+		<h2> Countries </h2>
+		<div style="height:300px;width:200px;overflow:auto;border:1px solid #CCCCCC;border-right: 0px;border-left: 0px;"> 
+<% for country in Country.find(:all, :order => "country asc") %>
+			<%= check_box_tag "application[country_ids][]", country.id, @application.countries.include?(country) %>
+			<%= country.country %> <br>
+<% end %>
+		</div>
+	</div>
+</div>
+
+<br />
+<div class="columns wat-cf">
+	<div class="column left" id="device_checkbox">
+		<h2> Devices </h2>
+<% for device in Device.find(:all, :order => "name asc") %>
+		<div>
+			<%= check_box_tag "application[device_ids][]", device.id, @application.devices.include?(device) %>
+			<%= device.name %>
+		</div>
+<% end %>
+	</div>
+	<div class="column right">
+		<h2>Downloadable APPs</h2>
+		<a href="javascript:void(0)" id="upload_file" style = "font-size: 1.1em"> Add Bin Files and Download URLs</a>
+		<div id="upload_file_div" class="t_popup" style="display:none;width:50%;overflow:auto;"></div>
+<%
+devices = @application.devices
+i = j = 0
+devices.each do |device|
+	devicefication = Devicefication.find_by_application_id_and_device_id(@application.id, device.id)
+	if devicefication.bin_file.present?
+		i += 1
+	end
+	if devicefication.download_url.present?
+		j += 1
+	end
+end
+if i > 0 or j > 0
+%>
+		<div style="padding-top:20px;">
+			<a href="javascript:void(0)" id="delete_file" style = "font-size: 1.1em"> Remove Bin Files and Download URLs </a>
+		</div>
+		<div id="delete_file_div" class="t_popup" style="display:none;width:50%;overflow:auto;"></div>
+<% end %>
+	</div> 
+</div>
+
+<br />
+<div class="group navform wat-cf">
+	<button class="button" type="submit">
+		<%= image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+	</button>
+	<%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")} #{t("web-app-theme.cancel", :default => "Cancel")}", collection_path, :class => "button" %>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+
+	if ($("select#application_payment_type").val() == "free"){
+		$('div#price_field').hide();
+	}
+	else{
+		$('div#price_field').show();
+	}
+
+	$('select#application_payment_type').change(function(){
+		if ($("select#application_payment_type").val() == "free"){
+			$('div#price_field').hide();
+		}
+		else{
+			$('div#price_field').show();
+		}
+	});
+
+	$('button.button').click(function() {
+		var flag = true;
+		if ($("select#application_payment_type").val() != "free"){
+			$('div#price_error').hide();  
+
+			if($('input#application_price').val()==""){
+				$('div#price_error').html("Application Price cannot be empty").show();
+				flag = false;
+			}else{
+				var filter = /^[0-9\.]+$/;
+				if(!filter.test($('input#application_price').val())) {
+					$('div#price_error').html('Please enter numbers only').show();
+					flag = false;
+				}
+				else{
+					var price = parseFloat($("input#application_price").val())
+					if (price <= 0){
+						$('div#price_error').html('Application Price cannot be 0').show();
+						flag = false;
+					}
+				}
+			}
+			if (flag == false){
+				$('html, body').animate({ scrollTop: $('select#application_payment_type').offset().top }, 'fast');
+				
+			}
+		}
+		return flag;
+	});
+
+
+	$('a#upload_file').click(function() {
+		var checked_device_ids = "";
+		$("#device_checkbox :checked").each(function() {
+			//alert("value = " + $(this).val());
+			checked_device_ids = checked_device_ids + $(this).val() + ",";
+		});
+		checked_device_ids = checked_device_ids.slice(0, -1)
+		
+		//alert(checked_device_ids);
+		
+		var div_id='upload_file_div';
+		if($('div#upload_file_div').is(':hidden')) {
+			showOverlay(div_id);
+			$('div#upload_file_div').html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('add_downloadable_apps?device_ids='+ checked_device_ids);
+			$('div#upload_file_div').show();
+		} else {
+			$('div#upload_file_div').hide();
+			hideOverlay();
+		}
+	});
+
+	$('a#delete_file').click(function() {
+		var div_id='delete_file_div';
+		if($('div#delete_file_div').is(':hidden')) {
+			showOverlay(div_id);
+			$('div#delete_file_div').html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('remove_downloadable_apps');
+			$('div#delete_file_div').show();
+		} else {
+			$('div#delete_file_div').hide();
+			hideOverlay();
+		}
+	});
+	});
+</script>

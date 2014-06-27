@@ -1,0 +1,96 @@
+<%
+=begin
+%>
+<h1> Add IP PBX to Company and Employer<h1>
+<%
+company_id = 139
+user_id = 333
+application_id = 12
+
+if PortalIppbxController.new.add_company_ippbx(company_id, 5) && PortalIppbxController.new.add_user_ippbx(user_id,true)
+employee = Employee.find_by_user_id(user_id)
+application = Application.find_by_id(application_id)
+request = employee.employee_applications.build(:application => application, :status => 'approved', :requested_at => Time.now, :assigned_by => '0')
+request.save
+%>
+<span style="color:blue">success</span>
+<% else %>
+<span style="color:red">fail</span>
+<% end %>
+<h1> Update crypted password in Cloudstorage</h1>
+<%
+cloud_employees = Cloudstorage.find(:all)
+cloud_employees.each do |cloud_employee|
+    if cloud_employee.admin_type == "user"
+		    employee = Employee.find_by_id(cloud_employee.employee_id)
+		    user = employee.user
+		    cloud_employee.password = user.user_password
+		    cloud_employee.save
+    end
+end
+%>
+<h1>Create Cloudstorage for company and user</h1>
+<%
+company_id = 174
+user_id = 343
+PortalCloudstorageController.new.add_company_and_ca(company_id,user_id)
+%>
+
+<%
+=end
+%>
+<%
+=begin
+# 317,125; 381,181; 343,174; 410, 412, 187; 342, 151; 407,185;
+#company_id = 174
+#user_id = 343
+company_id = 151
+user_id = 342
+if PortalCloudstorageController.new.add_company(company_id)
+	PortalCloudstorageController.new.add_user(user_id)
+end
+=end
+company_id = 188
+uid = company_id
+encrypt_password = Tools::AESCrypt.new.encrypt("nLnQuofs")
+
+c_quota =  10240 # 10 GB
+company_fields = {:uid => uid, :company_id => company_id, :admin_type => "enterprise", :name => "Alanis Engineering", :login => "alainise188", :password => encrypt_password, :quota => c_quota, :available_quota => c_quota, :date_created => Time.now}
+
+company_cloud = Cloudstorage.new(company_fields)
+if company_cloud.save
+	logger.info "cloud storage successfully saved for company #{company_id}"
+end
+
+#company_id = 125
+#user_id = 317
+#PortalCloudstorageController.new.add_company_and_ca(company_id,user_id)
+=begin
+response = "204"
+if /^20/.match(response)
+	msg = "ok"
+else
+	msg = "no"
+end
+=end
+=begin
+companifications = Companification.find(:all)
+companifications.each do |companification|
+%>
+<div> companification end: <%=companification.end_at%> </div>
+<div> time 10 days : <%=10.days.from_now%> </div>
+<%if !companification.end_at.blank?%>
+<%if companification.end_at < Time.now%>
+<p>expired>>>>>>>>>>>>>>></p> <br />
+<%end%>
+<%end%>
+<%
+end
+=end
+
+#sub_end = 1.month.since(Time.new).strftime("%Y-%m-%d %H:%M:%S")
+%>
+<%
+#=sub_end
+%>
+

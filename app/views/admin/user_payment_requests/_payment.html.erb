@@ -1,0 +1,56 @@
+<h2>Payment Details</h2>
+<div>
+	<table class="table">
+		<tr>
+			<th class="last">payer email</th>
+			<th class="last">payment system</th>
+			<th class="last">transaction date</th>
+			<th class="last">transaction id</th>
+			<th class="last">transaction type</th>
+			<th class="last">transaction status</th>
+			<th class="last">subscription id</th>
+			<th class="last">services</th>
+		</tr>
+<%
+payment_id = params[:payment_id]
+div_id = params[:div_id]
+ph = Payment.find_by_id(payment_id)
+type_names = ""
+item_number = ph.reference_id
+if !item_number.blank?
+	item_numbers = item_number.split(/\s*,\s*/)
+	item_numbers.each do |item|
+		type_id = item[-1,1]
+		logger.info "type_id: #{type_id}"
+		type_names += Service.find_by_id(type_id).service_code + ","
+	end
+end
+type_names = type_names.chop
+tt = ph.transaction_type.gsub("subscr_","subscription ")
+%>
+
+		<tr class="<%= cycle("odd", "even") %>">
+			<td class="first"><%= ph.payer_email %> </td>
+			<td class="first"><%= ph.payment_service %> </td>
+			<td class="first"><%= ph.transaction_date.strftime("%Y-%m-%d %H:%M:%S") %> </td>
+			<td class="first"><%= ph.transaction_id %> </td>
+			<td class="first"><%= tt %> </td>
+			<td class="first"><%= ph.transaction_status %> </td>
+			<td class="first"><%= ph.subscription_id %> </td>
+			<td class="first"><%= type_names %> </td>
+		</tr>
+
+	</table>
+</div>
+
+<div><input type="button" name="close" id="close_payment" value="CLOSE"/></div>
+
+<script type="text/javascript">
+$(function(){
+	$('input#close_payment').click(function() {
+		var div_id='<%=div_id%>';
+		$('div#'+div_id).hide();
+		hideOverlay();
+	});
+});
+</script>

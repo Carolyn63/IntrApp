@@ -1,0 +1,2 @@
+module Sysadmin::FeaturesHelper
+end

@@ -1,0 +1,643 @@
+detailprint: Installing Connectify 3.0.0.20932
+Call: 1076
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll" (overwriteflag=1)
+Jump: 1170
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\System.dll" (overwriteflag=1)
+Jump: 1217
+Jump: 1246
+detailprint: Installer start date=04/10/2011 (Tuesday)
+Time=8:16:07
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Connectify" "InstallType"="False"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Connectify" "UsageData"="1"
+CreateDirectory: "C:\Program Files\Connectify" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\ConnectifyShutdown.exe"
+File: wrote 104448 to "C:\Users\HAPPY\AppData\Local\Temp\ConnectifyShutdown.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\wifi.dll"
+File: wrote 44032 to "C:\Users\HAPPY\AppData\Local\Temp\wifi.dll"
+Call: 952
+detailprint: Stopping Connectify.  This could take a minute or two.
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll"
+File: wrote 62464 to "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll"
+detailprint: Service Connectify not installed
+Jump: 985
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll" (overwriteflag=1)
+detailprint: Service Connectify not installed
+Jump: 1014
+Call: 468
+detailprint: Removing task
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: Continuing
+Call: 468
+Sleep(1000)
+detailprint: Connectify removed
+Delete: "C:\Program Files\Connectify\ConnectifyService.exit"
+Delete: "C:\Program Files\Connectify\Connectifyd.exit"
+Delete: "C:\Users\HAPPY\AppData\Local\Temp\wifi.dll"
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\wifi.dll")
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Connectify" ""="C:\Program Files\Connectify"
+detailprint: Cleaning up DLL's and EXE's
+Delete: "C:\Program Files\Connectify\*.dll"
+Delete: "C:\Program Files\Connectify\*.exe"
+RMDir: "C:\Program Files\Connectify\BabelOut"
+Delete: "C:\Program Files\Connectify\logs\*.old"
+Delete: "C:\Program Files\Connectify\logs\*.pcap"
+Delete: "C:\Program Files\Connectify\logs\DualServer*.log"
+RMDir: "C:\Program Files\Connectify\docs"
+DeleteRegValue: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"
+DeleteRegValue: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"
+created uninstaller: 132876, "C:\Program Files\Connectify\Uninstall.exe"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "DisplayName"="Connectify"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "UninstallString"="C:\Program Files\Connectify\Uninstall.exe"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "InstallLocation"="C:\Program Files\Connectify"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "DisplayIcon"="C:\Program Files\Connectify\Uninstall.exe,0"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "Publisher"="Connectify"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "URLInfoAbout"="http://www.connectify.me/"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "HelpLink"="mailto:support@connectify.me"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "DisplayVersion"="3.0.0.20932"
+detailprint: Installing Connectify Wi-Fi Hotspot
+File: overwriteflag=0, allowskipfilesflag=2, name="Analytics.exe"
+File: wrote 23368 to "C:\Program Files\Connectify\Analytics.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Branding.dll"
+File: wrote 22344 to "C:\Program Files\Connectify\Branding.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="BuildProps.dll"
+File: wrote 14152 to "C:\Program Files\Connectify\BuildProps.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectify.exe"
+File: wrote 2717000 to "C:\Program Files\Connectify\Connectify.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectify.exe.config"
+File: wrote 2509 to "C:\Program Files\Connectify\Connectify.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyCLI.exe"
+File: wrote 45896 to "C:\Program Files\Connectify\ConnectifyCLI.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyCLI.exe.config"
+File: wrote 1555 to "C:\Program Files\Connectify\ConnectifyCLI.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyNAT.dll"
+File: wrote 440136 to "C:\Program Files\Connectify\ConnectifyNAT.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyNetServices.exe"
+File: wrote 351560 to "C:\Program Files\Connectify\ConnectifyNetServices.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyPluginInterface.dll"
+File: wrote 17224 to "C:\Program Files\Connectify\ConnectifyPluginInterface.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyService.exe"
+File: wrote 13312 to "C:\Program Files\Connectify\ConnectifyService.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyTheme.dll"
+File: wrote 285512 to "C:\Program Files\Connectify\ConnectifyTheme.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectifyd.exe"
+File: wrote 321864 to "C:\Program Files\Connectify\Connectifyd.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectifyd.exe.config"
+File: wrote 1509 to "C:\Program Files\Connectify\Connectifyd.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="Credits.html"
+File: wrote 16318 to "C:\Program Files\Connectify\Credits.html"
+File: overwriteflag=0, allowskipfilesflag=2, name="DriverLib.dll"
+File: wrote 22344 to "C:\Program Files\Connectify\DriverLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="DriverSwitcher.exe"
+File: wrote 242504 to "C:\Program Files\Connectify\DriverSwitcher.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ErrorNumbers.dll"
+File: wrote 13128 to "C:\Program Files\Connectify\ErrorNumbers.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="FsprgEmbeddedStore.dll"
+File: wrote 32072 to "C:\Program Files\Connectify\FsprgEmbeddedStore.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="GenerateLogs.exe"
+File: wrote 331080 to "C:\Program Files\Connectify\GenerateLogs.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="GenerateLogs.exe.config"
+File: wrote 2205 to "C:\Program Files\Connectify\GenerateLogs.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="HardwareHelperLib.exe"
+File: wrote 21320 to "C:\Program Files\Connectify\HardwareHelperLib.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="HtmlAgilityPack.dll"
+File: wrote 107336 to "C:\Program Files\Connectify\HtmlAgilityPack.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.NETCONLib.dll"
+File: wrote 15688 to "C:\Program Files\Connectify\Interop.NETCONLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.NETWORKLIST.dll"
+File: wrote 24904 to "C:\Program Files\Connectify\Interop.NETWORKLIST.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.NetFwTypeLib.dll"
+File: wrote 25416 to "C:\Program Files\Connectify\Interop.NetFwTypeLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.SHDocVw.dll"
+File: wrote 145224 to "C:\Program Files\Connectify\Interop.SHDocVw.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Ionic.Zip.dll"
+File: wrote 508744 to "C:\Program Files\Connectify\Ionic.Zip.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="RegistryFunctions.dll"
+File: wrote 13128 to "C:\Program Files\Connectify\RegistryFunctions.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Scannify.dll"
+File: wrote 30024 to "C:\Program Files\Connectify\Scannify.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ServiceComms.dll"
+File: wrote 44872 to "C:\Program Files\Connectify\ServiceComms.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ServiceProperties.exe"
+File: wrote 11080 to "C:\Program Files\Connectify\ServiceProperties.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Troubleshooter.exe"
+File: wrote 337224 to "C:\Program Files\Connectify\Troubleshooter.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Troubleshooter.exe.config"
+File: wrote 2725 to "C:\Program Files\Connectify\Troubleshooter.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="Vendors.dll"
+File: wrote 641864 to "C:\Program Files\Connectify\Vendors.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="WPSLib.dll"
+File: wrote 239432 to "C:\Program Files\Connectify\WPSLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="connectifynat.l4c"
+File: wrote 450 to "C:\Program Files\Connectify\connectifynat.l4c"
+File: overwriteflag=0, allowskipfilesflag=2, name="gma.Windows.Firewall.dll"
+File: wrote 21832 to "C:\Program Files\Connectify\gma.Windows.Firewall.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="io.dll"
+File: wrote 24392 to "C:\Program Files\Connectify\io.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="log4cxx.dll"
+File: wrote 1725256 to "C:\Program Files\Connectify\log4cxx.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="log4net.dll"
+File: wrote 276296 to "C:\Program Files\Connectify\log4net.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ndisapi.dll"
+File: wrote 70472 to "C:\Program Files\Connectify\ndisapi.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="start_service.exe"
+File: wrote 230328 to "C:\Program Files\Connectify\start_service.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="vcredist_x86.exe"
+File: wrote 1817928 to "C:\Program Files\Connectify\vcredist_x86.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="wifi.dll"
+File: wrote 49992 to "C:\Program Files\Connectify\wifi.dll"
+CreateDirectory: "C:\Program Files\Connectify\WCN-UFD" (1)
+CreateDirectory: "C:\Program Files\Connectify\WCN-UFD" created
+File: overwriteflag=0, allowskipfilesflag=2, name="AUTORUN.INF"
+File: wrote 90 to "C:\Program Files\Connectify\WCN-UFD\AUTORUN.INF"
+File: overwriteflag=0, allowskipfilesflag=2, name="setupSNK.exe"
+File: wrote 23880 to "C:\Program Files\Connectify\WCN-UFD\setupSNK.exe"
+CreateDirectory: "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY" (1)
+CreateDirectory: "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY" created
+File: overwriteflag=0, allowskipfilesflag=2, name="MessageB.txt"
+File: wrote 285 to "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY\MessageB.txt"
+File: overwriteflag=0, allowskipfilesflag=2, name="fcw.ico"
+File: wrote 22486 to "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY\fcw.ico"
+CreateDirectory: "C:\Program Files\Connectify\logs" (1)
+CreateDirectory: "C:\Program Files\Connectify\logs" created
+File: overwriteflag=0, allowskipfilesflag=2, name="logs.txt"
+File: wrote 23 to "C:\Program Files\Connectify\logs\logs.txt"
+CreateDirectory: "C:\Program Files\Connectify\plugins" (1)
+CreateDirectory: "C:\Program Files\Connectify\plugins" created
+CreateDirectory: "C:\Program Files\Connectify\source" (1)
+CreateDirectory: "C:\Program Files\Connectify\source" created
+CreateDirectory: "C:\Program Files\Connectify\source\ManagedWifi" (1)
+CreateDirectory: "C:\Program Files\Connectify\source\ManagedWifi" created
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.cs"
+File: wrote 76696 to "C:\Program Files\Connectify\source\ManagedWifi\Interop.cs"
+File: overwriteflag=0, allowskipfilesflag=2, name="ManagedWifi.csproj"
+File: wrote 3872 to "C:\Program Files\Connectify\source\ManagedWifi\ManagedWifi.csproj"
+File: overwriteflag=0, allowskipfilesflag=2, name="WlanApi.cs"
+File: wrote 52659 to "C:\Program Files\Connectify\source\ManagedWifi\WlanApi.cs"
+File: overwriteflag=0, allowskipfilesflag=2, name="app.config"
+File: wrote 120 to "C:\Program Files\Connectify\source\ManagedWifi\app.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="license.txt"
+File: wrote 24061 to "C:\Program Files\Connectify\source\ManagedWifi\license.txt"
+CreateDirectory: "C:\Program Files\Connectify\source\ManagedWifi\Properties" (1)
+CreateDirectory: "C:\Program Files\Connectify\source\ManagedWifi\Properties" created
+File: overwriteflag=0, allowskipfilesflag=2, name="AssemblyInfo.cs"
+File: wrote 1508 to "C:\Program Files\Connectify\source\ManagedWifi\Properties\AssemblyInfo.cs"
+CreateDirectory: "C:\Program Files\Connectify\source\dualserver" (1)
+CreateDirectory: "C:\Program Files\Connectify\source\dualserver" created
+File: overwriteflag=0, allowskipfilesflag=2, name="DualServer.cpp"
+File: wrote 253118 to "C:\Program Files\Connectify\source\dualserver\DualServer.cpp"
+File: overwriteflag=0, allowskipfilesflag=2, name="DualServer.h"
+File: wrote 19893 to "C:\Program Files\Connectify\source\dualserver\DualServer.h"
+File: overwriteflag=0, allowskipfilesflag=2, name="gpl-2.0.txt"
+File: wrote 17987 to "C:\Program Files\Connectify\source\dualserver\gpl-2.0.txt"
+File: overwriteflag=0, allowskipfilesflag=2, name="makefile"
+File: wrote 274 to "C:\Program Files\Connectify\source\dualserver\makefile"
+CreateDirectory: "C:\Program Files\Connectify" (1)
+CreateDirectory: "C:\Program Files\Connectify\Installer" (0)
+CreateDirectory: "C:\Program Files\Connectify\Installer" created
+CopyFiles "C:\Users\HAPPY\Downloads\ConnectifyInstaller.exe"->"C:\Program Files\Connectify\Installer\ConnectifyInstaller.exe"
+Jump: 1370
+WriteRegStr: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify-Installer"="C:\Program Files\Connectify\Installer\ConnectifyInstaller.exe"
+Jump: 1378
+detailprint: Installing Connectify driver.  This may take several minutes, please wait...
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: 	Return code says reboot is required
+Rename: C:\Users\HAPPY\AppData\Local\Temp\ConnectifyShutdown.exe->C:\Program Files\Connectify\ConnectifyShutdown.exe
+CreateDirectory: "C:\Users\HAPPY\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Connectify" (0)
+CreateDirectory: "C:\Users\HAPPY\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Connectify" created
+CreateShortCut: out: "C:\Users\HAPPY\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Connectify\Connectify.lnk", in: "C:\Program Files\Connectify\Connectify.exe ", icon: ,0, sw=0, hk=0
+CreateShortCut: out: "C:\Users\HAPPY\Desktop\Connectify.lnk", in: "C:\Program Files\Connectify\Connectify.exe ", icon: ,0, sw=0, hk=0
+WriteRegStr: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"="C:\Program Files\Connectify\Connectify.exe"
+DeleteRegValue: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"
+detailprint: Installing VC 2008 x86Redistributable
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: Installing Connectify service
+Call: 468
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll" (overwriteflag=1)
+Jump: 1444
+detailprint: Setting Connectify service description
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\SimpleSC.dll" (overwriteflag=1)
+detailprint: Failed to set service description - Reason: The service database is locked
+Aborting: "Failed to set service description.  Please try to reboot and reinstall (Reason: The service database is locked)"
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsg9898.tmp\nsExec.dll" (overwriteflag=1)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: Installing Connectify 3.0.0.20932
+Call: 1076
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Jump: 1170
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Jump: 1217
+Jump: 1246
+detailprint: Installer start date=04/10/2011 (Tuesday)
+Time=8:25:19
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Connectify" "InstallType"="False"
+CreateDirectory: "C:\Program Files\Connectify" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\ConnectifyShutdown.exe"
+File: wrote 104448 to "C:\Users\HAPPY\AppData\Local\Temp\ConnectifyShutdown.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\wifi.dll"
+File: wrote 44032 to "C:\Users\HAPPY\AppData\Local\Temp\wifi.dll"
+Call: 952
+detailprint: Stopping Connectify.  This could take a minute or two.
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: wrote 62464 to "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+Call: 468
+detailprint: Removing task
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: Continuing
+Call: 468
+Sleep(1000)
+detailprint: Connectify removed
+Delete: "C:\Program Files\Connectify\ConnectifyService.exit"
+Delete: "C:\Program Files\Connectify\Connectifyd.exit"
+Delete: "C:\Users\HAPPY\AppData\Local\Temp\wifi.dll"
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\wifi.dll")
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Connectify" ""="C:\Program Files\Connectify"
+detailprint: Cleaning up DLL's and EXE's
+Delete: "C:\Program Files\Connectify\*.dll"
+Delete: DeleteFile("C:\Program Files\Connectify\Branding.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\BuildProps.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyNAT.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyPluginInterface.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyTheme.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\DriverLib.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\ErrorNumbers.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\FsprgEmbeddedStore.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\gma.Windows.Firewall.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\HtmlAgilityPack.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Interop.NETCONLib.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Interop.NetFwTypeLib.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Interop.NETWORKLIST.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Interop.SHDocVw.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\io.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Ionic.Zip.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\log4cxx.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\log4net.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\ndisapi.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\RegistryFunctions.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Scannify.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\ServiceComms.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\Vendors.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\wifi.dll")
+Delete: DeleteFile("C:\Program Files\Connectify\WPSLib.dll")
+Delete: "C:\Program Files\Connectify\*.exe"
+Delete: DeleteFile("C:\Program Files\Connectify\Analytics.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\Connectify.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyCLI.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\Connectifyd.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyNetServices.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyService.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\ConnectifyShutdown.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\DriverSwitcher.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\GenerateLogs.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\HardwareHelperLib.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\ServiceProperties.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\start_service.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\Troubleshooter.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\Uninstall.exe")
+Delete: DeleteFile("C:\Program Files\Connectify\vcredist_x86.exe")
+RMDir: "C:\Program Files\Connectify\BabelOut"
+Delete: "C:\Program Files\Connectify\logs\*.old"
+Delete: "C:\Program Files\Connectify\logs\*.pcap"
+Delete: "C:\Program Files\Connectify\logs\DualServer*.log"
+RMDir: "C:\Program Files\Connectify\docs"
+DeleteRegValue: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"
+DeleteRegValue: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"
+created uninstaller: 132876, "C:\Program Files\Connectify\Uninstall.exe"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "DisplayName"="Connectify"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "UninstallString"="C:\Program Files\Connectify\Uninstall.exe"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "InstallLocation"="C:\Program Files\Connectify"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "DisplayIcon"="C:\Program Files\Connectify\Uninstall.exe,0"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "Publisher"="Connectify"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "URLInfoAbout"="http://www.connectify.me/"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "HelpLink"="mailto:support@connectify.me"
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Connectify" "DisplayVersion"="3.0.0.20932"
+detailprint: Installing Connectify Wi-Fi Hotspot
+File: overwriteflag=0, allowskipfilesflag=2, name="Analytics.exe"
+File: wrote 23368 to "C:\Program Files\Connectify\Analytics.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Branding.dll"
+File: wrote 22344 to "C:\Program Files\Connectify\Branding.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="BuildProps.dll"
+File: wrote 14152 to "C:\Program Files\Connectify\BuildProps.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectify.exe"
+File: wrote 2717000 to "C:\Program Files\Connectify\Connectify.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectify.exe.config"
+File: wrote 2509 to "C:\Program Files\Connectify\Connectify.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyCLI.exe"
+File: wrote 45896 to "C:\Program Files\Connectify\ConnectifyCLI.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyCLI.exe.config"
+File: wrote 1555 to "C:\Program Files\Connectify\ConnectifyCLI.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyNAT.dll"
+File: wrote 440136 to "C:\Program Files\Connectify\ConnectifyNAT.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyNetServices.exe"
+File: wrote 351560 to "C:\Program Files\Connectify\ConnectifyNetServices.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyPluginInterface.dll"
+File: wrote 17224 to "C:\Program Files\Connectify\ConnectifyPluginInterface.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyService.exe"
+File: wrote 13312 to "C:\Program Files\Connectify\ConnectifyService.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ConnectifyTheme.dll"
+File: wrote 285512 to "C:\Program Files\Connectify\ConnectifyTheme.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectifyd.exe"
+File: wrote 321864 to "C:\Program Files\Connectify\Connectifyd.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Connectifyd.exe.config"
+File: wrote 1509 to "C:\Program Files\Connectify\Connectifyd.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="Credits.html"
+File: wrote 16318 to "C:\Program Files\Connectify\Credits.html"
+File: overwriteflag=0, allowskipfilesflag=2, name="DriverLib.dll"
+File: wrote 22344 to "C:\Program Files\Connectify\DriverLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="DriverSwitcher.exe"
+File: wrote 242504 to "C:\Program Files\Connectify\DriverSwitcher.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="ErrorNumbers.dll"
+File: wrote 13128 to "C:\Program Files\Connectify\ErrorNumbers.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="FsprgEmbeddedStore.dll"
+File: wrote 32072 to "C:\Program Files\Connectify\FsprgEmbeddedStore.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="GenerateLogs.exe"
+File: wrote 331080 to "C:\Program Files\Connectify\GenerateLogs.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="GenerateLogs.exe.config"
+File: wrote 2205 to "C:\Program Files\Connectify\GenerateLogs.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="HardwareHelperLib.exe"
+File: wrote 21320 to "C:\Program Files\Connectify\HardwareHelperLib.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="HtmlAgilityPack.dll"
+File: wrote 107336 to "C:\Program Files\Connectify\HtmlAgilityPack.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.NETCONLib.dll"
+File: wrote 15688 to "C:\Program Files\Connectify\Interop.NETCONLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.NETWORKLIST.dll"
+File: wrote 24904 to "C:\Program Files\Connectify\Interop.NETWORKLIST.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.NetFwTypeLib.dll"
+File: wrote 25416 to "C:\Program Files\Connectify\Interop.NetFwTypeLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.SHDocVw.dll"
+File: wrote 145224 to "C:\Program Files\Connectify\Interop.SHDocVw.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Ionic.Zip.dll"
+File: wrote 508744 to "C:\Program Files\Connectify\Ionic.Zip.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="RegistryFunctions.dll"
+File: wrote 13128 to "C:\Program Files\Connectify\RegistryFunctions.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="Scannify.dll"
+File: wrote 30024 to "C:\Program Files\Connectify\Scannify.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ServiceComms.dll"
+File: wrote 44872 to "C:\Program Files\Connectify\ServiceComms.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ServiceProperties.exe"
+File: wrote 11080 to "C:\Program Files\Connectify\ServiceProperties.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Troubleshooter.exe"
+File: wrote 337224 to "C:\Program Files\Connectify\Troubleshooter.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="Troubleshooter.exe.config"
+File: wrote 2725 to "C:\Program Files\Connectify\Troubleshooter.exe.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="Vendors.dll"
+File: wrote 641864 to "C:\Program Files\Connectify\Vendors.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="WPSLib.dll"
+File: wrote 239432 to "C:\Program Files\Connectify\WPSLib.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="connectifynat.l4c"
+File: wrote 450 to "C:\Program Files\Connectify\connectifynat.l4c"
+File: overwriteflag=0, allowskipfilesflag=2, name="gma.Windows.Firewall.dll"
+File: wrote 21832 to "C:\Program Files\Connectify\gma.Windows.Firewall.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="io.dll"
+File: wrote 24392 to "C:\Program Files\Connectify\io.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="log4cxx.dll"
+File: wrote 1725256 to "C:\Program Files\Connectify\log4cxx.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="log4net.dll"
+File: wrote 276296 to "C:\Program Files\Connectify\log4net.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="ndisapi.dll"
+File: wrote 70472 to "C:\Program Files\Connectify\ndisapi.dll"
+File: overwriteflag=0, allowskipfilesflag=2, name="start_service.exe"
+File: wrote 230328 to "C:\Program Files\Connectify\start_service.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="vcredist_x86.exe"
+File: wrote 1817928 to "C:\Program Files\Connectify\vcredist_x86.exe"
+File: overwriteflag=0, allowskipfilesflag=2, name="wifi.dll"
+File: wrote 49992 to "C:\Program Files\Connectify\wifi.dll"
+CreateDirectory: "C:\Program Files\Connectify\WCN-UFD" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="AUTORUN.INF"
+File: wrote 90 to "C:\Program Files\Connectify\WCN-UFD\AUTORUN.INF"
+File: overwriteflag=0, allowskipfilesflag=2, name="setupSNK.exe"
+File: wrote 23880 to "C:\Program Files\Connectify\WCN-UFD\setupSNK.exe"
+CreateDirectory: "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="MessageB.txt"
+File: wrote 285 to "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY\MessageB.txt"
+File: overwriteflag=0, allowskipfilesflag=2, name="fcw.ico"
+File: wrote 22486 to "C:\Program Files\Connectify\WCN-UFD\SMRTNTKY\fcw.ico"
+CreateDirectory: "C:\Program Files\Connectify\logs" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="logs.txt"
+File: wrote 23 to "C:\Program Files\Connectify\logs\logs.txt"
+CreateDirectory: "C:\Program Files\Connectify\plugins" (1)
+CreateDirectory: "C:\Program Files\Connectify\source" (1)
+CreateDirectory: "C:\Program Files\Connectify\source\ManagedWifi" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="Interop.cs"
+File: wrote 76696 to "C:\Program Files\Connectify\source\ManagedWifi\Interop.cs"
+File: overwriteflag=0, allowskipfilesflag=2, name="ManagedWifi.csproj"
+File: wrote 3872 to "C:\Program Files\Connectify\source\ManagedWifi\ManagedWifi.csproj"
+File: overwriteflag=0, allowskipfilesflag=2, name="WlanApi.cs"
+File: wrote 52659 to "C:\Program Files\Connectify\source\ManagedWifi\WlanApi.cs"
+File: overwriteflag=0, allowskipfilesflag=2, name="app.config"
+File: wrote 120 to "C:\Program Files\Connectify\source\ManagedWifi\app.config"
+File: overwriteflag=0, allowskipfilesflag=2, name="license.txt"
+File: wrote 24061 to "C:\Program Files\Connectify\source\ManagedWifi\license.txt"
+CreateDirectory: "C:\Program Files\Connectify\source\ManagedWifi\Properties" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="AssemblyInfo.cs"
+File: wrote 1508 to "C:\Program Files\Connectify\source\ManagedWifi\Properties\AssemblyInfo.cs"
+CreateDirectory: "C:\Program Files\Connectify\source\dualserver" (1)
+File: overwriteflag=0, allowskipfilesflag=2, name="DualServer.cpp"
+File: wrote 253118 to "C:\Program Files\Connectify\source\dualserver\DualServer.cpp"
+File: overwriteflag=0, allowskipfilesflag=2, name="DualServer.h"
+File: wrote 19893 to "C:\Program Files\Connectify\source\dualserver\DualServer.h"
+File: overwriteflag=0, allowskipfilesflag=2, name="gpl-2.0.txt"
+File: wrote 17987 to "C:\Program Files\Connectify\source\dualserver\gpl-2.0.txt"
+File: overwriteflag=0, allowskipfilesflag=2, name="makefile"
+File: wrote 274 to "C:\Program Files\Connectify\source\dualserver\makefile"
+CreateDirectory: "C:\Program Files\Connectify" (1)
+CreateDirectory: "C:\Program Files\Connectify\Installer" (0)
+CopyFiles "C:\Users\HAPPY\Downloads\ConnectifyInstaller.exe"->"C:\Program Files\Connectify\Installer\ConnectifyInstaller.exe"
+Jump: 1370
+WriteRegStr: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify-Installer"="C:\Program Files\Connectify\Installer\ConnectifyInstaller.exe"
+Jump: 1378
+detailprint: Installing Connectify driver.  This may take several minutes, please wait...
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: 	Driver Installed OK
+Rename: C:\Users\HAPPY\AppData\Local\Temp\ConnectifyShutdown.exe->C:\Program Files\Connectify\ConnectifyShutdown.exe
+CreateDirectory: "C:\Users\HAPPY\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Connectify" (0)
+CreateShortCut: out: "C:\Users\HAPPY\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Connectify\Connectify.lnk", in: "C:\Program Files\Connectify\Connectify.exe ", icon: ,0, sw=0, hk=0
+CreateShortCut: out: "C:\Users\HAPPY\Desktop\Connectify.lnk", in: "C:\Program Files\Connectify\Connectify.exe ", icon: ,0, sw=0, hk=0
+WriteRegStr: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"="C:\Program Files\Connectify\Connectify.exe"
+DeleteRegValue: "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify"
+detailprint: Installing VC 2008 x86Redistributable
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+detailprint: Installing Connectify service
+Call: 468
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+Jump: 1444
+detailprint: Setting Connectify service description
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+detailprint: Setting Connectify service recovery settings
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+Call: 468
+detailprint: Setting Connectify service failure settings
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+detailprint: Starting Connectify service
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll" (overwriteflag=1)
+detailprint: Connectify Wi-Fi Hotspot installed
+Call: 1076
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Jump: 1170
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Jump: 1217
+detailprint: Installer completion date=04/10/2011 (Tuesday)
+Time=8:25:58
+DeleteRegValue: "HKEY_LOCAL_MACHINE\Software\Connectify" "InstallType"
+DeleteRegValue: "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" "Connectify-Installer"
+Jump: 163
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: wrote 9728 to "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 169
+Call: 1577
+BringToFront
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=2, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll" (overwriteflag=1)
+Call: 179
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll" (overwriteflag=1)
+Call: 1552
+Call: 468
+Jump: 1559
+CreateDirectory: "C:\Program Files\Connectify" (1)
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\UAC.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\UAC.dll" (overwriteflag=1)
+ExecShell: success ("": file:"C:\Program Files\Connectify\Connectify.exe" params:"start")
+CreateDirectory: "C:\Program Files\Connectify" (1)
+Jump: 1575
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+WriteRegStr: "HKEY_LOCAL_MACHINE\Software\Connectify" "UsageData"="0"
+Call: 1580
+File: overwriteflag=1, allowskipfilesflag=0, name="C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll"
+File: skipped: "C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll" (overwriteflag=1)
+Delete: "C:\Users\HAPPY\AppData\Local\Connectify\Connectify.exit"
+Delete: "C:\Program Files\Connectify\ConnectifyD.exit"
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\modern-header.bmp")
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\modern-wizard.bmp")
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsDialogs.dll")
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\nsExec.dll")
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\SimpleSC.dll")
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\System.dll")
+Delete: DeleteFile("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\UAC.dll")
+RMDir: RemoveDirectory("C:\Users\HAPPY\AppData\Local\Temp\nsgEFCC.tmp\")

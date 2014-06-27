@@ -1,0 +1,46 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container" style="padding-top: 25px;">
+
+<%if !@orders.blank?%>
+    <h1><%= t("views.orders.history") %></h1>
+
+<table class="table" width="100%" cellspacing = "10">
+<tr>
+	      <th class = "first" align="left"> <%=t("views.orders.item_name")%></th>
+	      <th align="left"> <%=t("views.orders.quantity")%></th>
+	      <th align="left"> <%=t("views.orders.price")%></th>
+	      <th align="left"> <%=t("views.orders.total_price")%></th>
+	      <th align="left"> <%=t("views.orders.status")%></th>
+	       
+	       <th align="left">&nbsp;</th>
+</tr>
+
+<%@orders.each do |order|%>
+<%
+if !order.plan_id.blank?
+
+
+%>
+
+
+<tr class="<%= cycle("odd", "even") %>">
+	<td> <span><%=order.application_plan.code%></span></td>
+            
+
+	<td> <%=order.quantity%></td>
+	<td> <%=sprintf("%.2f",order.amount)%> <%=property(:default_currency)%></td>
+	<td> <%=sprintf("%.2f",order.amount.to_i * order.quantity.to_i)%> <%=property(:default_currency)%></td>
+    <td> <%=order.status%></td>
+</tr>
+
+<%end%>
+<%end%>
+
+</table>
+<%end%>
+
+		</div>
+	<div class="clear"></div>
+</div>

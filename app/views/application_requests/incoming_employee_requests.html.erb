@@ -1,0 +1,66 @@
+<div class="content left-column applications-layout">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+
+  <div class="right-wider-side">
+    <div class="filter-title-holder">
+      <h1><%= t("views.application_requests.employee_app_request") %></h1>
+      <%= will_paginate(@incoming_employee_requests, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if @incoming_employee_requests && @incoming_employee_requests.total_pages > 1 %>
+      <div class="clear"></div>
+    </div>
+    <% unless @incoming_employee_requests.blank? %>
+      <ul class="list applications-list profiles-list">
+        <% @incoming_employee_requests.each do |request| %>
+          <% employee = request.employee %>
+          <li>
+            <div class="img-box img-box-size-135">
+              <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <% if request.application.logo.present? %>
+                    <td><%= image_tag request.application.logo.normal.url -%></td>
+                  <% else %>
+                    <td><a href="#"></a></td>
+                  <% end %>
+                </tr>
+              </table>
+            </div>
+            <div class="right-box">
+              <%= link_to(content_tag(:h2,h(request.application.name)), user_application_path(current_user, request.application)) -%>
+              <h2>
+                <strong><%= t("views.application_requests.request_from") %></strong>&nbsp;
+                <%= link_to employee.user.name, user_path(employee.user) -%>
+              </h2>
+              <ul class="application-details-list">
+                <li><strong><%= t("views.application_requests.employee_email") %></strong> <%= link_to employee.user.email, "mailto:#{employee.user.email}" -%></li>
+                <li><strong><%= t("views.applications.requested_date") %></strong> <%= request.requested_at.to_s(:long) -%></li>
+              </ul>
+              <p>&nbsp;</p>
+              <% if @company.can_request_application?(request.application) %>
+                <p>
+                	 <%if request.application.basic_plan.payment_type == "free"%>
+                	 <%= link_to link_name(t("views.applications.purchase_application")), send_request_user_application_path(current_user, request.application, :company_id => @company.id), :method => :put, :class => 'standart-button' %>
+                	 <%else%>
+                	 <%= link_to link_name(t("views.applications.purchase_application")), create_app_order_user_order_path(current_user, request.application,:plan_id => request.application.basic_plan.id, :company_id => @company.id), :method => :put, :class => 'standart-button' %>
+                     <%end%>
+                </p>
+              <%end%>
+              <% if @company.has_approved_application?(request.application) %>
+                <p>
+                  <%= link_to link_name(t("views.application_requests.approve")), approve_company_application_request_path(@company, request), :method => :put, :class => 'standart-button' %>
+                </p>
+              <% end %>
+              <p>
+                <%= link_to link_name(t("views.application_requests.reject")), reject_company_application_request_path(@company, request), :method => :put, :class => 'standart-button' %>
+              </p>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <%= will_paginate(@incoming_employee_requests, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if @incoming_employee_requests.total_pages > 1 %>
+    <% else %>
+      <%= no_items_title(t("views.no_requests")) %>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->

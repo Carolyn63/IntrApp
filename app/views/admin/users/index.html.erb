@@ -1,0 +1,79 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path  %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> Users</h2>
+    <div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <span><%= t("views.company") %>:</span>
+        <%= select("", "", Company.all.map{|c| [c.name, c.id]}, {:selected => params[:company_id].to_i,
+                    :include_blank => true}, {:name => "company_id", :onchange => "this.form.submit();"}) %>
+        <span><%= t("views.status") %>:</span>
+        <%= select("", "", User::Status::LIST, {:selected => params[:status].blank? ? nil : params[:status].to_i,
+                    :include_blank => true}, {:name => "status", :onchange => "this.form.submit();"}) %>
+        <span><%= t("views.privacy") %>:</span>
+        <%= select("", "", User::Privacy::LIST, {:selected => params[:privacy].blank? ? nil : params[:privacy].to_i,
+                    :include_blank => true}, {:name => "privacy", :onchange => "this.form.submit();"}) %>
+        <!--span><%#= t("views.mt_associated") %>:</span-->
+        <%#= select("", "", User::MobileTribeUserState::LIST, {:selected => params[:mt_associated].blank? ? nil : params[:mt_associated].to_i,
+                    :include_blank => true}, {:name => "mt_associated", :onchange => "this.form.submit();"}) %>
+        <span>&nbsp;</span>
+        <%= text_field_tag("search", params[:search], :id => "admin_user_search") %>
+        <%= submit_tag "Search" %>
+      <% end %>
+    </div>
+    <div class="inner">
+      <table class="table">
+        <tr>             
+          <%= sortable_table_header :name => t("views.users.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.users.email"),  :sort => "email" %>
+          <%= sortable_table_header :name => t("views.users.login"),  :sort => "login" %>
+          <%= sortable_table_header :name => t("views.users.name"),  :sort => "name" %>
+          <%= sortable_table_header :name => t("views.users.address"),  :sort => "address" %>
+          <%= sortable_table_header :name => t("views.users.cellphone"),  :sort => "cellphone" %>
+          <%= sortable_table_header :name => t("views.users.created"),  :sort => "created_at" %>
+          <%= sortable_table_header :name => t("views.users.privacy"),  :sort => "privacy" %>
+          <%= sortable_table_header :name => t("views.users.status"),  :sort => "status" %>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% @users.each do |user| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="first"><%= user.id %></td>
+          <td><%= user.email %></td>
+          <td><%= link_to user.login, admin_user_path(user) %></td>
+          <td><%= user.name %></td>
+          <td><%= user.address %></td>
+          <td><%= user.cellphone %></td>
+          <td><%= user.created_at.to_s(:long) %></td>
+          <td><%= User::Privacy::TO_LIST[user.privacy] %></td>
+          <td><%= User::Status::TO_LIST[user.status] %></td>
+          <td class="last">
+            <% if user != current_user %>
+              <% if user.status_active? %>
+               <%= link_to "Block", block_admin_user_path(user), :method => :put, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+              <%else%>
+                <%= link_to "UnBlock", unblock_admin_user_path(user), :method => :put, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+              <%end%>
+              |
+            <%end%>
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path(user) %> |
+            <%= link_to "#{t("web-app-theme.show", :default => "Info")}", info_admin_user_path(user), :title => "User information" %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user) %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Delete")}", admin_user_path(user), :method => "delete", :confirm => t("views.companies.waring_user_delete", :sp_name => property(:sp_name)) %>
+          </td>
+        </tr>          
+        <% end -%>
+      </table>
+      <%= will_paginate @users, :status => params[:status], :privacy => params[:privacy], :company_id => params[:company_id], :mt_associated => params[:mt_associated], :search => params[:search]  %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+

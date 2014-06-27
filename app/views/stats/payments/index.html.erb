@@ -1,0 +1,39 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", stats_payments_path%>
+				
+			</li>
+		
+		</ul>
+	</div>
+	  <div class="content">  
+  <div class="inner" style="width:50%">
+      <table class="table">
+				
+					<tr>
+		  <%= sortable_table_header :name => t("views.titles.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.titles.name"),  :sort => "name" %>
+	<th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				
+					<% @services.each do |service| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"> <%= service.id%> </td>
+						<td><%= service.name%> </td>
+						<td>
+							<%= link_to "#{t("web-app-theme.show", :default => t("views.links.show"))}",  stats_payment_path(service.id)%> 
+						</td>
+		           </tr>
+					<%end%>
+
+
+			</table>
+<%= will_paginate @services%>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,14 @@
+<div class="left-short-side left-back">
+	<div class="head">
+		<h1><%= t("views.orders.manage_orders") %><%= help_icon %></h1>
+		<p><i><%= t("views.orders.you_can_manage") %></i></p>
+	</div>
+	<ul class="left-menu">
+		<li class="<%= (params[:operation] == "cart" or request.request_uri.include?('cart')) ?'selected' : '' %>">
+			<%= link_to "Cart", cart_user_orders_path(current_user.id, :operation => "cart")%>
+		</li>
+		<li class="<%= (params[:operation] == "track_order" or request.request_uri.include?('track_order')) ? 'selected' : '' %>">
+			<%= link_to "Track Order", track_order_user_orders_path(current_user.id, :operation => "track_order")%>
+		</li>
+	</ul>
+</div><!-- .left-short-side -->

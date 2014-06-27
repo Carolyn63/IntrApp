@@ -1,0 +1,2 @@
+module Useradmin::LogoutsHelper
+end

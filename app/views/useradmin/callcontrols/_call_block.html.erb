@@ -1,0 +1,72 @@
+<% form_for :call_block, :url => update_call_block_useradmin_callcontrols_path, :html => {:multipart => true,  :class => :form } do |f| -%>
+<input type="hidden" name="_method" value="put" />
+<table align="left" cellspacing="10" cellpadding="5" border="0" style="font-size:12px;width:350px;">
+	<tr valign="top" >
+		<td align="left" style="width:75px;"><%=t("views.labels.phone_number")%></td>
+		<td align="left" style="width:160px;">
+		<input type="text" id="phone_number" name="phone_number" value="" style="width:150px;" class="text_border" /><div id="phone_error_block" style="display:none;color:red;"></div>
+		</td>
+		<td align="left"><a href="#" class="add_phone">&nbsp;&nbsp;<img src="/images/plus.png" width="16" height="16" align="absmiddle"></a>&nbsp;&nbsp;&nbsp;<a href="#" class="remove_phone"><img src="/images/minus.png" width="16" height="16" align="absmiddle"></a></td>
+	</tr>
+	<tr valign="top">
+		<td colspan="3" align="left" style="padding-top:10px;"> <%= f.select :list,  @feature_number.collect{|number| [number, number]}, {},:name=>"call_block_list[]", :onclick=>"javascript:document.getElementById('phone_number').value=this.value;return false;",:size=>"10" , :multiple => true%>
+	</tr>
+	<tr valign="top">
+		<td colspan="3" align="left">
+		<input type="submit" class="submit_apply" id="apply_call_block" name="apply_call_block" value= <%=t("views.buttons.apply")%> />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="cancel_call_block" name="cancel_call_block" value=<%=t("views.buttons.cancel")%>  />
+		</td>
+	</tr>
+</table>
+<% end -%>
+
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+$('a.add_phone').click(function() {
+var phone_number=document.getElementById('phone_number').value;
+
+	$('div#phone_error_block').hide();	
+	var flag = true;
+	if(phone_number == "") {
+		$('div#phone_error_block').html('Please enter a phone number').show();
+		flag = false;
+	}
+	else{
+		if(!/^\+*$/.test(phone_number.substring(0,1))) {
+			$('div#phone_error_block').html('Phone number starts with \'+\'').show();
+			flag = false;
+		}	
+		else if(!/^[0-9]+$/.test(phone_number.substring(1))) {
+			$('div#phone_error_block').html('Phone number is not valid').show();
+			flag = false;
+		}
+		// else if(phone_number.substring(1).length < 12) {
+		// $('div#phone_error_block').html('Phone number too short').show();
+		// flag = false;
+		// }
+		// else if(phone_number.substring(1).length > 12) {
+		// $('div#phone_error_block').html('Phone number too long').show();
+		// flag = false;
+		// }								
+		}
+	if(flag){
+		$('#call_block_list').append($(document.createElement("option")).attr("value",phone_number).text(phone_number));
+	}
+});
+$('a.remove_phone').click(function() {
+$("#call_block_list option:selected").remove();
+});
+$("#apply_call_block").click(function() {
+$("#call_block_list").each(function() {
+$("#call_block_list option").attr("selected","selected");
+});
+$("#change_password_form").submit
+});
+$('input#cancel_call_block').click(function() {
+$('span#arrow_call_block').html('<img src="/images/arrow_down.jpg" align="absmiddle" width="16" height="16"">');
+$('div#call_block_div').hide();
+});
+});
+</script>

@@ -1,0 +1,26 @@
+<form action="https://ondeego.futurewei.ebento.net:8443/appcentral/api/company/create" id="ondeego_new_company" method="post" >
+  <input id="oauth_nonce" name="oauth_nonce" type="hidden" value="yUWzJPNGMKhBXONCY42rLxUngbmDws0KznytunB6OY">
+  <input id="oauth_signature_method" name="oauth_signature_method" type="hidden" value="HMAC-SHA1">
+  <input id="oauth_timestamp" name="oauth_timestamp" type="hidden" value="1292276227">
+  <input id="oauth_consumer_key" name="oauth_consumer_key" type="hidden" value="AQ==">
+  <input id="oauth_signature" name="oauth_signature" type="hidden" value="lasgifssFMqL2P0YRmGF7ksmonM=">
+  <input id="oauth_version" name="oauth_version" type="hidden" value="1.0">
+
+  <input id="email" name="email" type="text" value="test@tes.com">
+  <input id="firstName" name="firstName" type="text" value="firstName">
+  <input id="lastName" name="lastName" type="text" value="lastName">
+  <input id="jobTitle" name="jobTitle" type="text" value="jobTitle">
+  <input id="phone" name="phone" type="text" value="12345678">
+  <input id="address" name="address" type="text" value="address">
+  <input id="city" name="city" type="text" value="city">
+  <input id="state" name="state" type="text" value="US">
+  <input id="countryISOCode" name="countryISOCode" type="text" value="US">
+
+  <input id="companyName" name="companyName" type="text" value="test">
+  <input id="companyLogoURL" name="companyLogoURL" type="text" value="">
+  <input id="numberEmployeesAllowed" name="numberEmployeesAllowed" type="text" value="0">
+
+  <input id="successRedirectURL" name="successRedirectURL" type="text" value="http://ebento.gera-it-dev.com">
+  <input id="failureRedirectURL" name="failureRedirectURL" type="text" value="http://ebento.gera-it-dev.com">
+  <input name="commit" type="submit" value="">
+</form>

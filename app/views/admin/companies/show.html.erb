@@ -1,0 +1,66 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_companies_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_company_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+        <p>
+          <b><%= t("views.companies.name") %>:</b>
+          <%= @company.name %>
+        </p>
+        <p>
+          <b><%= t("views.companies.address") %>:</b>
+          <%= @company.address %>
+        </p>
+        <p>
+          <b><%= t("views.companies.city") %>:</b>
+          <%= @company.city %>
+        </p>
+        <p>
+          <b><%= t("views.companies.phone") %>:</b>
+          <%= @company.phone %>
+        </p>
+        <p>
+          <b><%= t("views.companies.company_type")%>:</b>
+          <%= @company.company_type %>
+        </p>
+        <p>
+          <b><%= t("views.companies.industry") %>:</b>
+          <%= @company.industry %>
+        </p>
+        <div class="img-box">
+          <p><b><%= "Avatar" %>:</b></p>
+          <%= image_tag @company.logo.url(:medium) %>
+        </div>
+        <p>
+          <b><%= t("views.companies.size") %>:</b>
+          <%= @company.size %>
+        </p>
+        <p>
+          <b><%= t("views.companies.privacy") %>:</b>
+          <%= Company::Privacy::TO_LIST[@company.privacy] %>
+        </p>
+        <p>
+          <b><%= t("views.companies.team") %>:</b>
+          <%= @company.team %>
+        </p>
+        <p>
+          <b><%= t("views.companies.description") %>:</b>
+          <%= @company.description %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_company.country_phone_code", :default => t("activerecord.labels.country_phone_code", :default => "Country phone code")) %>:</b>
+          <%= @company.country_phone_code %>
+        </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_admin_company_path(@company), :class => "button" %> 
+        <%= link_to "#{image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.edit", :default=> "Employees")}")} #{t("web-app-theme.edit", :default=> "Employees")}", employees_admin_company_path(@company), :class => "button" %>
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", admin_company_path(@company), :method => "delete", :class => "button", :confirm => t("views.companies.waring_company_delete") %>
+      </div>      
+    </div>
+  </div>
+</div>

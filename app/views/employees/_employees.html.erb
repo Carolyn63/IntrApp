@@ -1,0 +1,39 @@
+<% form_tag destroy_all_company_employees_path(@company), :id => "form_employees_action" do %>
+  <div class="employees-box">
+    <h3><%= "#{image_tag("down_grey_arrow.png")}&nbsp;&nbsp;#{Employee::Status::TO_PAGE_TITLE[params[:status].to_s]}"%></h3>
+      <ul class="list-employees">
+        <% employees.each do |employee| -%>
+          <li>
+            <span class="name">
+              <% if employee.owner_employee?(@company) %>
+                <%= check_box_tag "employees[]", "#{employee.id}", false, :disabled => true %>
+              <%else%>
+                <%= check_box_tag "employees[]", "#{employee.id}" %>
+              <%end%>
+              <%= link_to employee.user.name, user_path(employee.user) %>
+            </span>
+            <span>
+              <a style="margin-right:5px" href="mailto:<%= employee.company_email %>" class="email"><%= employee.company_email %></a>
+              <br/>
+              <a href="mailto:<%= employee.user.email %>" class="email"><%= employee.user.email %></a>
+            </span>
+            <%# if params[:status] == Employee::Status::ACTIVE %>
+              <span class="employee-edit-link"><%= link_to link_name(t("views.companies.edit_profile")), edit_company_employee_path(@company, employee, :status => params[:status])%></span>
+            <%#end%>
+            <div class="clear"></div>
+          </li>
+        <% end -%>
+      </ul>
+    <div class="clear"></div>
+  </div>
+  <% unless employees.blank? %>
+    <div class="button-box">
+        <%= link_to_function link_name(t("views.employees.delete_selected_ones")), "SubmitEmployeeForm('#{destroy_all_company_employees_path(@company)}')", :class=>"standart-button standart-button-orange"%>
+        <% if params[:status] == Employee::Status::PENDING %>
+          <%= link_to_function link_name(t("views.employees.send_invitations")), "SubmitEmployeeForm('#{invite_all_company_employees_path(@company)}')", :class=>"standart-button"%>
+          <%= link_to_function link_name(t("views.employees.activate_all")), "SubmitEmployeeForm('#{activate_all_company_employees_path(@company)}')", :class=>"standart-button"%>
+        <% end %>
+        <%= submit_tag "", :style => "display:none" %>
+    </div>
+  <% end %>
+<%end%>

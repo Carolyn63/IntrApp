@@ -1,0 +1,87 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.profile"))}", useradmin_profiles_path  %>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.edit"))}", edit_useradmin_profile_path(session[:user_admin_id] ||= '0')  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">	
+		<br> 
+		<div class="inner">
+			<% form_for :view_profile, :html => { :class => :form } do |f| -%>
+			<table cellspacing="10px;" style="width:636px">
+				<tr >
+					<td > <%= f.label :label_loginName, t("views.labels.loginName"), :class => :label %> </td>
+					<td><%= f.text_field :loginName, :value=>@loginName, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+					<td > <%= f.label :label_email, t("views.labels.emailId"), :class => :label %></td>
+					<td><%= f.text_field :emailId, :value=>@emailId, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td><%= f.label :label_title, t("views.labels.title"), :class => :label %></td>
+					<td><%= f.text_field :title, :value=>@title, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+					<td> <%= f.label :label_alias, t("views.labels.alias"), :class => :label %> </td>
+					<td ><%= f.text_field :alias, :value=>@alias, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td > <%= f.label :label_firstName, t("views.labels.firstName"), :class => :label %> </td>
+					<td><%= f.text_field :firstName ,:value=>@firstName, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+					<td><%= f.label :label_workPhone, t("views.labels.workPhone"), :class => :label %></td>
+					<td><%= f.text_field :workPhone ,:value=>@workPhone, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td> <%= f.label :label_middleName, t("views.labels.middleName"), :class => :label %> </td>
+					<td><%= f.text_field :middleName, :value=>@middleName, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+					<td><%= f.label :label_faxNumber, t("views.labels.faxNumber"), :class => :label%></td>
+					<td><%= f.text_field :faxNumber, :value=>@faxNumber, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td > <%= f.label :label_lastName, t("views.labels.lastName"), :class => :label %> </td>
+					<td><%= f.text_field :lastName, :value=>@lastName, :size=>"17px;",:disabled=>'disabled', :class=> "text_border" %></td>
+					<td> <%= f.label :label_workExtension, t("views.labels.workExtension"), :class => :label %> </td>
+					<td ><%= f.text_field :workExtension, :value=>@workExtension, :size=>"17px;",:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td > <%= f.label :label_language, t("views.labels.language"), :class => :label %> </td>
+					<td ><%= f.text_field :language, :value=>@language, :size=>"17px;",:disabled=>'disabled', :class=> "text_border"%></td>
+					<td> <%= f.label :label_cellNumber, t("views.labels.cellNumber"), :class => :label %> </td>
+					<td ><%= f.text_field :cellNumber, :value=>@cellNumber, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td > <%= f.label :label_locale, t("views.labels.locale"), :class => :label %> </td>
+					<td ><%= f.text_field :locale, :value=>@locale, :size=>"17px;",:disabled=>'disabled', :class=> "text_border"%></td>
+					<td > <%= f.label :label_homephone, t("views.labels.homePhone"), :class => :label %> </td>
+					<td><%= f.text_field :homePhone, :value=>@homePhone, :size=>"17px;",:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td > <%= f.label :label_addressLine1, t("views.labels.addressLine1"), :class => :label %> </td>
+					<td colspan="3"> <%= f.text_field :addressLine1, :value=>@addressLine1,  :disabled=>'disabled', :class=> "text_border",:size=>"56%"%> </td>
+				</tr>
+				<tr>
+					<td><%= f.label :label_addressLine2, t("views.labels.addressLine2"), :class => :label %></td>
+					<td colspan="3"> <%= f.text_field :addressLine2, :value=>@addressLine2,  :disabled=>'disabled', :class=> "text_border",:size=>"56%"%></td>
+				</tr>
+				<tr>
+					<td><%= f.label :label_city, t("views.labels.city"), :class => :label %></td>
+					<td><%= f.text_field :city, :value=>@city, :size=>"17px;",:disabled=>'disabled', :class=> "text_border"%></td>
+					<td><%= f.label :label_state, t("views.labels.state"), :class => :label %></td>
+					<td ><%= f.text_field :state, :value=>@state, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_zipCode, t("views.labels.zipCode"), :class => :label %></td>
+					<td><%= f.text_field :zipCode, :value=>@zipCode, :size=>"17px;",:disabled=>'disabled' , :class=> "text_border"%></td>
+					<td > <%= f.label :label_country, t("views.labels.country"), :class => :label %></td>
+					<td ><%= f.text_field :country, :value=>@country, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_timezone, t("views.labels.timezone"), :class => :label %></td>
+					<td ><%= f.text_field :timezone, :value=>@timezone, :size=>"17px;" ,:disabled=>'disabled', :class=> "text_border"%></td>
+				</tr>
+			</table>
+			<% end -%>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,224 @@
+<%
+i = j = 0
+devices = Device.find(:all)
+devices.each do |device|
+	if @application.devices.include?(device)
+		devicefication = Devicefication.find_by_application_id_and_device_id(@application.id, device.id)
+		if devicefication.bin_file.present?
+			i += 1
+		end
+		if devicefication.download_url.present?
+			j += 1
+		end
+	end
+end
+%>
+
+
+
+<script type="text/javascript" charset="utf-8">
+$(function(){
+
+	$('a#download_application').click(function() {
+		var div_id='download_application_div';
+		if($('div#'+div_id).is(':hidden')) {
+			showOverlay(div_id);
+			$('div#'+div_id).html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('<%=@application.id%>/download_application');
+			//$('div#'+div_id).html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('../download_application/');
+			$('div#'+div_id).show();
+		} else {
+			$('div#'+div_id).hide();
+			hideOverlay();
+		}
+	});
+	
+});
+</script>
+
+<div class="content left-column applications-layout" >
+	<div class="clear"></div>
+	<% basic_plan = @application.basic_plan %>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wider-side">
+		<div style="margin-bottom: 10px;padding-left: 450px;">
+			<span><%= link_to "Cart",  cart_user_orders_path(current_user.id)%> </span>&nbsp;&nbsp;&nbsp;&nbsp;<span><%= link_to "Track Order", track_order_user_orders_path(current_user.id)%><span>
+		</div>
+		<div class="first-column">
+			<div class="img-box img-box-size-135">
+				<table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<% if @application.logo.present? %> 
+						<td><%= image_tag @application.logo.normal.url -%></td>
+						<% else %> 
+						<td><a href="#"></a></td>
+						<% end %>
+					</tr>
+				</table>
+
+<% 
+if @application.available_for?(current_own_company, current_employee)
+	if i > 0 or j > 0 
+%>
+				<a href="javascript:void(0)" class="standart-button" id="download_application" style="font-weight: bold; width:140px"><b class="f-small"></b><b class="s">&nbsp;<%= t("views.applications.download_application")%></b><b class="t"></b></a>
+<% 
+	end 
+end 
+%>
+
+			</div>
+		</div>
+		<div class="second-column" style="">
+			<% request = @application.request_for(current_own_company, current_employee) %> <h1 class="black"><%= h @application.name -%></h1>
+			<ul class="application-details-list">
+				<%if current_own_company or ((session[:app_current_tab] || controller.action_name) == 'my_applications')%>
+				<%= status_li(request.status) if request.present? && !request.approved? %>
+				<%end%>
+				<% logger.info("11111111111111111111")%>
+				<li>
+					<strong>Price:</strong> <%unless basic_plan.free?%>  <%= basic_plan.amount %> <%= basic_plan.currency%><%end%>
+				</li>
+				<%if basic_plan.payment_type == "monthly"%>
+				<li>
+					<strong>Trial Period:</strong><%= @application.trial_period%>
+				</li>
+				<%end%>
+				<li>
+					<strong>Provider:</strong> <%= h @application.provider -%>
+				</li>
+				<li>
+					<strong>Supported Devices:</strong> <%= h @application.devices.to_sentence %>
+				</li>
+				<li>
+					<strong>Types:</strong> <%= h @application.application_types.to_sentence %>
+				</li>
+				<li>
+					<strong>Categories:</strong> <%= h @application.categories.to_sentence %>
+				</li>
+				<li>
+					<strong>Description:</strong> <%= h @application.description %>
+				</li>
+				<%if current_own_company%>
+				<%if @application.basic_plan.code.delete(' ').downcase.include?("ippbx") and current_own_company.ippbx.present?%>
+				<li>
+					<strong>Available Public numbers:</strong> <%= @pn_size%> </br>
+					<%= h "(" + @public_numbers + ")" if @pn_size>0%>
+				</li>
+				<%end%>
+				<%end%>
+			</ul>
+			<% if @application.external_url.present? && @application.available_for?(current_own_company, current_employee) %> <h4>Want to see more information? &nbsp; &nbsp; <!--<a class="standart-button width-135">
+			<b class="f-small"></b><b class="s"><%#= link_to 'Go to App Main', '#' %></b><b class="t"></b>
+			</a>--> <%= link_to link_name('Go to App Main'), @application.external_url, :style => 'font-size: 12px', :class => "standart-button", :target => "_blank" %> </h4>
+			<% end %>
+			<%if current_own_company.present?%>
+
+			<%if basic_plan.payment_type == "free" or request.blank?%>
+			<%= request_links(@application, request) %>
+			<%if !request.blank?%>
+			<%if request.cancelled?%>
+			<%= request_links(@application, request) %>
+			<%elsif request.paid? or request.approved? or request.trial? %>
+			<p>
+				<b><%= "Purchased"%> <b>
+			</p>
+			<%end%>
+			<%end%>
+			<%end%>
+
+			<% request = @application.request_for(current_own_company, current_employee, basic_plan.payment_type)%>
+
+			<%if request.present? and (request.paid? or request.trial?)%>
+			<% logger.info("application>>>>>>>>>>>> Button")%>
+
+			<%if !((session[:app_current_tab] || controller.action_name) == 'my_applications')%>
+			<%if basic_plan.payment_type == "monthly"%>
+			<div style="margin-top:10px;">
+				<%= content_tag(:span, link_to(link_name("Cancel Subscription"), send_cancel_request_user_application_path(current_user, @application, :company_id => current_own_company.id), :method => :put, :class => 'standart-button', :confirm => t("views.applications.warning_cancel_subscription")))%>
+			</div>
+			<%end%>
+
+			<% plans = ApplicationPlan.active_plans(@application.id)%>
+			<%if !plans.blank?%>
+			<div style="font-size: 11px;">
+				<h1 style="color:#575757;margin-bottom:15px;"><%= t("views.applications.plans")%></h1>
+				<% form_for :orders, :url => user_orders_path(), :html => { :class => :form } do |f| -%> <h4 style="color:#575757;margin-bottom:15px; font-family: Verdana;">Basic:&nbsp;&nbsp;<span style="font-size:0.8em;color:#006600;">purchased</span></h4>
+				<% plan_ids = Array.new%>
+				<% plans.each do |plan|%>
+				<% plan_ids << plan.id%>
+				<div style="margin-bottom:10px;">
+					<%if plan.addon?%> <h4 style="color:#575757;margin-bottom:15px; font-family: Verdana;"><%= t("views.applications.add_ons")%>:&nbsp;&nbsp;<span style="font-size:0.8em;color:#006600;"><%= @addon_count.to_s + " purchased"%></span></h4>
+					<%elsif plan.employee?%> <h4 style="color:#575757;margin-bottom:15px; font-family: Verdana;"><%= t("views.applications.per_employee")%>:&nbsp;&nbsp;<span style="font-size:0.8em;color:#006600;"><%= @employee_count.to_s + " purchased"%></span></h4>
+					<%end%>
+					<div style="margin-bottom:3px;font-size: 12px;"">
+
+					<%= radio_button "orders", "plan_id", plan.id.to_s%>
+					<span><%= plan.code%>
+					<%if plan.code.delete(' ').downcase.include?("cloud")%>
+					<%= " Per GB"%>
+					<%end%>
+
+					</span>
+
+					</div>
+
+					<div style="margin-top:10px;"> <span><%= t("views.applications.price")%> </span><span style="color:#575757"><%= plan.free? ? t("views.applications.free")  : format("%.2f",plan.amount)  + " "+ plan.currency + " " + plan.payment_type.titleize%></span>
+					</div>
+					<div style="margin-top:10px;">	<span><%= t("views.applications.qunatity")%></span>&nbsp;&nbsp;<span><%= f.text_field "quantity_#{plan.id.to_s}", :size=>"2", :class=> :text_border, :onclick => "document.getElementById('orders_plan_id_#{plan.id.to_s}').checked=true;return false;"%></span>
+					</div>
+
+					</div>
+					<% end %>
+					<div style="margin-bottom:15px;"></div>
+
+					<input type="hidden" name="plan_ids" value="<%= plan_ids%>" />
+					<input type="hidden" name="basic_id" value="<%= basic_plan.id%>" />
+
+					<div><button class="max-button" type="submit" id="next_button"><b class="f"></b><b class="s" style="width:130px;padding-left:3px;"><%= t("views.orders.add_to_cart") %></b><b class="t"></b></button>
+					</span></div>
+					<%end%>
+					<%end%>
+					<%else%>
+					<%= content_tag(:span, link_to(link_name(t("views.application_requests.remove_application")), remove_application_user_application_path(current_user, @application, :employee_id => current_employee.id), :method => :put, :class => 'standart-button', :confirm => t("views.applications.warning_remove_user_applocation"))) %>
+					<%end%>
+					</div>
+					<div class="clear"></div>
+					<%end%>
+					<%else%>
+
+					<%= request_links(@application, request)%>
+					<%if request.present? and request.approved? and !@application.basic_plan.code.delete(' ').downcase.include?("ippbx")%>
+					<%= content_tag(:span, link_to(link_name(t("views.application_requests.remove_application")), remove_application_user_application_path(current_user, @application, :employee_id => current_employee.id), :method => :put, :class => 'standart-button', :confirm => t("views.applications.warning_remove_user_applocation"))) %>
+					<%end%>
+					<%end%>
+
+					<% if current_own_company.present? && current_own_company.has_approved_application?(@application) && !((session[:app_current_tab] || controller.action_name) == 'my_applications') %>
+					<div class="employees-application-container">
+					<h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("views.applications.assigned_employees") %></h3>
+					<% form_tag assign_employees_or_departments_user_application_path(current_user, @application) do -%>
+					<%= hidden_field_tag "employee_ids[]", "" %>
+					<%= select_tag('employee_ids[]', options_for_select(current_own_company.employees.active.all.map { |e| [e.user.name, e.id] },
+            current_own_company.active_employees_per_application(@application).map { |e| e.id } ), { :multiple => true, :id => 'employee_ids', :class => 'js_chosen' }) %>
+					<div class="bottom-gradient-box tac">
+					<%= content_tag(:button, link_name(t("views.save")), :type => 'submit', :class => 'standart-button') %>
+					</div>
+					<%end%>
+					</div>
+					<div class="employees-application-container">
+					<h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("views.applications.assigned_deparments") %></h3>
+					<% form_tag assign_employees_or_departments_user_application_path(current_user, @application) do -%>
+					<%= hidden_field_tag "department_ids[]", "" %>
+					<%= select_tag('department_ids[]', options_for_select(current_own_company.departments.all.map { |d| [d.name, d.id] },
+            current_own_company.departments_per_application(@application).map { |e| e.id } ), { :multiple => true, :id => 'department_ids', :class => 'js_chosen' }) %>
+					<div class="bottom-gradient-box tac">
+					<%= content_tag(:button, link_name(t("views.save")), :type => 'submit', :class => 'standart-button') %>
+					</div>
+					<%end%>
+					</div>
+					<%end%>
+
+					</div>
+
+					</div>
+
+					<div class="clear"></div>
+					</div><!-- .content -->

@@ -1,0 +1,68 @@
+
+<div class="content right-column">
+  <div class="left-side company-info">
+
+    <div id="contact-us">
+      <div class="container">
+        <h2><%= "Contact Us" %><%= help_icon %></h2>
+				<br />
+        <ul class="info-list">
+          <li>
+            <p class="left"><b><%= property(:sp_contact) %></b></p>
+            <p class="right"><i><%= property(:sp_tel1) %></i></p>
+            <div class="clear"></div>
+          </li>
+          <li>
+            <p class="left"><b><%= property(:sp_address1) %></b></p>
+            <p class="right"><i><%= property(:sp_tel2) %></i></p>
+            <div class="clear"></div>
+          </li>
+          <li>
+            <p class="left"><b><%= property(:sp_address2) %></b></p>
+            <p class="right"><i><%= property(:sp_fax) %></i></p>
+            <div class="clear"></div>
+          </li>
+          <li>
+            <p class="left"><b>&nbsp;</b></p>
+            <p class="right"><i>&nbsp;</i></p>
+            <div class="clear"></div>
+          </li>
+          <li>
+            <p class="left"><b><%= "Email Support #{property(:sp_email_link)}" %></b></p>
+            <p class="right"><i><%= "Web #{property(:sp_web_link)}" %></i></p>
+            <div class="clear"></div>
+          </li>
+        </ul>
+        <div class="clear"></div>
+        <div class="question">
+          <h2><%= t("views.contacts_us.questions_about", :sp_name => property(:sp_name)) %></h2>
+          <ul>
+            <li>
+              <p><%= t("views.contacts_us.check_answer_for", :link => link_to_function(t("views.contacts_us.frequently_asked_questions"), help_system_window(property(:sp_faq_url)))) %></p>
+            </li>
+            <li>
+              <p><%= t("views.contacts_us.read_link", :portal_link => link_to_function(t("views.contacts_us.sp_portal_help", :sp_name => property(:sp_name)), help_system_window(property(:sp_portal_help_url)))) %></p>
+            </li>
+          </ul>
+          <h2><%= t("views.contacts_us.still_having_problems") %></h2>
+          <ul>
+            <li>
+              <%= t("views.contacts_us.support_system", :sp_name => property(:sp_name), :open_help_ticket => link_to_function(t("views.contacts_us.open_help_ticket"), help_system_window(property(:sp_support_url)), :target => "_blank"))%>
+            </li>
+          </ul>
+          <h2>Service Level Agreement</h2>
+          <ul>
+            <li>
+              <p>You can also peruse the <%= link_to_function("Service Level Agreement", help_system_window(property(:sp_sla_url))) %> for the oToGo service.</p>
+            </li>
+          </ul>
+        </div>
+     </div><!-- .container -->
+   </div>
+
+  </div><!-- .left-side -->
+  <div class="right-side right-back right-profile-box">
+    &nbsp;
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->

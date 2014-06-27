@@ -1,0 +1,12 @@
+<%# unless controller.controller_name == "search" %>
+  <div class="search-box">
+  	<% unless current_user.blank? %>  	
+    <% action = controller.controller_name == "users" ? users_path : user_companies_path(current_user.id)  %>
+    <% form_tag user_companies_path(current_user.id), :method => "get", :id => "menu_search_form" do %>
+      <%= search_drop_down("menu_search_by", menu_search_select, :ul_class => "sub-ul-short", :selected => action) %>
+      <%= text_field_tag 'search', params[:search].blank? ? "Search" : params[:search], :class=>"field", :placeholder=>"Search" %>
+      <%= image_tag "search_button.gif", :onclick => "$('#menu_search_form').submit();", :class=>"search-button" %>
+    <%end%>
+    <% end %>
+  </div>
+<%#end%>

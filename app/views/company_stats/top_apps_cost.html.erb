@@ -1,0 +1,92 @@
+<script language="javascript" type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+<div class="content left-column">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container" style="padding-top: 25px;">
+	<h1> Top Apps by Cost </h1>
+
+<%
+top_apps_by_cost = company_top_apps_by_cost(current_own_company.id).sort_by { |key, value| value.to_i }.reverse!
+
+app_count  = top_apps_by_cost.count
+
+if app_count
+%>
+<script language="javascript" type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+<!-- COST TREND REPORT BY APP TABLE CHART -->
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+
+	data.addColumn('string', 'App');
+	data.addColumn('number', 'Cost');
+
+	data.addRows(<%=app_count%>);
+
+<%
+	i = 0
+	top_apps_by_cost.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+%>
+
+	var formatter = new google.visualization.NumberFormat({prefix: '$'});
+	formatter.format(data, 1);
+
+	var table = new google.visualization.Table(document.getElementById('top_apps_cost_table_div'));
+	table.draw(data, {allowHtml:true, showTip: true, showRowNumber: false});
+}
+</script>
+
+<!-- COST TREND REPORT BY APP COLUMN CHART -->
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["columnchart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+
+	data.addColumn('string', 'App');
+	data.addColumn('number', 'Cost, US$');
+
+	data.addRows(<%=app_count%>);
+
+<%
+	i = 0
+	top_apps_by_cost.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+%>
+
+	var chart = new google.visualization.BarChart(document.getElementById('top_apps_cost_bar_div'));
+	chart.draw(data, {width: 500, height: 500, is3D: false, isStacked:false, legend:'top', legendFontSize:'14px', titleFontSize: '18px', title: 'Top App Cost'});
+}
+</script>
+
+
+	<div id="top_apps_cost_table_div" style="border:1px solid #ccc;margin-top:40px;"></div>
+
+	<div class="clear"></div>
+
+	<div id="top_apps_cost_bar_div" style="border:1px solid #ccc;margin-top:30px;"></div>
+
+<% end %>
+<%
+#=end
+%>
+	</div>
+	<div class="clear"></div>
+</div>

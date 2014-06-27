@@ -1,0 +1,39 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.show"))}", useradmin_callcontrols_path  %>
+			</li>
+			<li >
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.edit"))}", edit_useradmin_callcontrol_path(session[:user_admin_id]) %>
+			</li>
+		</ul>
+	</div>
+	<div class="content" >
+		<br>
+		<div class="inner">
+			<table id="sortableTable" class="tablesorter" style="width: 67%">
+				<thead>
+					<tr>
+						<th><%= t("views.titles.name")%></th>
+						<th><%= t("views.titles.description")%></th>
+						<th><%= t("views.titles.featureCode")%></th>
+						<th><%= t("views.titles.activeStatus")%></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @features.each do |feature| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td><%= feature["name"]%></td>
+						<td><%= feature["description"]%></td>
+						<td><%= feature["featureCode"]%></td>
+						<td><%= feature["active"]%></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>

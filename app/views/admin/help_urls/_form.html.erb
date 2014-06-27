@@ -1,0 +1,26 @@
+  <%= error_messages_for :help_url %>
+
+  <div class="group">
+    <%= f.label :name, t("views.help_urls.name"), :class => :label %>
+    <%= f.text_field :name, :class => 'text_field' %>
+    <span class="description"><%= t("views.help_urls.name_example") %></span>
+  </div>
+
+  <div class="group">
+    <%= f.label :portal_url, t("views.help_urls.portal_url"), :class => :label %>
+    <%= f.text_field :portal_url, :class => 'text_field' %>
+    <span class="description"><%= t("views.help_urls.portal_url_example") %></span>
+  </div>
+
+  <div class="group">
+    <%= f.label :help_url, t("views.help_urls.help_system_url"), :class => :label %>
+    <%= f.text_field :help_url, :value => @help_url.help_url.blank? ? property(:sp_help_url) : @help_url.help_url, :class => 'text_field' %>
+    <span class="description"><%= t("views.help_urls.help_url_example", :sp_help_url => property(:sp_help_url)) %></span>
+  </div>
+        
+<div class="group navform wat-cf">
+  <button class="button" type="submit">
+    <%= image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+  </button>  
+  <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")} #{t("web-app-theme.cancel", :default => "Cancel")}", admin_help_urls_path, :class => "button" %> 
+</div>

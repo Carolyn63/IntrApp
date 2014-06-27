@@ -1,0 +1,61 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", admin_services_path%>
+				
+			</li>
+		<li>
+			<%= link_to "#{t("web-app-theme.list", :default => t("views.links.add"))}", new_admin_service_path%></li>
+		</ul>
+	</div>
+	  <div class="content">  
+  <div class="inner">
+      <table class="table">
+				
+					<tr>
+		  <%= sortable_table_header :name => t("views.titles.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.titles.name"),  :sort => "name" %>
+          <%= sortable_table_header :name => t("views.titles.active"),  :sort => "active" %>
+          <%= sortable_table_header :name => t("views.titles.amount"),  :sort => "amount" %>
+          <%= sortable_table_header :name => t("views.titles.currency"),  :sort => "currency" %>
+          <%= sortable_table_header :name => t("views.titles.control_panel"),  :sort => "currency" %>
+						<th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				
+					<% @services.each do |service| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"> <%= service.id%> </td>
+						<td><%= service.name%> </td>
+						<%if service.active == 1%>
+						<td><%= "Active"%> </td>
+						<%else%>
+						<td><%= "Inactive"%> </td>
+						<%end%>
+						<td><%= service.amount%> </td>
+						<td><%= service.currency%> </td>
+                                                <td>
+                                                <%if service.name.include? "IP PBX"%>
+                                                <%=link_to t("views.links.click_here"), spadmin_logins_path%>
+                                                <%else%>
+                                                <%=link_to t("views.links.click_here"), "javascript:void(0)"%>
+                                                <%end%>
+						</td>
+						<td>
+							<%= link_to "#{t("web-app-theme.show", :default => t("views.links.edit"))}",  edit_admin_service_path(service.id)%> |
+							<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  admin_service_path(service.id) , :method => "delete", :confirm => t("views.notices.admin_delete_service")%>
+							 
+						
+						</td>
+		           </tr>
+					<%end%>
+
+
+			</table>
+
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+			</div>
+		</div>
+	</div>

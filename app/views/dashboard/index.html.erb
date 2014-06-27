@@ -1,0 +1,110 @@
+
+<div class="content right-column">
+  <div class="left-side">
+    <h1><%= t("views.companies.welcome_to_sp", :sp_name => property(:sp_name)) %><%= help_icon %></h1>
+    <h2><%= t("views.companies.connections_requests") %></h2>
+    <br/>
+    <% requests_count = (@employers_request.size + @friends_request.size).to_i
+    accepted_request = (@employees_accepted_request.size + @friends_accepted_request.size).to_i
+  %>
+    <% if requests_count.zero? and accepted_request.zero? %>
+      <h3 style="margin-left:52px"><%= t("views.companies.not_have_connections_requests") %></h3>
+      <br/>
+    <% else %>
+      <% unless requests_count.zero? %>
+        <h2><%= requests_count %>&nbsp;<%= t("views.companies.sp_members_sent_you_requests_to_your_contacts", :count => requests_count) %></h2>
+        <ul class="list members-list">
+          <% unless @employers_request.blank? %>
+            <%= render :partial => "employer_request", :collection => @employers_request %>
+          <%end%>
+          <% unless @friends_request.blank? %>
+            <%= render :partial => "friend_request", :collection => @friends_request %>
+          <%end%>
+        </ul>
+      <%end%>
+      <% unless accepted_request.zero? %>
+        <div class="green-back-box">
+          <h2><%= accepted_request %>&nbsp;<%= t("views.companies.sp_members_has_accepted_your_request", :count => accepted_request) %></h2>
+          <ul class="list members-list">
+            <% unless @employees_accepted_request.blank? %>
+              <%= render :partial => "employee_accepted_request", :collection => @employees_accepted_request %>
+            <%end%>
+            <% unless @friends_accepted_request.blank? %>
+              <%= render :partial => "friend_accepted_request", :collection => @friends_accepted_request %>
+            <%end%>
+          </ul>
+        </div>
+      <%end%>
+    <%end%>
+
+    <% unless @recently_companies.blank? %>
+      <h2><%= t("views.companies.new_companies_profiles") %></h2>
+      <ul class="list members-list profiles-list">
+        <%= render :partial => "recently_company", :collection => @recently_companies %>
+      </ul>
+    <%end%>
+
+    <% unless @recently_user.blank? %>
+      <h2><%= t("views.companies.new_people_profile") %></h2>
+      <ul class="list members-list profiles-list">
+        <%= render :partial => "recently_user", :collection => @recently_user %>
+      </ul>
+    <%end%>
+  </div>
+  <div class="right-side right-back">
+    <div class="inner-right-side">
+      <div class="w280">
+        <div class="dashboard-profile">
+          <h2><%= t("views.companies.my_profile") %></h2>
+          <ul class="list right-profile-list">
+            <li>
+              <div class="img-box img-square-box-logo">
+                <%= image_tag current_user.avatar.url(:medium), :class => "img-square-box-logo" %>
+                <%= link_to %Q!<b class="f-small"></b><b class="s7">#{t("views.companies.edit_profile")}</b><b class="t"></b>!, edit_user_path(current_user.id), :class => 'standart-button' %>
+              </div>
+              <div class="right-box">
+                <p class="name"><b><%= link_to current_user.name, user_path(current_user) %></b>&nbsp;<%#= link_to "<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>", user_path(current_user.id), :class => 'orange-color fz10'  %></p>
+
+                <% company = current_user.top_company %>
+                <p class="fz10">
+                  <span><i><%= company.blank? ? "&nbsp;" : company.name %></i></span>&nbsp;
+                  <%= join_fields_with_pipe(((company.blank? or company.employee(current_user).blank?) ? "" : company.employee(current_user).department_name ), current_user.job_title ) %>
+                </p>
+                <p class="description">
+                  <%= current_user.description %>
+                </p>
+              </div>
+              <div class="clear"></div>
+            </li>
+          </ul>
+        </div>
+        <% unless @companies.blank? %>
+          <div class="dashboard-profile">
+            <h2><%= @companies.size > 1 ? t("views.companies.my_companies_profiles") : t("views.companies.my_company_profile") %></h2>
+            <ul class="list right-profile-list">
+              <%= render :partial => "company", :collection => @companies %>
+            </ul>
+          </div>
+        <%end%>
+
+
+      </div><!-- .w280 -->
+
+    </div>
+
+    <% unless @employers.blank? %>
+      <h2><%= @employers.size > 1 ? t("views.companies.your_companies") : t("views.companies.your_company") %></h2>
+      <ul class="list right-list w255">
+        <%= render :partial => "new_employer", :collection => @employers %>
+        <li class="last">&nbsp;</li>
+      </ul>
+      <% if @employers.total_pages > 1 %>
+        <div class="bottom-gradient-box">
+          <%= will_paginate @employers, :class => 'pagination float-right', :renderer => 'CustomLinkRenderer' %>
+        </div>
+      <%end%>
+    <%end%>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>

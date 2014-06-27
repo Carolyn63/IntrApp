@@ -1,0 +1,51 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_linkedin_users_path  %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> Registered LinkedIn Users</h2>
+    <div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <%= text_field_tag("search", params[:search], :id => "admin_linkedin_user_search") %>
+        <%= submit_tag t("views.search") %>
+      <% end %>
+    </div>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <%= sortable_table_header :name => t("views.users.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.users.name"),  :sort => "name" %>
+          <th><%= t("views.users.address") %></th>
+          <th><%= t("views.users.city") %></th>
+          <th><%= t("views.users.country") %></th>
+          <th><%= t("views.users.phone") %></th>
+          <th>Company</th>
+        </tr>
+        <% @linkedin_users.each do |linkedin_user| -%>
+					<% linkedin_company = LinkedinCompany.find_by_linkedin(linkedin_user.login) %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="first"><%= linkedin_user.id %></td>
+          <td><a href="http://www.linkedin.com/x/profile/3zw8df764vlo/<%=linkedin_user.linkedin%>" target="_blank"><%= linkedin_user.firstname %> <%= linkedin_user.lastname %></a></td>
+          <td><%= linkedin_user.address %></td>
+          <td><%= linkedin_user.city %></td>
+          <td><%= linkedin_user.country %></td>
+          <td><%= linkedin_user.phone %></td>
+					<td>
+					<% unless linkedin_company.blank? %>
+						<a href="http://www.linkedin.com/company/<%=linkedin_company.linkedin%>" target="_blank"><%= linkedin_company.name %></a>
+					<% end %>
+					</td>
+        </tr>
+        <% end -%>
+      </table>
+       <%= will_paginate @linkedin_users, :search => params[:search] %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

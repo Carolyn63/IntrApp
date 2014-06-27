@@ -1,0 +1,200 @@
+<%= error_messages_for :user %>
+<div class="content right-column">
+  <% @user.password = @user.password_confirmation = nil %>
+  <% form_for @user, :url => user_path(@user), :html => {:multipart => true, :id => "user_form"} do |f| -%>
+    <div class="left-side create-profile">
+      <h1><%= t("views.users.edit_sp_profile", :sp_name => property(:sp_name)) %><%= help_icon %></h1>
+      <div class="container">
+        <h3 class="mt40"><%= t("views.users.personal_information") %></h3>
+        <div class="input-row">
+          <label><span><%= t("views.users.first_name") %><b class="green-color fz14">&nbsp;*</b></span></label>
+          <%= f.text_field :firstname, :value => default_value(@user.firstname, t("views.users.enter_first_name")), :placeholder => t("views.users.enter_first_name") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.last_name") %><b class="green-color fz14">&nbsp;*</b></span></label>
+          <%= f.text_field :lastname, :value => default_value(@user.lastname, t("views.users.enter_last_name")), :placeholder => t("views.users.enter_last_name") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.username") %></span></label>
+          <%= f.text_field :login, :value => default_value(@user.login, t("views.users.create_username")), :readonly => true  %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.age") %></span></label>
+          <%= f.text_field :age, :value =>  default_value(@user.age, t("views.users.enter_your_age")), :placeholder => t("views.users.enter_your_age") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.sex") %></span></label>
+          <span><%= t("views.users.male") %></span><%= f.radio_button :sex, "Male", :class => "checkbox" %>&nbsp;&nbsp;
+          <span><%= t("views.users.female") %></span><%= f.radio_button :sex, "Female", :class => "checkbox" %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.job_title") %></span></label>
+          <%= f.text_field :job_title, :value =>  default_value(@user.job_title, t("views.users.enter_your_job_title")), :placeholder => t("views.users.enter_your_job_title") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.site") %></span></label>
+          <%= f.text_field :site, :value =>  default_value(@user.site, t("views.users.enter_your_site")), :placeholder => t("views.users.enter_your_site") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.password") %></span></label>
+          <%= f.password_field :password, :autocomplete => "off" %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.confirm") %></span></label>
+          <%= f.password_field :password_confirmation, :autocomplete => "off" %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.privacy") %></span></label>
+          <%= f.select :privacy, User::Privacy::LIST %>
+        </div>
+
+        <div class="input-row">
+          <label style="width:280px">
+            <span><%= t("views.users.receive_notification_friendship") %></span>
+          </label>
+          <%= f.check_box :friendship_notification, :class => "checkbox" %>
+        </div>
+
+        <h3 class="mt40"><%= t("views.users.contact_information") %></h3>
+        <div class="input-row">
+          <label><span><%= t("views.users.alt_email") %><b class="green-color fz14">&nbsp;*</b></span></label>
+          <%= f.text_field :email, :value =>  default_value(@user.email, t("views.users.enter_alt_email")), :placeholder => t("views.users.enter_alt_email") %>
+        </div>
+        <% @user.employees.each_with_index do |e, i| %>
+          <div class="input-row">
+            <label><span><%= i.zero? ? t("views.users.corporate_emails") : "&nbsp;" %></span></label>
+              <%= text_field_tag :corporate_email, e.company_email, :readonly => true %>
+          </div>
+        <%end%>
+      
+         
+        <div class="input-row">
+          <label><span><%= t("views.labels.workPhone") %></span></label>
+          <%if @user.user_has_ippbx?(@user)%>
+	      <%unless @user.employees[0].ippbx.public_number.blank? %>
+	      <%= f.text_field :phone, :value =>  default_value(@user.phone, t("views.users.enter_your_phone")), :placeholder => t("views.users.enter_your_phone"), :readonly => true %>
+	      <%else%>
+	      <%= f.text_field :phone, :value =>  default_value(@user.phone, t("views.users.enter_your_phone")), :placeholder => t("views.users.enter_your_phone")%>
+	      <%end%>          
+          <%else%>
+          <%= f.text_field :phone, :value =>  default_value(@user.phone, t("views.users.enter_your_phone")), :placeholder => t("views.users.enter_your_phone")%>
+          <%end%>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.cellphone") %></span></label>
+          <%= f.text_field :cellphone, :value =>  default_value(@user.cellphone, t("views.users.enter_your_cellphone")), :placeholder => t("views.users.enter_your_cellphone") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.linkedin") %></span></label>
+          <%= f.text_field :linkedin , :placeholder => "format http://www.linkedin.com/profile/view?id=123456"%>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.address") %></span></label>
+          <%= f.text_field :address, :value =>  default_value(@user.address, t("views.users.enter_your_address")), :placeholder => t("views.users.enter_your_address") %>
+        </div>
+        <div class="input-row">
+          <label><span><%= t("views.users.address2") %></span></label>
+          <%= f.text_field :address2, :value =>  default_value(@user.address2, t("views.users.enter_your_address")), :placeholder => t("views.users.enter_your_address") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.city") %></span></label>
+          <%= f.text_field :city, :value =>  default_value(@user.city, t("views.users.enter_your_city")), :placeholder => t("views.users.enter_your_city") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.state") %></span></label>
+          <%= f.text_field :state, :value =>  default_value(@user.state, t("views.users.enter_your_state")), :placeholder => t("views.users.enter_your_state") %>
+        </div>
+           <div class="input-row">
+          <label><span><%= t("views.users.zipcode") %></span></label>
+          <%= f.text_field :zipcode, :value =>  default_value(@user.zipcode, t("views.users.enter_your_zipcode")), :placeholder => t("views.users.enter_your_zipcode") %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.users.country") %></span></label>
+          <%= f.select :country, enterprise_countries, :selected => @user.country %>
+        </div>
+
+        <div class="input-row">
+          <label><span><%= t("views.required_fields") %><b class="green-color fz14">&nbsp;*</b></span></label>
+        </div>
+      </div>
+      <div class="bottom-gradient-box tac">
+        <button type="submit" class="standart-button"><b class="f"></b><b class="s"><%= t("views.users.save_profile") %></b><b class="t"></b></button>
+        <br/>
+      </div>
+    </div>
+    <div class="right-side right-back right-profile-box">
+      <h2><%= t("views.users.your_profile_photo") %></h2>
+      <div class="w255">
+        <% unless @user.new_record? %>
+          <%= image_tag @user.avatar.url(:big) %>
+        <%else%>
+          <div class="img-box img-big-box">
+            <table class="verticalMiddle" border="0" cellpadding="0" cellspacing="0">
+              <tbody><tr>
+                  <td><a href="#"></a></td>
+                </tr>
+              </tbody></table>
+          </div>
+        <%end%>
+        <!--a class="standart-button standart-button-plus"><b class="f"></b><b class="s">&nbsp;Upload Another Photo</b><b class="t"></b></a-->
+        <div style="margin-top: 10px"><%= f.file_field :avatar, :size => 15 %></div>
+        <div class="hor-line"></div>
+        <div class="desc-box">
+          <div class="input-row">
+            <label style="width:150px" ><span><%= t("views.users.description") %></span></label>
+            <%= f.text_area :description, :value =>  default_value(@user.description, t("views.users.enter_small_description")), :placeholder => t("views.users.enter_small_description") %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  <% end -%>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    /*/*
+  var options = {positions:'right'};
+  $("#user_cellphone").bt('<%= t("views.users.valid_cellphone") %>', options);
+
+   /*
+    var options = {positions:'right'};
+    $("#login-info").bt("An account name must be unique within our system. May we suggest you use your email address as your account name?", options);
+    $("#user_login").mouseover(function(){
+      $("#login-info").mouseover();
+    });
+
+    $("#email-info").bt("A valid email is used to send a confirmation message to verify your new account", options);
+    $("#user_email").mouseover(function(){
+      $("#email-info").mouseover();
+    });
+
+    $("#password-info").bt("A password must be 6 or more characters, and should include letters, numbers, and symbols", options);
+    $("#user_password").mouseover(function(){
+      $("#password-info").mouseover();
+    });
+
+    $("#mt-login-info").bt("An account name must already be register with MobileTribe.", options);
+    $("#mt-pass-info").bt("A password must be 6 or more characters, and should include letters, numbers, and symbols", options);
+     */
+    if( $("#user_mobile_tribe_user_state_0").is(":checked") ){
+      $("#mt-login-info").hide();
+      $("#mt-pass-info").hide();
+    }
+  });
+</script>

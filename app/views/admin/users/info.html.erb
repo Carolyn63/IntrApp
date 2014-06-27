@@ -1,0 +1,17 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.list", :default => "User information")}", info_admin_user_path(@user)  %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%= "User information for #{@user.name}" %></h2>
+    <div class="inner">
+      <%= render :partial => "companies" %>
+      <%= render :partial => "friendships" %>
+      <%= render :partial => "contacts" %>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,24 @@
+<li>
+  <div class="img-box">
+    <%= image_tag employer_request.admin.avatar.url(:thumb), :class => "img-mini-box-logo" %>
+  </div>
+  <div class="right-box">
+    <div class="left">
+      <p class="first-row"><span class="title"><b><%= link_to employer_request.admin.name, user_path(employer_request.admin) %></b></span><span class="request green-request"><%= t("views.companies.coworking_request") %></span></p>
+      <%= render :partial => "shared/company_name_and_profile_link", :locals => {:company => employer_request} %>
+      <p>
+        <span class="float-left">
+          <%= join_fields_with_pipe((employer_request.admin_employee.blank? ? "" : employer_request.admin_employee.department_name ), employer_request.admin.job_title ) %>
+        </span>
+        <span class="fz10 float-right">
+          <span class="grey-color"><%= t("views.companies.request_send") %></span>&nbsp;<span class="green-color"><%= "#{time_ago_in_words(employer_request.employee(current_user).created_at)} ago" %></span>
+        </span>
+      </p>
+    </div>
+    <div class="right">
+      <%= link_to link_name(t("views.accept_request")), accept_user_employer_path(current_user, employer_request), :class => "standart-button", :style => "margin-top:5px" %>
+      <%= link_to link_name(t("views.reject_request")), reject_user_employer_path(current_user, employer_request), :class => "standart-button", :style => "margin-top:5px" , :confirm => t("controllers.confirm_reject_employment", :sp_name => property(:sp_name))%>
+    </div>
+    <div class="clear"></div>
+  </div>
+</li>

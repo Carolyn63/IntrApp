@@ -1,0 +1,31 @@
+<% form_tag destroy_all_company_departments_path(@company), :id => "form_departments_action" do %>
+  <div class="employees-box">
+    <h3><%= "#{image_tag("down_grey_arrow.png")}&nbsp;&nbsp; #{t("views.departments.departments")}" %></h3>
+		  <ul class="list-employees">
+        <% departments.each do |department| -%> 
+          <li>
+            <span class="name">
+                <%= check_box_tag "departments[]", "#{department.id}" %>
+              <%= department.name %>
+            </span>
+            <span>
+							<%= department.description %>
+            </span>
+            <%# if department.exist? %>
+              <span class="employee-edit-link"><%= link_to link_name(t("views.departments.edit_department")), edit_company_department_path(@company, department)%></span>
+            <%# end%>
+            <div class="clear"></div>
+          </li>
+        <% end -%> 
+      </ul>
+    <div class="clear"></div>
+  </div>
+  <% unless departments.blank? %>
+    <div class="button-box">
+        <%= link_to_function link_name(t("views.departments.delete_selected_ones")), "SubmitDepartmentForm('#{destroy_all_company_departments_path(@company)}')", :class=>"standart-button standart-button-orange"%>
+        <%= submit_tag "", :style => "display:none"%>
+    </div>
+  <% end %>
+<%end%>
+
+

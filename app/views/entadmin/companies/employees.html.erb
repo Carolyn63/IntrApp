@@ -1,0 +1,77 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => "Portal Users")}", employees_entadmin_company_path(session[:ent_company_id] )  %>
+			</li>
+			<li>
+				<%= link_to "#{t("web-app-theme.list", :default => "IP PBX Users")}", ippbx_entadmin_users_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+	
+	<h2>title</h2>
+
+   <div class="admin-filter">
+
+			<table >
+				<% form_tag "", {:method => :get} do %>
+				<tr>
+					<td><span><%= t("views.entadmin.users.firstname")%>:</span></td>
+					<td> <%= text_field_tag("firstName", params[:firstName], :id => "entadmin_users_firstname") %> </td>
+					<td><span><%= t("views.entadmin.users.lastname")%>:</span></td>
+					<td> <%= text_field_tag("lastName", params[:lastName], :id => "entadmin_users_lastname") %> </td>
+					<td><span><%= t("views.entadmin.users.email")%>:</span></td>
+					<td> <%= text_field_tag("emailId", params[:emailId], :id => "entadmin_users_email") %> </td>
+					 
+					<td><%= submit_tag t("views.search") %></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+
+
+		
+		<div class="inner">
+			<table class="table">
+				<tr>
+					<th><%= t("views.entadmin.users.name") %></th>
+					<th><%= t("views.entadmin.users.email") %></th> 
+					<th><%= t("views.entadmin.users.extn") %></th>
+					<th><%= t("views.entadmin.users.workphone") %>
+					<th class="last">action</th>
+				</tr>
+				<% @employees.each do |employee| -%>
+				<%if employee.is_ippbx_enabled == 0%>
+				<tr class="<%= cycle("odd", "even") %>">
+					<td class="first"><%= employee.user.name%></td>
+					<td><%= employee.user.email %></td>
+					<td></td>
+					<td></td>
+					<% form_for :user, :url => new_entadmin_user_path(:form => 1), :html => {:multipart => true,  :class => :form} do |f| -%> <td>
+					<input type="hidden" name="_method" value="get" />
+					<input type="hidden" name="empid" id ="empid" value=<%= employee.id%> />
+					<input type="hidden" name="firstname" id ="firstname" value="<%= CGI::escape(employee.user.firstname)%>" /><br/>
+					<input type="hidden" name="lastname" id ="lastname" value="<%= CGI::escape(employee.user.lastname)%>" />
+					<input type="hidden" name="phone" id ="phone" value="<%= CGI::escape(employee.user.phone)%>" />
+					<input type="hidden" name="cellphone" id ="cellphone" value="<%= CGI::escape(employee.user.cellphone)%>" />
+					<input type="hidden" name="address" id ="address" value="<%= CGI::escape(employee.user.address)%>"/>
+					<input type="hidden" name="city" id ="city" value="<%= CGI::escape(employee.user.city)%>" />
+					<input type="hidden" name="state" id ="state" value="<%= CGI::escape(employee.user.state)%>" />
+					<input type="hidden" name="country" id ="country" value="<%= CGI::escape(employee.user.country)%>" />
+					<input type="hidden" name="email" id ="email" value="<%= CGI::escape(employee.user.email)%>" />
+			    	<input type="submit" value="Add" />
+			     	</td>
+					<%end%>
+				    </tr>
+				<%end%>
+				<% end -%>
+			</table>
+			
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>
+</div>

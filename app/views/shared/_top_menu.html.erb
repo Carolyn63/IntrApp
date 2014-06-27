@@ -1,0 +1,11 @@
+<% if current_user %>
+  <div class="top-line">
+    <%= link_to "#{image_tag("green_link_arrow.png")}&nbsp;Take me to view my public profile", user_path(current_user.id), :class=>"green-link"%>
+    <ul class="right-navi">
+      <li><%= link_to %Q!My property(:sp_name)&nbsp;&nbsp;&nbsp;#{image_tag("navi_arrow_down.gif")}!, property(:mobile_client_link) %></li>
+      <li><a class="not-work" href="#">Quick Links&nbsp;&nbsp;&nbsp;<%= image_tag("navi_arrow_down.gif") %></a></li>
+      <li><%= link_to %Q!Contact Us&nbsp;&nbsp;&nbsp;#{image_tag("navi_arrow_down.gif")}!, contact_us_support_path %></li>
+    </ul>
+    <div class="clear"></div>
+  </div>
+<% end %>

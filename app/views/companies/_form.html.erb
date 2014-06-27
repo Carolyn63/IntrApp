@@ -1,0 +1,88 @@
+<div id="new_company_information" class="content right-column">
+  <%= error_messages_for :company %>
+  <div class="left-side company-info">
+    <h1><%= t("views.companies.create_company_profile") %><%= help_icon %></h1>
+
+    <%= render :partial => "main_company_fields", :locals => {:f => f} %>
+
+    <div class="bottom-gradient-box tac" style="padding-left:0px">
+      <%= link_to link_name(t("views.cancel")), user_dashboard_index_path(current_user), :class=>"standart-button" %>
+      <%= link_to link_name("#{t("views.next")}&nbsp;&nbsp;"), "#", :id => "company_create_next_link" , :class=>"standart-button" %>
+      <br/>
+    </div>
+  </div><!-- .left-side -->
+  <div class="right-side right-back right-profile-box">
+    <%= render :partial => "logo_and_description", :locals => {:f => f} %>
+    <div class="w255">
+      <div class="advance-search-box right-deafult-box company-departmens">
+        <div class="green-box">
+          <ul class="blue-list">
+            <li><%= t("views.companies.after_create_able_add_department") %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->
+
+<div id="new_company_owner_information" class="content right-column" style="display:none">
+  <%= error_messages_for :employee %>
+  <div class="left-side company-info">
+    <h1><%= t("views.companies.generate_company_profile") %></h1>
+    <div class="container">
+      <h3><%= t("views.companies.contact_information") %><%= help_icon(:url => @owner_help_url) %></h3>
+      <% fields_for :employee do |employee| %>
+        <%= employee.hidden_field :user_id, :value => current_user.id %>
+        <%= employee.hidden_field :status, :value => Employee::Status::ACTIVE %>
+        <div class="input-row">
+          <label class="notes"><%= t("views.companies.company_owner_info_work_email") %></label>
+        </div>
+        <div class="input-row">
+          <label><span><%= t("views.companies.job_title") %></span></label>
+          <%= employee.text_field :job_title %>
+        </div>
+        <div class="input-row">
+          <label><span><%= t("views.users.email") %><b class="green-color fz14">&nbsp;*</b></span></label>
+          <% company_email = !@employee.blank? && !@employee.company_email.blank? ? @employee.company_email : current_user.login  + "@#{property(:sogo_email_domain)}" %>
+          <%= employee.text_field :company_email, :value => company_email %>
+        </div>
+        <div class="input-row">
+          <label class="notes"><%= t("views.companies.company_owner_info_application_tab") %></label>
+        </div>
+        <div class="input-row">
+          <label class="notes"><%= t("views.companies.company_owner_info_now_company_created") %></label>
+        </div>
+      <%end%>
+    </div><!-- .content -->
+    <div class="bottom-gradient-box tac" style="padding-left:0px">
+      <div id="submit-buttons">
+        <%= link_to link_name(t("views.cancel")), user_dashboard_index_path(current_user), :class=>"standart-button" %>
+        <%= link_to link_name(t("views.save_profile")), "#", :id => "company_form_submit_and_add_new_employee" , :class=>"standart-button" %>
+        <%if property(:use_ondeego)%>
+        <%= link_to link_name(t("views.companies.save_and_go_register_mobile_app_store")), "#", :id => "company_form_submit" , :class=>"standart-button" %>
+        <%end%>
+      </div>
+      <div id="submit-loader" style="display:none">
+        <%= image_tag "loader.gif" %>
+      </div>
+      <br/>
+    </div>
+  </div>
+  <div class="right-side right-back right-profile-box">
+    &nbsp;
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(function(){
+      <% if !@employee.blank? && !@employee.errors.blank? && @company.errors.blank? %>
+          $("#new_company_information").hide();
+          $("#new_company_owner_information").show();
+      <%end%>
+    });
+  });
+</script>

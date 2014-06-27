@@ -1,0 +1,23 @@
+<% form_remote_for :employee, :url => update_company_email_company_employee_path(@company,@employee), :html => {:method => :put, :id => "edit_password", :autocomplete => :off } do |f| -%>
+  <%= error_messages_for :employee %>
+  <div class="employees-box">
+    <h3><%= image_tag("down_grey_arrow.png") %><%= "&nbsp;&nbsp;#{t("views.employees.edit_company_email_password")}#{@employee.user.name}" %></h3>
+     <div class="input-row">
+       <label style="width:170px"><span><%= t("views.companies.company_email_password") %></span></label>
+       <%= f.password_field :email_password, :value => "" %>
+     </div>
+     <div class="input-row">
+       <label style="width:170px"><span><%= t("views.employees.company_email_confirmation") %></span></label>
+       <%= f.password_field :email_password_confirmation, :value => "" %>
+     </div>
+    <div class="clear"></div>
+  </div>
+  <div class="tac">
+    <%= link_to_function link_name(t("views.save")), "$('#edit_password').hide();$('#loader').show();$('#submit').click();", :class=>"standart-button" %>
+    <%= submit_tag '', :id => "submit", :style => "display:none" %>
+  </div>
+<% end -%>
+
+<div id="loader" style="display:none">
+  <%=  image_tag "loadingAnimation.gif"%>
+</div>

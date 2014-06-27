@@ -1,0 +1,2 @@
+module Spadmin::DomainsHelper
+end

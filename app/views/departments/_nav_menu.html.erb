@@ -1,0 +1,13 @@
+<div class="left-short-side left-back">
+  <div class="head">
+    <h1><%= t("views.departments.manage_departments", :name => @company.name) %><%= help_icon %></h1>
+    <p><i><%= t("views.departments.manage_dept_desc") %></i></p>
+  </div>
+  <ul class="left-menu">
+		<% if !@company.departments.blank? %>
+			<li class="<%= ["index"].include?(controller.action_name) ? 'selected' : '' %>"><%= link_to t("views.departments.manage_departments"), company_departments_path(@company) %></li>
+		<% end %>
+    <li class="<%= ["new", "create"].include?(controller.action_name) ? 'selected' : '' %>"><%= link_to t("views.departments.create_department"), new_company_department_path(@company) %></li>
+  </ul>
+  <a href="#" class="help-box"></a>
+</div><!-- .left-short-side -->

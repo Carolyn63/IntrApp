@@ -1,0 +1,366 @@
+class CloudStorageController < ApplicationController
+  # the Properties Aspect - see /doc/MediaType.ashx#PropertiesAspect
+  # def properties
+  # return self['properties']
+  # end
+  #
+  # # the Associations Aspect - see /doc/MediaType.ashx#AssociationsAspect
+  # def associations
+  # return self['associations']
+  # end
+  #
+  # # the Neighbors Aspect - see /doc/MediaType.ashx#NeighborsAspect
+  # def neighbors
+  # return self['neighbors']
+  # end
+  #
+  # # the Collections Aspect - see /doc/MediaType.ashx#CollectionsAspect
+  # def collections
+  # return self['collections']
+  # end
+  #
+  # # the Members Aspect - see /doc/MediaType.ashx#MembersAspect
+  # def members
+  # return self['members']
+  # end
+  # handy extension method that finds a member by comparing a
+  # particular property of each member to the desired value
+  def find_member_by_property(source, property_name, value)
+    return source['members'].select { |k| k['properties'][property_name] == value }[0]
+  end
+
+  # this is a handy extension method that finds a DDRS link
+  # by querying a document's Associations Aspect for links
+  # with a rel attribute equal to the 'rel' parameter
+  def find_link_by_relation(source, rel)
+    links = source['associations']['links'] # links to other resources
+    return links.select { |k| k['rel'] == rel }[0]
+  end
+
+  def create_biz_and_admin
+
+    @api_execution_info = ""
+
+    @admin_username = "admin@digidata.com"
+    @admin_password = "password"
+    @top_level_collection = "Top-Level Collection"
+
+    @small_business_name = params[:biz]
+    @small_business_quota = params[:quota]
+    @small_business_admin_login = params[:ca_login]
+    @small_business_admin_password = params[:ca_pass]
+    @small_business_admin_email = params[:ca_email]
+
+    if @small_business_name.blank? or @small_business_quota.blank? or @small_business_admin_login.blank? or @small_business_admin_password.blank? or @small_business_admin_email.blank?
+      @api_execution_info = "Execution error! The reason is at least one of the following params is not supplied to execute the API: Business Name, Admin Login, Admin Password, Admin Email. Please Check!"
+    return
+    end
+
+    # construct a new DDRS client for our main administrator
+    service = Services::DigidataApi::Api.new(@admin_username, @admin_password)
+
+    # retrieve our service's "home page"
+    homepage = service.get()
+
+    # retrieve our administrator's user entity via the 'login' relation
+    login_link = find_link_by_relation(homepage, 'login')
+
+    me = service.get(login_link)
+    logger.info "========================get login info=============================="
+    logger.info "=============url(get) #{login_link}"
+    logger.info "=============response #{me}"
+
+    @api_execution_info = "Login as Top level Collection Admin OK!" + "</br>"
+
+    ###
+    ### goal 1: create a new user collection for our small business
+    ###
+
+    ## step 1: find our top-level user collection, of which our
+    ##         small business user collections should be children
+
+    # find the set of all UCs of which our admin is a member
+    all_ucs_link = find_link_by_relation(me, 'memberships')
+    all_ucs = service.get(all_ucs_link)
+    logger.info "========================get current user's memberships=============================="
+    logger.info "=============url(get) #{all_ucs_link}"
+    logger.info "=============response #{all_ucs}"
+
+    @api_execution_info = @api_execution_info + "Get all the memberships OK!" + "</br>"
+
+    # find the specific UC under which we want to create the small business UCs
+    top_level_uc = find_member_by_property(all_ucs, 'name', @top_level_collection)
+    children_link = find_link_by_relation(top_level_uc, 'children')
+
+    ## step 2: post a representation of the user collection we
+    ##         want to make a new child of the top-level collection
+
+    # create a Ruby hash representing our new user collection entity
+    sb_uc =
+    {
+      'doc' => 'entity',
+      'type' => 'user-collection',
+      'properties' =>
+      {
+        # just using a random name for this small business
+        'name' => @small_business_name
+      }
+    }
+
+    # POST it to the 'children' relation we found above
+    sb_uc = service.post(children_link, sb_uc)
+    logger.info "========================Create small bussiness '#{@small_business_name}' OK=============================="
+    @api_execution_info = @api_execution_info + "Create small bussiness '#{@small_business_name}' OK!" + "</br>"
+    ###
+    ### goal 2: create a new administrator for the small business collection
+    ###
+
+    ## step 1: create the new user who is to become the administrator of
+    ##         the 'small business' collection
+
+    # create a Ruby hash representing our new administrator
+    sb_admin =
+    {
+      'doc' => 'entity',
+      'type' => 'user',
+      'properties' =>
+      {
+        'emailAddress' => @small_business_admin_email,
+        'locale' => 'en-US',
+        'login' => @small_business_admin_login,
+        'credential' => @small_business_admin_password,
+        'spaceTotal' => @small_business_quota,
+      }
+    }
+
+    # POST it to the small business members collection
+    members_link = find_link_by_relation(sb_uc, 'members')
+    sb_admin = service.post(members_link, sb_admin)
+
+    logger.info "===============Create user '#{@small_business_admin_login}' for small bussiness '#{@small_business_name}' OK================="
+    @api_execution_info = @api_execution_info + "Create a user '#{@small_business_admin_login}' OK!" + "</br>"
+    ## step 2: make this new user an administrator of the previously-
+    ##         created collection
+
+    # POST our newly-created user to the 'owners' relation
+    owners_link = find_link_by_relation(sb_uc, 'owners')
+    service.post(owners_link, sb_admin)  # no response for this one
+    logger.info "===============Assgin user '#{@small_business_admin_login}' as small bussiness '#{@small_business_name}''s Admin OK================="
+    @api_execution_info = @api_execution_info + "Assign user '#{@small_business_admin_login}' to small bussiness '#{@small_business_name}' as an Admin OK!" + "</br>"
+
+    admin_url = "http://core5qa.digidatagrid.com/current/admin/Core/Login.aspx"
+    user_url = "http://core5qa.digidatagrid.com/current/obw/Core/Login.aspx"
+    Notifier.deliver_cloud_storage_created(@small_business_admin_login, @small_business_admin_password, @small_business_admin_email, admin_url, user_url)
+    @api_execution_info = @api_execution_info + "Send an email '#{@small_business_admin_email}' for Admin '#{@small_business_admin_login}' of Small Bussiness '#{@small_business_name}' OK!" + "</br>"
+
+    ###
+    ### goal 3: as the new administrator, create a new user
+    ###
+
+    ## step 1: login as the new administrator
+
+    service = Services::DigidataApi::Api.new(sb_admin['properties']['login'], 'password')
+    homepage = service.get()
+    login_link = find_link_by_relation(homepage, 'login')
+    me = service.get(login_link)
+    #
+    # ## step 2: find the entity representing the small business UC
+    #
+    all_ucs_link = find_link_by_relation(me, 'memberships')
+    all_ucs = service.get(all_ucs_link)
+
+    sb_uc = find_member_by_property(all_ucs, 'name', @small_business_name)
+
+    ## step 3: create the new user by POSTing a representation
+    ##         to the 'members' relation of our new UC
+
+    # create a Ruby hash representing our new regular user
+    sb_user =
+    {
+      'doc' => 'entity',
+      'type' => 'user',
+      'properties' =>
+      {
+        'emailAddress' => "user@#{@small_business_name}",
+        'locale' => 'en-US',
+        'login' => @small_business_user_login,
+        'credential' => @small_business_user_password,
+        'spaceTotal' => '100000',
+      }
+    }
+
+    # POST it to the small business members collection
+    members_link = find_link_by_relation(sb_uc, 'members')
+    sb_user = service.post(members_link, sb_user)
+
+  # @api_result = ""
+  # @to_do = params[:to_do]
+  # logger.info "digidata todo ===========#{@to_do}"
+
+  # if @to_do.eql?"Get_All_Users"
+  # logger.info "digidata todo ===========#{@tos_do}"
+  #
+  # response = Services::DigidataApi::Connector.new.digidata_get_xml("user1", "password", "users/me")
+  #
+  # @api_result = response.code+"</br>"+response.body
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  #
+  # elsif @to_do.eql?"Get_All_Collections"
+  # logger.info "digidata todo ===========#{@tos_do}"
+  # response = Services::DigidataApi::Connector.new.digidata_get_xml("user1", "password", "collections")
+  #
+  # @api_result = response.code+"</br>"+response.body
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  #
+  # elsif @to_do.eql?"Get_My_Collection"
+  # logger.info "digidata todo ===========#{@tos_do}"
+  # response = Services::DigidataApi::Connector.new.digidata_get_xml("user1", "password", "user-collections")
+  #
+  # @api_result = response.code+"</br>"+response.body
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  #
+  # elsif @to_do.eql?"Get_Me"
+  # logger.info "digidata todo ===========#{@tos_do}"
+  # response = Services::DigidataApi::Connector.new.digidata_get_xml("user1", "password", "users/me")
+  #
+  # @api_result = response.code+"</br>"+response.body
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  # elsif @to_do.eql?"Create_Collection"
+  # # json_str = {
+  # # "doc" => "entity",
+  # # "compact" => true,
+  # # "type" => "user-collection",
+  # # "properties" => {
+  # # "name" => "MobileTribe",
+  # # }
+  # # }.to_json
+  #
+  # xml_str = "<?xml version=\"1.0\"?><entity xmlns=\"http://www.digidata.com/2010/rest\" compact=\"true\" type=\"user-collection\"> <properties> <property name=\"name\">Customers</property> </properties> </entity>"
+  #
+  # #xml
+  # response = Services::DigidataApi::Connector.new.digidata_post_xml("otogo", "mobile1", "", xml_str)
+  #
+  # #json
+  # #response = Services::DigidataApi::Connector.new.digidata_post_json("otogo", "mobile1", "", json_str)
+  #
+  # @api_result = response.code+"</br>"+response.body
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  #
+  # elsif @to_do.eql?"Create_User"
+  # json_str = {
+  # "doc" => "entity",
+  # "compact" => true,
+  # "type" => "user",
+  # "properties" => {
+  # "emailAddress" => "eafdfd@gmail.com",
+  # "firstName" => "Qingya",
+  # "lastName" => "Chen",
+  # "locale" => "en-US",
+  # "credential" => "123456",
+  # "spaceTotal" => 10000,
+  # }
+  # }.to_json
+  #
+  # response = Services::DigidataApi::Connector.new.digidata_post_json("otogo", "mobile1", "", json_str)
+  # @api_result = response.code+"</br>"+response.body
+  #
+  # logger.info ">>>>>>>>>>>>>>>//#{json_str}"
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  #
+  # elsif @to_do.eql?"Assign_User_to_Collection"
+  # response = Services::DigidataApi::Connector.new.digidata_get_xml("otogo", "mobile1", "", "json_str")
+  # @api_result = response.code+"</br>"+response.body
+  # logger.info "<<<<<<<<<<<<<<<<#{response.code}"
+  # logger.info ">>>>>>>>>>>>>>>>#{response.body}"
+  # logger.info "digidata todo ===========#{@to_do}"
+  # elsif @to_do.eql?"Assign_Admin_to_Collection"
+  # logger.info "digidata todo ===========#{@to_do}"
+  # end
+  end
+
+  def create_user
+    @api_execution_info = ""
+
+    @admin_username = "finalAdmin"
+    @admin_password = "12346"
+    @bizName = "finalBird"
+
+    @user_quota = params[:quota]
+    @user_login = params[:user_login]
+    @user_password = params[:user_pass]
+    @user_email = params[:user_email]
+
+    if @small_business_name.blank? or @small_business_quota.blank? or @small_business_admin_login.blank? or @small_business_admin_password.blank? or @small_business_admin_email.blank?
+      @api_execution_info = "Execution error! The reason is at least one of the following params is not supplied to execute the API: Business Name, Admin Login, Admin Password, Admin Email. Please Check!"
+    return
+    end
+
+    ###
+    ### goal 3: as the new administrator, create a new user
+    ###
+
+    ## step 1: login as the new administrator
+
+    service = Services::DigidataApi::Api.new(@admin_username, @admin_password)
+    homepage = service.get()
+    login_link = find_link_by_relation(homepage, 'login')
+    me = service.get(login_link)
+    #
+    # ## step 2: find the entity representing the small business UC
+    #
+    all_ucs_link = find_link_by_relation(me, 'memberships')
+    all_ucs = service.get(all_ucs_link)
+
+    sb_uc = find_member_by_property(all_ucs, 'name', @bizName)
+
+    ## step 3: create the new user by POSTing a representation
+    ##         to the 'members' relation of our new UC
+
+    # create a Ruby hash representing our new regular user
+    sb_user =
+    {
+      'doc' => 'entity',
+      'type' => 'user',
+      'properties' =>
+      {
+        'emailAddress' => @user_email,
+        'locale' => 'en-US',
+        'login' => @user_login,
+        'credential' => @user_password,
+        'spaceTotal' => @user_quota,
+      }
+    }
+
+    # POST it to the small business members collection
+    members_link = find_link_by_relation(sb_uc, 'members')
+    sb_user = service.post(members_link, sb_user)
+
+
+
+
+    logger.info "===============Create user '#{@small_business_admin_login}' for small bussiness '#{@small_business_name}' OK================="
+    @api_execution_info = @api_execution_info + "Create a user '#{@small_business_admin_login}' OK!" + "</br>"
+    ## step 2: make this new user an administrator of the previously-
+    ##         created collection
+
+    # POST our newly-created user to the 'owners' relation
+    owners_link = find_link_by_relation(sb_uc, 'owners')
+    service.post(owners_link, sb_admin)  # no response for this one
+    logger.info "===============Assgin user '#{@small_business_admin_login}' as small bussiness '#{@small_business_name}''s Admin OK================="
+    @api_execution_info = @api_execution_info + "Assign user '#{@small_business_admin_login}' to small bussiness '#{@small_business_name}' as an Admin OK!" + "</br>"
+
+    admin_url = "http://core5qa.digidatagrid.com/current/admin/Core/Login.aspx"
+    user_url = "http://core5qa.digidatagrid.com/current/obw/Core/Login.aspx"
+    Notifier.deliver_cloud_storage_created(@small_business_admin_login, @small_business_admin_password, @small_business_admin_email, admin_url, user_url)
+    @api_execution_info = @api_execution_info + "Send an email '#{@small_business_admin_email}' for Admin '#{@small_business_admin_login}' of Small Bussiness '#{@small_business_name}' OK!" + "</br>"
+
+  end
+
+end
+

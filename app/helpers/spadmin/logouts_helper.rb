@@ -1,0 +1,2 @@
+module Spadmin::LogoutsHelper
+end

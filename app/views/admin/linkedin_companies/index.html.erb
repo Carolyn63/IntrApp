@@ -1,0 +1,61 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_linkedin_companies_path  %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> Registered LinkedIn Companies</h2>
+    <div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <%= text_field_tag("search", params[:search], :id => "admin_linkedin_company_search") %>
+        <%= submit_tag t("views.search") %>
+      <% end %>
+    </div>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <%= sortable_table_header :name => t("views.companies.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.companies.name"),  :sort => "name" %>
+          <th><%= t("views.companies.address") %></th>
+          <th><%= t("views.companies.city") %></th>
+          <th><%= t("views.companies.country") %></th>
+          <th><%= t("views.companies.phone") %></th>
+          <th><%= t("views.companies.industry") %></th>
+          <th><%= t("views.companies.size") %></th>
+          <th>Founder</th>
+        </tr>
+        <% @linkedin_companies.each do |linkedin_company| -%>
+					<% founder = LinkedinUser.find_by_login(linkedin_company.linkedin) %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="first"><%= linkedin_company.id %></td>
+          <td><a href="http://www.linkedin.com/company/<%=linkedin_company.linkedin%>" target="_blank"><%= linkedin_company.name %></a></td>
+          <td><%= linkedin_company.address %></td>
+          <td><%= linkedin_company.city %></td>
+          <td><%= linkedin_company.country %></td>
+          <td><%= linkedin_company.phone %></td>
+          <td>
+          <% unless linkedin_company.industry.blank?
+            industry = LinkedinIndustry.find_by_code(linkedin_company.industry)
+           %>
+          <%= industry.industry %>
+          <% end %>
+          </td>
+          <td><%= linkedin_company.size %></td>
+					<td>
+					<% unless founder.blank? %>
+						<a href="http://www.linkedin.com/x/profile/3zw8df764vlo/<%=founder.linkedin%>" target="_blank"><%= founder.firstname %> <%= founder.lastname %></a>
+					<% end %>
+					</td>
+        </tr>
+        <% end -%>
+      </table>
+       <%= will_paginate @linkedin_companies, :search => params[:search] %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

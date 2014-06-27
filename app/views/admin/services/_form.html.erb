@@ -1,0 +1,90 @@
+
+<div class="group">
+        <table table cellspacing="10px;" style="width:430px;"> 
+        <tr>
+        <td><span style="float:left"><%= f.label :lable_name, t("views.labels.name"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+	<td><%= f.text_field :name, :class=>"text_border", :size=>"25%", :value=> @name%><div id="service_name_error" style="display:none;color:red;"></div></td>
+        </tr>
+         
+        <tr>
+        <td> <span style="float:left"><%= f.label :lable_code, t("views.labels.service_code"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+        <td>	<%= f.text_field :service_code, :class=>"text_border", :size=>"25%" , :value=> @service_code%><div id="service_code_error" style="display:none;color:red;"></div></td>
+        </tr>
+       
+       <tr>
+       
+        <td><%= f.label :label_assign, t("views.labels.active_status"), :class => :label %></td>
+	<td><label><%= "Active" %></label> <%= f.radio_button :active, 1, :checked => "checked", :class => "checkbox"%> <label ><%= "In Active" %></label> <%= f.radio_button :active, 0, :class => "checkbox"%></td> 
+       </tr>
+
+
+       <tr>
+       <td><span style="float:left"><%= f.label :lable_fee, t("views.labels.amount"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+       <td><%= f.text_field :amount, :class=>"text_border", :size=>"25%" , :value=> @amount%><div id="service_fee_error" style="display:none;color:red;"></div></td>
+       </tr>
+         
+       </table>
+
+</div>
+<div class="group navform wat-cf">
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<style>
+	.submit_finish {
+		background-image: url('/images/web-app-theme/tick.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+
+$(function() {
+	$('input.submit_finish').click(function() {
+		$('div#service_name_error').hide();
+	        $('div#service_code_error').hide();
+		$('div#service_fee_error').hide();
+
+		var flag = true;
+
+		if($('input#service_name').val()==""){
+			$('div#service_name_error').html("Please enter service name").show();
+			flag = false;
+		}
+
+               if($('input#service_service_code').val()==""){
+			$('div#service_code_error').html("Please enter service code").show();
+			flag = false;
+		}
+
+               if($('input#service_amount').val()==""){
+			$('div#service_fee_error').html("Please enter service amount").show();
+			flag = false;
+               
+		}else{
+                        var filter = /^[0-9\.]+$/;
+			if(!filter.test($('input#service_amount').val())) {
+				$('div#service_fee_error').html('Please Enter Numbers only').show();
+				flag = false;
+			}
+                 }
+
+		return flag;	
+	});
+});
+
+</script>

@@ -1,0 +1,45 @@
+<div class="group">
+	<span style="float:left"><%= f.label :lable_name, t("views.labels.name"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span>
+	<%= f.text_field :name, :class => 'text_field', :class=>"text_border", :size=>"62%"%><div id="domainname_error" style="display:none;color:red;"></div>
+</div>
+<div class="group navform wat-cf">
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<style>
+	.submit_finish {
+		background-image: url('/images/web-app-theme/tick.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$('input.submit_finish').click(function() {
+		$('div#domainname_error').hide();
+
+		var flag = true;
+
+		if($('input#domain_name').val()==""){
+			$('div#domainname_error').html("Please enter domain name").show();
+			flag = false;
+		}
+
+		return flag;	
+	});
+});
+</script>

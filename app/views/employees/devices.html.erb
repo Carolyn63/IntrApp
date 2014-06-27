@@ -1,0 +1,22 @@
+<div class="content right-column">
+  <div class="left-side">
+    <h1><%= t("views.employees.my_devices") %><%= help_icon %></h1>
+    <% form_for :employee, :url => update_devices_company_employee_path(@company, @employee), :html => {:method => :put, :id => "device_employee_form", :class => "single_form" } do |f| -%>
+      <div class="employees-box">
+        <h3><%= image_tag("down_grey_arrow.png") %><%= "&nbsp;&nbsp;#{t("views.employees.edit_employee_devices_of", :name => @employee.user.name)}" %></h3>
+          <ul class="checkboxOptions">
+            <li><label for="device_select_all"><%= check_box_tag :device_select_all, true, params[:device_select_all], {:class => 'selectAll'} %> All</label></li>
+            <% collection_checks("device_ids", Device.all(:order => "name asc").map{|c| [c.id, c.name] }, @employee.employee_devices.map(&:device_id).map(&:to_s)) do |check| -%>
+              <li><%= check %></li>
+            <%end-%>
+          </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="bottom-gradient-box tac">
+        <%= content_tag(:button, link_name(t("views.save")), :type => 'submit', :class => 'standart-button') %>
+      </div>
+    <% end -%>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>

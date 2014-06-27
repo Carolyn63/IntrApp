@@ -1,0 +1,61 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li ><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_companies_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.list", :default => "Employees")}", employees_admin_company_path(@company)  %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%=  "#{t("views.employees.employees_by")} #{@company.name}"  %></h2>
+    <div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <span><%= t("views.status") %>:</span>
+        <%= select("", "", Employee::Status::LIST, {:selected => params[:status].blank? ? nil : params[:status],
+                    :include_blank => true}, {:name => "status", :onchange => "this.form.submit();"}) %>
+      <% end %>
+    </div>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <th class="first">&nbsp;</th>
+          <th><%= t("views.users.username") %></th>
+          <th><%= t("views.users.login") %></th>
+          <th><%= t("views.users.email") %></th>
+          <th><%= t("views.users.cellphone") %></th>
+          <th><%= t("views.users.address") %></th>
+          <th><%= t("views.users.created") %></th>
+          <th><%= t("views.users.privacy") %></th>
+          <th><%= t("views.users.status") %></th>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% @employees.each do |employee| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="first">&nbsp;</td>
+          <td><%= link_to employee.user.name, admin_user_path(employee.user) %></td>
+          <td><%= employee.user.login %></td>
+          <td><%= employee.user.email %></td>
+          <td><%= employee.user.cellphone %></td>
+          <td><%= employee.user.address %></td>
+          <td><%= employee.created_at.to_s(:long) %></td>
+          <td><%= User::Privacy::TO_LIST[employee.user.privacy] %></td>
+          <td><%= Employee::Status::TO_LIST[employee.status] %></td>
+          <td class="last">
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path(employee.user) %>
+            <%#= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(employee.user) %>
+            <% if employee.status == Employee::Status::PENDING %>
+             | <%= link_to t("views.send_invitations"), invite_admin_company_path(@company, :employee_id => employee.id) %>
+            <% end %>
+          </td>
+        </tr>          
+        <% end -%>
+      </table>
+       <%= will_paginate @employees, :status => params[:status] %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+

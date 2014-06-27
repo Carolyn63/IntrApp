@@ -1,0 +1,115 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.registered_linkedin_companies"))}", registered_linkedin_companies_admin_stats_path%>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.registered_linkedin_users"))}", registered_linkedin_users_admin_stats_path%>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.registered_users"))}", registered_users_admin_stats_path%>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.paid_users"))}", paid_users_admin_stats_path%>
+			</li>
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.payments"))}", payments_admin_stats_path%>
+			</li>
+		</ul>
+	</div>
+	<div class="content">  
+		<div class="inner">
+			<br>
+			<div class="admin-filter"> 
+				<% form_tag "", {:method => :get} do %> <span><%= t("views.titles.user_name")%>:</span>
+				<%= text_field_tag("search", params[:search], :id =>"stats_paid_user_search", :class => "text_border") %> <span><%= submit_tag t("views.buttons.search") %></span>
+				<% end %>
+			</div>
+
+			<table class="table">
+				<tr>
+					<%= sortable_table_header :name => t("views.titles.id"),  :sort => "id", :class => "first" %>
+					<%= sortable_table_header :name => t("views.titles.date"),  :sort => "name" %>
+					<%= sortable_table_header :name => t("views.titles.user_name"),  :sort => "name" %>
+					<%= sortable_table_header :name => t("views.titles.service"),  :sort => "name" %>
+					<%= sortable_table_header :name => t("views.titles.paymentsystem"),  :sort => "name" %>
+					<%= sortable_table_header :name => t("views.titles.subscription_end"),  :sort => "name" %>
+					<%= sortable_table_header :name => t("views.titles.paid_status"),  :sort => "name" %>
+					<th class="last"><%= t("views.titles.history") %></th>
+					<th class="last"><%= t("views.titles.action")%></th>
+				</tr>
+
+<% 
+@payments.each do |payment|
+	user = User.find_by_id(payment.user_id)
+	company = Company.find_by_id(payment.company_id)
+	if !company.blank?
+	@companifications = Companification.find_all_by_company_id_and_payment_id(company.id, payment.id)
+	unless @companifications.blank?
+		plan_name =""
+		#paid_status = "Not Paid"
+		@companifications.each do |companification|
+			logger.info "companification.application_plan: #{companification.application_plan.to_json}"
+			plan_name = plan_name +  companification.application_plan.code + ","
+		end
+		plan_name = plan_name.chop
+		paid_status = @companifications[0].status.titleize
+		subscription_end = @companifications[0].end_at.to_s.split(" ")[0]
+	end
+	ps = payment.payment_service
+%>
+
+				<tr class="<%= cycle("odd", "even") %>">
+					<td class="first"><%= payment.id%> </td>
+					<td class="first"><%= payment.transaction_date.to_s.split(" ")[0]%> </td>
+					<td class="first"><%= user.name%></td>
+					<td><%= plan_name %> </td>
+					<td class="first"><%=ps%> </td>
+					<td class="first"><%=subscription_end%> </td>
+					<td class="first"><%=paid_status%></td>
+					<td class="first"><a href="javascript:void(0);" id="history_<%=user.id%>" class="show_history" user_id="<%=user.id%>">history</a></td>
+					<td>
+				<% if payment.payment_service == "amazon" %>
+					<% if payment.transaction_type == "subscr_payment" %>
+						<%= link_to "#{t("web-app-theme.show", :default => t("views.links.cancel"))}", "javascript:void(0)", :confirm => t("views.notices.confirm_cancel_subscription")%> | <%= link_to "#{t("web-app-theme.show", :default => t("views.links.refund"))}", "javascript:void(0)", :confirm => t("views.notices.confirm_refund_subscription")%> 
+					<% elsif payment.transaction_type == "subscr_signup" %>
+						<%= link_to "#{t("web-app-theme.show", :default => t("views.links.cancel"))}", "javascript:void(0)", :confirm => t("views.notices.confirm_cancel_subscription")%>
+					<% end %>
+				<% else %>
+					<% if payment.transaction_type == "subscr_payment" %>
+						<%= link_to "#{t("web-app-theme.show", :default => t("views.links.cancel"))}", cancel_paypal_admin_stats_path(:subscription_id => payment.subscription_id), :confirm => t("views.notices.confirm_cancel_subscription")%> | <%= link_to "#{t("web-app-theme.show", :default => t("views.links.refund"))}", refund_paypal_admin_stats_path(:transaction_id=>payment.transaction_id), :confirm => t("views.notices.confirm_refund_subscription")%> 
+					<% elsif payment.transaction_type == "subscr_signup" %>
+						<%= link_to "#{t("web-app-theme.show", :default => t("views.links.cancel"))}", cancel_paypal_admin_stats_path(:subscription_id => payment.subscription_id), :confirm => t("views.notices.confirm_cancel_subscription")%> 
+					<% end %>
+				<% end %>
+					</td>
+				</tr>
+<% end %>
+<% end %>
+			</table>
+			<div id="show_history_div" class="t_popup" style="display:none;width:90%;overflow:auto;"></div>
+
+<%= will_paginate @payments%>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	$('a.show_history').click(function(){
+		var user_id = $(this).attr('user_id');
+		var div_id = 'show_history_div';
+		if ($('div#'+div_id).is(':hidden')) {
+			showOverlay(div_id);
+			$('div#'+div_id).html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('history', { div_id:div_id, user_id:user_id });
+			$('div#'+div_id).show();
+		}
+		else{
+			$('div#'+div_id).hide();
+			hideOverlay();
+		}
+	});
+</script>

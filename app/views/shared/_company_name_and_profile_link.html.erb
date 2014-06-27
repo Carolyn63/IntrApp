@@ -1,0 +1,6 @@
+<p>
+  <% unless company.blank? %>
+    <span class="fz10"><i><%= link_to company.name, company_path(company) %></i></span>&nbsp;
+    <%#= link_to %Q!<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>!, company_path(company), :class=>"orange-color fz10" %>
+  <%end%>
+</p>

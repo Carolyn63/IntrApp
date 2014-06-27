@@ -1,0 +1,17 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container invite">
+    <div class="employees-box">
+        <ul class="list left-list community-company-list">
+          <%= render :partial => "employer", :collection => @employers %>
+        </ul>
+      <% if @employers.total_pages > 1 %>
+        <div class="bottom-gradient-box">
+          <%= will_paginate @employers, :status => params[:status], :class => 'pagination float-right', :renderer => 'CustomLinkRenderer' %>
+        </div>
+      <%end%>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>

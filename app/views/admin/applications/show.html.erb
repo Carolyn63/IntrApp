@@ -1,0 +1,103 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", collection_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", resource_path %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="inner">
+      <p>
+        <b>Name:</b>
+        <%= resource.name %>
+      </p>
+      <p>
+      <b>Logo:</b><br/>
+      <% if resource.logo.present? %>
+        <%= image_tag resource.logo.thumb.url -%>
+      <% end %></p>
+
+      <p><b>Price:</b>
+        <%= resource.price %></p>
+
+      <p><b>Trial Period:</b>
+        <%= resource.trial_period %> days</p>
+
+			<p><b>Provider:</b>
+        <%= resource.provider %></p>
+
+      <p><b>External Url:</b>
+        <%= resource.external_url %></p>
+		
+	  <p><b>Download Link:</b>
+        <%= resource.download_url %></p>
+
+      <b> Screenshots </b>
+      <table><tr>
+        <% if resource.screenshot0.present? %>
+          <td><p> <%= image_tag resource.screenshot0.thumb.url -%> </p></td>
+        <% end %>
+
+        <% if resource.screenshot1.present? %>
+          <td><p> <%= image_tag resource.screenshot1.thumb.url -%> </p></td>
+        <% end %>
+
+        <% if resource.screenshot2.present? %>
+          <td><p> <%= image_tag resource.screenshot2.thumb.url -%> </p></td>
+        <% end %>
+      </tr></table>
+
+      <p><b>Status:</b>
+        <%= Application::Status::TO_LIST[resource.status] %>
+      </p>
+
+      <p><b>Auto Approve:</b>
+        <%= Application::Approve::TO_LIST[resource.auto_approve] %>
+      </p>
+
+      <p><b>Description:</b>
+        <%= resource.description %></p>
+      <p>
+        <b>Types:</b>
+        <%= resource.application_types.to_sentence %>
+      </p>
+
+      <p>
+        <b>Categoires:</b>
+        <%= resource.categories.to_sentence %>
+      </p>
+      <p>
+        <b>Devices:</b>
+        <%= resource.devices.to_sentence %>
+      </p>
+       <p>
+        <b>Countries:</b>
+        <%= resource.countries.to_sentence %>
+      </p>
+       <p>
+        <b>Industries:</b>
+        <%= resource.industries.to_sentence %>
+      </p>
+      <p>
+        <b>Companies:</b>
+        <%= resource.active_companies.to_sentence %>
+      </p>
+      <p>
+        <b>Approved companies count:</b>
+        <%= resource.approved_companies_count %>
+      </p>
+      <p>
+        <b>Departments count:</b>
+        <%= resource.departments_count %>
+      </p>
+      <p>
+        <b>Approved employees count:</b>
+        <%= resource.approved_employees_count %>
+      </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_resource_path(resource), :class => "button" %>
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", resource_path(resource), :method => "delete", :class => "button", :confirm => t("views.are_you_sure") %>
+      </div>
+    </div>
+  </div>
+</div>

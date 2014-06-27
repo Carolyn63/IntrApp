@@ -1,0 +1,2 @@
+module Sysadmin::LogoutsHelper
+end

@@ -1,0 +1,66 @@
+<div style="padding-bottom: 10px;">
+	<div style="padding:10px 0;"><b><%= t("views.titles.create_public_number_range_or_one")%></b></div>
+	<div>
+		<span><%= t("views.labels.range_from")%></span>
+		<%=  f.text_field :range_from, :class => "text_border",:style=>"width:100px;" %><div id="range_from_error" style="display:none;color:red;"></div>
+		&nbsp;&nbsp; <span><%= t("views.labels.range_to")%></span>
+		<%=  f.text_field :range_to, :class => "text_border",:style=>"width:100px;" %><div id="range_to_error" style="display:none;color:red;"></div>
+	</div>
+</div>
+<div style="padding-bottom: 10px;"><span style="color:red;">N.B.</span> public number format: "+" country code + std code + phone number (e.g. +18041592254)</div>
+
+<div class="group navform wat-cf">
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<style>
+	.submit_finish {
+		background-image: url('/images/web-app-theme/tick.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$('input.submit_finish').click(function() {
+		$('div#range_from_error').hide();
+		$('div#range_to_error').hide();
+
+		var flag = true;
+
+		if($('input#public_number_range_from').val() == "") {
+			$('div#range_from_error').html("Please enter a start range").show();
+			flag = false;
+		} else {
+			var filter = /^\+[0-9]+$/;
+			if(!filter.test($('input#public_number_range_from').val())) {
+				$('div#range_from_error').html('Public number is not valid').show();
+				flag = false;
+			}
+		}
+		if($('input#public_number_range_to').val() != "") {
+			var filter = /^\+[0-9]+$/;
+			if(!filter.test($('input#public_number_range_to').val())) {
+				$('div#range_to_error').html('Public number is not valid').show();
+				flag = false;
+			}
+		}
+
+		return flag;	
+	});
+});
+</script>

@@ -1,0 +1,12 @@
+<%login_name = @loginName.split("@")%>
+
+<h3>Hi, <%= login_name[0] %> </h3>
+
+<p>Welcome! Your account has been created.  You can access to the User Admin site here:</p>
+<p>If the above link does not work, try copying it and pasting it into your browser.</p>
+
+<%= link_to @website_url, @website_url %>
+<br/>
+<br/>User Name: <%= @loginName %>
+<br/>Password: <%= @password %>
+

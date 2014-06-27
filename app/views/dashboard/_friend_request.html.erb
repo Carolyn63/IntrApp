@@ -1,0 +1,22 @@
+<li>
+  <div class="img-box">
+    <%= image_tag friend_request.user.avatar.url(:thumb), :class => "img-mini-box-logo" %>
+  </div>
+  <div class="right-box">
+    <div class="left">
+      <p class="first-row"><span class="title"><b><%= link_to friend_request.user.name, user_path(friend_request.user) %></b></span><span class="request grey-request">Friend Request</span></p>
+      <% company = friend_request.user.top_company %>
+      <%= render :partial => "shared/company_name_and_profile_link", :locals => {:company => company} %>
+      <p>
+        <span class="float-left">
+          <%= join_fields_with_pipe((company.blank? ? "" : company.employee(friend_request.user).department_name), friend_request.user.job_title) %>
+        </span>
+        <span class="fz10 float-right"><span class="grey-color"><%= t("views.companies.request_send") %></span>&nbsp;<span class="green-color"><%= "#{time_ago_in_words(friend_request.created_at)} ago" %></span></span></p>
+    </div>
+    <div class="right">
+      <%= link_to link_name(t("views.accept_request")), accept_user_friendship_path(current_user, friend_request), :class => "standart-button", :style => "margin-top:5px" %>
+      <%= link_to link_name(t("views.reject_request")), reject_user_friendship_path(current_user, friend_request), :class => "standart-button", :style => "margin-top:5px" %>
+    </div>
+    <div class="clear"></div>
+  </div>
+</li>

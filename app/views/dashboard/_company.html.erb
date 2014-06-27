@@ -1,0 +1,23 @@
+<li>
+  <div class="img-box img-square-box-logo company_profile">
+    <%= image_tag company.logo.url(:medium), :class => "img-square-box-logo" %>
+    <% if company.owner?(current_user) %>
+      <%= link_to %Q!<b class="f-small"></b><b class="s7">#{t("views.companies.edit_profile")}</b><b class="t"></b>!, edit_company_path(company.id), :class => 'standart-button' %>
+    <%end%>
+  </div>
+  <div class="right-box">
+    <p class="name"><b><%= link_to company.name, company_path(company) %></b>&nbsp;<%#= link_to "<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>", company_path(company), :class => 'orange-color fz10'  %></p>
+
+    <p class="fz10">
+      <% if company.owner?(current_user) %>
+        <%= link_to %Q!<span class="blue-color"><b><i>#{company.active_employees.size}&nbsp;#{t("views.employees_title")}</i></b></span>!, company_employees_path(company), :class => 'blue-color' %>
+      <%else%>
+        <%= link_to %Q!<span class="blue-color"><b><i>#{company.active_employees.size}&nbsp;#{t("views.employees_title")}</i></b></span>!, profile_company_path(company), :class => 'blue-color' %>
+      <%end%>
+    </p>
+    <p class="description">
+      <%= company.description %>
+    </p>
+  </div>
+  <div class="clear"></div>
+</li>

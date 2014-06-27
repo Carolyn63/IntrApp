@@ -1,0 +1,36 @@
+<%= f.hidden_field :company_id, :value => company.id %>
+<div class="input-row help-field">
+  <label class="input-help"><%= email_uniq_description %></label>
+</div>
+<div class="input-row">
+  <label><span><%= t("views.companies.company_email") %><b class="green-color fz14">&nbsp;*</b></span></label>
+  <%= f.text_field :company_email, :value => @employee.company_email.blank? ? name_for_company_email + "@" + property(:sogo_email_domain) : @employee.company_email%>
+  <div id="email_already_used" class="personal-error-field" style="display:none">
+    <span id="email_already_used_error">&nbsp;</span>
+  </div>
+</div>
+<div class="input-row">
+  <label><span><%= t("views.companies.department") %></span></label>
+  <span id="company_department" style="display:inline">
+    <%= render(:partial => "company_department", :locals => {:company => company}) %>
+  </span>
+  <span id="company_department_loader" style="display:none"><%= image_tag 'indicator.gif' %></span>
+</div>
+<div class="input-row">
+  <label><span><%= t("views.companies.job_title") %></span></label>
+  <%= f.text_field :job_title %>
+</div>
+<!--div class="input-row">
+  <label><span><%#= t("views.companies.ondeego_phone") %></span></label>
+  <%#= f.text_field :phone %>
+</div-->
+<div class="input-row">
+  <label>&nbsp;</label>
+  <%= f.check_box :send_invitation, {:class => "checkbox", :checked => !@employee.blank? && !@employee.send_invitation.blank? ? @employee.send_invitation : true } %><label style="margin-left:10px; width: 150px"><%= t("views.employees.send_invitations") %></label>
+</div>
+<div class="clear"></div>
+<div class="input-row require">
+  <label><span><%= t("views.required_fields") %><b class="green-color fz14">&nbsp;*</b></span></label>
+</div>
+
+

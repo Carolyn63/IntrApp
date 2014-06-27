@@ -1,0 +1,67 @@
+<div class="content left-column">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container">
+		<%= error_messages_for :user, :employee %>
+		<% form_for :user, :url => bulk_create_company_employees_path(@company), :html => {:multipart => true, :id => "new_bulk_create_employees"} do |f| -%>
+			<div class="employees-box">
+				<%= f.hidden_field :company_id, :value => @company.id %>
+				<h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("views.employees.new_bulk_employee") %></h3>
+				<div style="font-weight:bold;font-size:1.3em;margin-bottom:10px;">1. Make a list of user accounts</div>
+				<div style="line-height:150%;">You'll need to create a CSV (comma separated value) file with the user account information. Spreadsheet programs including Google Docs and Microsoft Excel make it easy to create and edit CSV files. Your CSV file should be formatted as a table and must include a header, or first line, that defines the fields in your table. The headers should be: email address, first name, last name.</div>
+				<div style="margin-top:10px;"><em>Example:</em></div>
+				<div style="font-style:italic;margin:10px 0 20px 0;">
+					<table cellpadding="5" cellspacing="1" style="background-color:#999;">
+						<tr>
+							<td width="30" style="padding:5px;background-color:#fff;"></td>
+							<td width="300" align="center" style="padding:5px 0;background-color:#fff;">A</td>
+							<td width="150" align="center" style="padding:5px;background-color:#fff;">B</td>
+							<td width="150" align="center" style="padding:5px;background-color:#fff;">C</td>
+						</tr>
+						<tr>
+							<td width="30" align="center" style="padding:5px 0;background-color:#fff;">1</td>
+							<td width="300" align="left" style="padding:5px;background-color:#fff;font-weight:bold;">email address</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;font-weight:bold;">first name</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;font-weight:bold;">last name</td>
+						</tr>
+						<tr>
+							<td width="30" align="center" style="padding:5px 0;background-color:#fff;">2</td>
+							<td width="300" align="left" style="padding:5px;background-color:#fff;">picasso@mycompany.com</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;">Pablo</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;">Picasso</td>
+						</tr>
+						<tr>
+							<td width="30" align="center" style="padding:5px 0;background-color:#fff;">3</td>
+							<td width="300" align="left" style="padding:5px;background-color:#fff;">claude.monet@mycompany.com</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;">Claude</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;">Monet</td>
+						</tr>
+						<tr>
+							<td width="30" align="center" style="padding:5px 0;background-color:#fff;">4</td>
+							<td width="300" align="left" style="padding:5px;background-color:#fff;">lilies@mycompany.com</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;">Georgia</td>
+							<td width="150" align="left" style="padding:5px;background-color:#fff;">O'Keeffe</td>
+						</tr>
+					</table>
+				</div>
+				<div class="clear"></div>
+				<div style="font-weight:bold;font-size:1.3em;">2. Upload list of user accounts in CSV format</div>
+				<div class="input-row">
+					<%= f.file_field :bulk_csv_file, :accept => "text/csv" %>
+				</div>
+				<div class="clear"></div>
+				<div style="font-weight:bold;font-size:1.3em;">3. Configure employee accounts</div>
+				<div class="input-row">
+					<input class="checkbox" id="user_make_active" name="user[make_active]" type="checkbox" value="1" checked />
+					<%#= f.check_box :make_active, {:class => "checkbox"} %><label style="margin:-5px 0 0 10px; width: 200px">Make employees active</label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="bottom-gradient-box tac">
+				<%= link_to_function link_name(t("views.employees.upload_and_continue")), "$('#new_bulk_create_employees').submit()", :class=>"standart-button" %>
+			</div>
+		<% end -%>
+	</div>
+	<div class="clear"></div>
+</div><!-- .content -->
+

@@ -1,0 +1,58 @@
+<style type="text/css">
+  .contact-list li .input-row label{width:130px; display:inline-block}
+  .contact-list li {margin-right: 30px;width: 400px;}
+  .contact-list li .description{margin-left: 130px}
+</style>
+<% form_for @company, :url => company_path(@company), :html => { :id => "new_company", :multipart => true } do |f| -%>
+  <%= error_messages_for :company, :employee %>
+  <%= hidden_field_tag request_forgery_protection_token.to_s, form_authenticity_token -%>
+  <%=  hidden_field_tag :redirect_to %>
+  <div class="content right-column">
+    <div class="left-side company-info">
+      <h1><%= t("views.companies.generate_company_profile") %><%= help_icon %></h1>
+       <%= render :partial => "main_company_fields", :locals => {:f => f} %>
+
+      <div class="bottom-gradient-box tac" style="padding-left:0px">
+        <div id="submit-buttons">
+          <%= link_to link_name(t("views.cancel")), user_dashboard_index_path(current_user), :class=>"standart-button" %>
+          <%= link_to link_name(t("views.save_profile")), "#", :id => "company_form_submit" , :class=>"standart-button" %>
+          <%= link_to link_name(t("views.companies.save_and_go")), "#", :id => "company_form_submit_and_add_new_employee" , :class=>"standart-button" %>
+        </div>
+        <br/>
+        <div id="submit-loader" style="display:none">
+          <%= image_tag "loader.gif" %>
+        </div>
+      </div>
+    </div><!-- .left-side -->
+    <div class="right-side right-back right-profile-box">
+      <%= render :partial => "logo_and_description", :locals => {:f => f} %>
+    <% end -%>
+
+    <div class="w255">
+      <div class="advance-search-box right-deafult-box company-departmens">
+        <div class="green-box">
+          <div id="message" style="display: none; text-align: center; background-color: #BBFFB6; margin-bottom:10px"><%= t("views.companies.your_departments_changed") %></div>
+          <div id="error" style="display: none; text-align: center; background-color: #BBFFB6; margin-bottom:10px"><%= t("views.companies.empty_department") %></div>          
+          <ul class="blue-list">
+            <li><%= t("views.companies.setting_company_department_important") %></li>
+          </ul>
+          <% form_remote_tag :url => company_departments_path(:company_id => @company.id), :html => {:id => 'new_department'} do %>
+            <div id="departments_fields">
+              <%= render :partial => 'departments/form' %>
+            </div>
+            <div style="display: none">
+              <%= submit_tag 'save', :id => 'submit_form' %>
+            </div>
+          <% end -%>
+
+          <div class="tar right-link"><b><%= link_to t("views.companies.add_department"), '#', :class => 'blue-color', :id => 'add_department' %></b></div>
+          <div class="tar">
+            <div id="loading_indicator" style="display: none"><%= image_tag 'indicator.gif' %></div>
+            <%= link_to %Q|<b class="f-small"></b><b class="s7">#{t("views.companies.save_setting")}</b><b class="t"></b>|, '#', :class => 'standart-button', :id => 'department_submit' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->

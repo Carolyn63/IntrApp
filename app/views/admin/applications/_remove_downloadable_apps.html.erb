@@ -1,0 +1,57 @@
+<!-- REMOVE BINFILE/DOWNLOAD URL ADMIN APPLICATION -->
+
+<%
+device_ids = ""
+devicefications = Devicefication.find_all_by_application_id(@application.id)
+%>
+
+<div style="font-family: Arial; font-size: 17px; color: #7b7b7b; padding: 0px; position: relative;"><b>Remove Bin Files and Download URLs</b></div>
+<div style="color:red;font-size:12px;margin-top:10px;">n.b. check to remove bin file and delete url to remove download url</div>
+<% form_for :devicefication, :url => delete_downloadable_apps_admin_application_path(@application.id), :html => { :multipart => true } do |f| -%>
+<input type="hidden" name = "_method" value= "put" />
+<div class="columns wat-cf" style="margin-top: 20px;line-height:180%;">
+
+<%
+devicefications.each do |devicefication|
+	if devicefication.bin_file.present? or devicefication.download_url.present?
+		device = devicefication.device
+%>
+	<div><b><%= device.name %></b></div>
+	<div class="downloadable_apps">
+		<ul>
+			<li style="width:40%;">
+				<% if devicefication.bin_file.present? %>
+					<%= check_box_tag "bin_file[device_ids][]", devicefication.id, false %>&nbsp;&nbsp;<%= File.basename(devicefication.bin_file.path) -%>
+					<% #@application.devices.include?(device) %> 
+				<% else %>
+					no bin file
+				<% end %>
+			</li>
+			<li style="width:50%;"><input type="text" name="download_url[<%=devicefication.id%>]" value="<%=devicefication.download_url%>" class ="text_field" /></li>
+		</ul>
+	</div>
+	<% end %>
+	<div style="clear:both;padding-top:10px;"></div>
+<% end %>
+
+</div>
+
+<div class="group navform wat-cf" style="margin-top:10px;">
+	<button class="button" type="submit">
+		<%= image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+	</button>
+	<%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")} #{t("web-app-theme.cancel", :default => "Cancel")}", "javascript:void(0)", :class => "button", :id => "cancel_link" %>
+</div>
+<% end %> 
+
+<script type="text/javascript">
+$(function(){
+	$('a#cancel_link').click(function() {
+		var div_id='delete_file_div';
+		$('div#'+div_id).hide();
+		hideOverlay();
+	});
+});
+</script>
+
+

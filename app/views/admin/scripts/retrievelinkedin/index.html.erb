@@ -1,0 +1,22 @@
+<%
+		date_diff = (Date.today  -  "2012-09-21".to_date).to_i
+
+		ids_start = 1000000 + 500 * date_diff + 1
+		ids_end = ids_start + 499
+%>
+
+date_diff <%=date_diff %>
+<br />
+ids_start <%=ids_start %>
+<br />
+ids_end <%=ids_end %>
+<br />
+
+<h1> Retrieve LinkedIn Script</h1>
+<br />
+
+<%=link_to 'Retrieve LinkedIn Companies',   retrieve_companies_admin_scripts_retrievelinkedin_path%>
+<br /><br />
+
+<%#=link_to 'Retrieve LinkedIn Users',   retrieve_users_admin_scripts_retrievelinkedin_path%>
+<br /><br />

@@ -1,0 +1,187 @@
+<div class="content right-column">
+  <div class="left-side">
+    <h1><%= t("views.find_people") %><%= help_icon %></h1>
+    <% if @users.total_pages > 1 %>
+      <%= will_paginate @users,:class => 'pagination-no-back float-right mr35 mt-25', :renderer => 'CustomLinkRenderer' %>
+      <div class="clear"></div>
+    <%end%>
+
+    <div class="alphabet-box">
+      <%= alphabetical_search_index("", params) %>
+      <div class="clear"></div>
+    </div>
+
+    <div class="search-row">
+      <% form_tag "", :method => "get", :id => "user-search" do %>
+        <%= hidden_field_tag "sort_by", params[:sort_by] %>
+        <%= search_drop_down("search_by", User::Search::SEARCH_BY, :long => true, :selected => params[:search_by]) %>
+        <%= text_field_tag 'search', params[:search].blank? ? "Search" : params[:search], :class => "w368", :id => "user_search", :placeholder=>"Search" %>
+      <%end%>
+      <div class="clear"></div>
+    </div>
+
+    <ul class="list members-list profiles-list">
+      <%= render :partial => "user", :collection => @users %>
+    </ul>
+
+    <% if @users.total_pages > 1 %>
+      <%= will_paginate @users, :class => 'pagination-no-back float-right mr35', :renderer => 'CustomLinkRenderer' %>
+    <%end%>
+    <div class="clear"></div>
+  </div>
+  <div class="right-side right-back">
+     <div class="inner-right-side">
+      <div class="w280">
+        <div class="sort-box right-deafult-box">
+          <div class="green-box">
+            <h2 class="orange-color"><%= t("views.users.sort_your_people") %></h2>
+            <% form_tag "", :method => "get", :id => "user_sort" do %>
+              <%= hidden_field_tag "alphabet", params[:alphabet] %>
+              <%= hidden_field_tag "search_by", params[:search_by] %>
+              <%= hidden_field_tag "search", params[:search] %>
+              <%= search_drop_down("sort_by", User::Search::SORT_BY, :long => true, :selected => params[:sort_by], :submit => true) %>
+              <%#= select_tag "sort_by", options_for_select(User::Search::SORT_BY, params[:sort_by]), :onchange => "$(this).parents('form:first').submit();" %>
+            <%end%>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      <% if !@recently_users.blank? %>
+        <h2><%= t("views.users.recent_members") %></h2>
+        <ul class="list right-list w255">
+          <%= render :partial => "recently_user", :collection => @recently_users %>
+          <li class="last">&nbsp;</li>
+        </ul>
+      <%end%>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+
+<div id="subscription_id" style="display:none;"></div>
+
+<script type="text/javascript">
+function poll() {
+	var str = document.getElementById('subscription_id').innerHTML;
+	if (str != ""){
+		var str_array = str.split(":");
+		var div_id = str_array[0];
+		var sid = str_array[1];
+		var failed = false;
+
+		$.get('/voip/event_code?sid='+sid,{},function(data) {
+			if(data=='EC01') {
+				$("div#"+div_id).html("calling party invalid");
+				failed = true;
+			}
+			else if(data=='EC02') {
+				$("div#"+div_id).html("calling party ringing");
+			}
+			else if(data=='EC03') {
+				$("div#"+div_id).html("calling party answered");
+			}
+			else if(data=='EC04') {
+				$("div#"+div_id).html("calling party rejected");
+				failed = true;
+			}
+			else if(data=='EC05') {
+				$("div#"+div_id).html("calling party no answer");
+				failed = true;
+			}
+			else if(data=='EC06') {
+				$("div#"+div_id).html("calling party call waiting");
+				failed = true;
+			}
+			else if(data=='EC07') {
+				$("div#"+div_id).html("calling party call blocking");
+				failed = true;
+			}
+			else if(data=='EC08') {
+				$("div#"+div_id).html("calling party hung up");
+				failed = true;
+			}
+			else if(data=='EC09') {
+				$("div#"+div_id).html("calling party unreachable");
+				failed = true;
+			}
+			else if(data=='EC10') {
+				$("div#"+div_id).html("calling party not found");
+				failed = true;
+			}
+			else if(data=='EC11') {
+				$("div#"+div_id).html("called party invalid");
+				failed = true;
+			}
+				else if(data=='EC12') {
+				$("div#"+div_id).html("called party ringing");
+			}
+				else if(data=='EC13') {
+				$("div#"+div_id).html("called party answered");
+			}
+			else if(data=='EC14') {
+				$("div#"+div_id).html("called party rejected");
+				failed = true;
+			}
+			else if(data=='EC15') {
+				$("div#"+div_id).html("called party no answer");
+				failed = true;
+			}
+			else if(data=='EC16') {
+				$("div#"+div_id).html("called party call waiting");
+			}
+			else if(data=='EC17') {
+				$("div#"+div_id).html("called party call blocking");
+				failed = true;
+			}
+			else if(data=='EC18') {
+				$("div#"+div_id).html("called party unreachable");
+				failed = true;
+			}
+			else if(data=='EC19') {
+				$("div#"+div_id).html("called party not found");
+				failed = true;
+			}
+			else{
+				setTimeout("poll()",10000);
+				return;
+			}
+
+			if(failed){
+				document.getElementById('subscription_id').innerHTML = "";
+				$.get('/voip/delete_sid?sid='+sid,{},function(data) {
+					$("div#"+div_id).html(data);
+				});
+			}
+			else{
+				setTimeout("poll()",10000);
+				return;
+			}
+		});
+	}
+	else{
+		$("div#"+div_id).html("call ended");
+		return;
+	}
+}
+
+$('a#call_phone').click(function() {
+	var div_id = "call_status_" + $(this).attr('callee_id');
+	var sid = "";
+	sid = $.ajax({
+			type: "PUT",
+			url: '/voip/update',
+			data: {"calledNumber": $(this).attr('calledNumber'), "employee_id": $(this).attr('employee_id'), "user_id": $(this).attr('user_id'), },
+			async: false,
+	}).responseText;
+
+	if(sid.length > 0){
+		$("div#"+div_id).html("calling...");
+		document.getElementById('subscription_id').innerHTML = div_id + ":" + sid;
+		poll();
+	}
+	else{
+		$("div#"+div_id).html("error");
+		return;
+	}
+});
+</script>

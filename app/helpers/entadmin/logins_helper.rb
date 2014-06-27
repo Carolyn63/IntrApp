@@ -1,0 +1,2 @@
+module Entadmin::LoginsHelper
+end

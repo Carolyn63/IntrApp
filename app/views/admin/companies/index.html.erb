@@ -1,0 +1,66 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_companies_path  %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> Companies</h2>
+    <div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <span><%= t("views.privacy") %>:</span>
+        <%= select("", "", User::Privacy::LIST, {:selected => params[:privacy].blank? ? nil : params[:privacy].to_i,
+                    :include_blank => true}, {:name => "privacy", :onchange => "this.form.submit();"}) %>
+        <span>&nbsp;</span>
+        <%= text_field_tag("search", params[:search], :id => "admin_company_search") %>
+        <%= submit_tag t("views.search") %>
+      <% end %>
+    </div>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <%= sortable_table_header :name => t("views.companies.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.companies.name"),  :sort => "name" %>
+          <%= sortable_table_header :name => t("views.companies.address"),  :sort => "address" %>
+          <%= sortable_table_header :name => t("views.companies.city"),  :sort => "city" %>
+          <%= sortable_table_header :name => t("views.companies.phone"),  :sort => "phone" %>
+          <%= sortable_table_header :name => t("views.companies.company_type"),  :sort => "company_type" %>
+          <%= sortable_table_header :name => t("views.companies.industry"),  :sort => "industry" %>
+          <%= sortable_table_header :name => t("views.companies.size"),  :sort => "size" %>
+          <%= sortable_table_header :name => t("views.companies.team"),  :sort => "team" %>
+          <%= sortable_table_header :name => t("views.users.created"),  :sort => "created_at" %>
+          <%= sortable_table_header :name => t("views.companies.privacy"),  :sort => "privacy" %>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% @companies.each do |company| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="first"><%= company.id %></td>
+          <td><%= link_to company.name, admin_company_path(company) %></td>
+          <td><%= company.address %></td>
+          <td><%= company.city %></td>
+          <td><%= company.phone %></td>
+          <td><%= company.company_type %></td>
+          <td><%= company.industry %></td>
+          <td><%= company.size %></td>
+          <td><%= company.team %></td>
+          <td><%= company.created_at.to_s(:long) %></td>
+          <td><%= Company::Privacy::TO_LIST[company.privacy] %></td>
+          <td class="last">
+            <%= link_to "#{t("web-app-theme.show", :default => "Employees")}",  employees_admin_company_path(company) %> |
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_company_path(company) %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_company_path(company) %> |
+            <%#= link_to "#{t("web-app-theme.edit", :default => "Delete")}", admin_company_path(company), :method => "delete", :confirm => t("views.companies.waring_company_delete") %>
+          </td>
+        </tr>          
+        <% end -%>
+      </table>
+       <%= will_paginate @companies, :privacy => params[:privacy], :search => params[:search] %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+

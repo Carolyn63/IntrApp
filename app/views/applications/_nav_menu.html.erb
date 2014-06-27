@@ -1,0 +1,269 @@
+<div class="left-short-side left-back">
+  <div class="head">
+    <h1><%= t("views.applications.applications_title") %></h1>
+  </div>
+  <ul class="left-menu">
+    <li class="<%= (session[:app_current_tab] || controller.action_name) == "index" ? 'selected' : ''%>">
+      <%= link_to("#{t("views.applications.market_place")} <span>(#{@market_place_count})</span>", user_applications_path(current_user)) %>
+    </li>
+    <%# <% unless current_own_company.blank? %>
+      <li class="<%= (session[:app_current_tab] || controller.action_name) == 'company_catalog' ? 'selected' : ''%>">
+        <%= link_to("#{t("views.applications.company_catalog")} <span>(#{@company_catalog_count})</span>", company_catalog_user_applications_path(current_user)) %>
+      </li>
+    <%# <%end%>
+    <li class="<%= (session[:app_current_tab] || controller.action_name) == 'my_applications' ? 'selected' : ''%>">
+      <%= link_to("#{t("views.applications.my_applications")} <span>(#{@my_applications_count})</span>", my_applications_user_applications_path(current_user)) %>
+    </li>
+  </ul>
+  <div class="w245">
+    <div class="sort-box right-deafult-box">
+      <div class="green-box">
+        <h2 class="orange-color"><%= t("views.applications.filter_company_catalog") %></h2>
+        <% form_tag path_for_application_search, :method => "get", :class => "filter_form" do  %>
+          <div class="changed-box show-box search-field">
+            <p class="title"><a class="open-box" href="javascript:void(0);" id="search_options"><%= t("views.applications.search_by") %></a></p>
+						<div id="search_options" style="display:block;">
+							<%= text_field_tag 'search', params[:search].blank? ? "Search" : params[:search], :class => "w368", :id => "application_search", :placeholder=>"Search" %>
+						</div>
+          </div>
+          <div class="changed-box show-box">
+            <p class="title"><a class="open-box" href="javascript:void(0);" id="order_options">Order by</a></p>
+						<div id="order_options" style="display:block;">
+							<ul class="checkboxOptions">
+								<li>
+								<%= select_tag(:order_by, options_for_select([["Default (name)", 'default'], ['Most Popular First', 'most_popular_first']], params[:order_by]).to_s) %>
+								</li>
+							</ul>
+						</div>
+          </div>
+
+          <% if (session[:app_current_tab] || controller.action_name) == "company_catalog" && !current_own_company.blank? %>
+            <div class="changed-box show-box">
+              <p class="title"><a class="close-box" href="javascript:void(0);" id="employee_options"><%= t("views.applications.employees") %><span></span></a></p>
+							<div id="employee_options" style="display:none;">
+								<ul class="checkboxOptions">
+									<li><label for="employee_select_all"><%= check_box_tag :employee_select_all, true, params[:employee_select_all], {:class => 'selectAll'} %> All</label></li>
+									<% collection_checks("employees_in", current_own_company.employees.active.all(:include => [:user], :order => "users.firstname asc").map{|c| [c.id, c.user.name] }, params[:employees_in]) do |check| -%>
+										<li><%= check %></li>
+									<%end-%>
+								</ul>
+							</div>
+            </div>
+            <div class="changed-box show-box">
+              <p class="title"><a class="close-box" href="javascript:void(0);" id="department_options"><%= t("views.applications.departments") %><span></span></a></p>
+							<div id="department_options" style="display:none;">
+								<ul class="checkboxOptions">
+									<li><label for="department_select_all"><%= check_box_tag :department_select_all, true, params[:department_select_all], {:class => 'selectAll'} %> All</label></li>
+									<% collection_checks("departments_in", current_own_company.departments.all(:order => "name asc").map{|c| [c.id, c.name] }, params[:departments_in]) do |check| -%>
+										<li><%= check %></li>
+									<%end-%>
+								</ul>
+							</div>
+            </div>
+          <%end%>
+
+          <div class="changed-box show-box">
+            <p class="title"><a class="close-box" href="javascript:void(0);" id="category_options"><%= t("views.applications.apps_category") %></a></p>
+						<div id="category_options" style="display:none;">
+							<ul class="checkboxOptions">
+								<li><label for="category_select_all"><%= check_box_tag :category_select_all, true, params[:category_select_all], {:class => 'selectAll'} %> All</label></li>
+								<% collection_checks("categories_in", Category.all(:order => 'name asc').map{|c| [c.id, c.name] }, params[:categories_in]) do |check| -%>
+									<li><%= check %></li>
+								<%end-%>
+							</ul>
+						</div>
+          </div>
+          <div class="changed-box show-box">
+            <p class="title"><a class="close-box" href="javascript:void(0);" id="device_options"><%= t("views.applications.apps_device") %></a></p>
+						<div id="device_options" style="display:none;">
+							<ul class="deviceCheckboxOptions">
+								<li><label for="device_select_all"><%= check_box_tag :device_select_all, true, params[:device_select_all], {:class => 'selectAll'} %> All</label></li>
+								<% if current_employee %>
+									<li><label for="my_devices"><%= check_box_tag :my_devices, true, params[:my_devices], {:class => 'myDevices', 'data-my-device-ids' => current_employee.employee_devices.map(&:device_id).join(",")} %> My Devices</label></li>
+								<%end%>
+								<% collection_checks("devices_in", Device.all(:order => 'name asc').map{|c| [c.id, c.name] }, params[:devices_in]) do |check| -%>
+									<li><%= check %></li>
+								<%end-%>
+							</ul>
+						</div>
+          </div>
+          <div class="changed-box show-box">
+            <p class="title"><a class="close-box" href="javascript:void(0);" id="type_options"><%= t("views.applications.apps_type") %></a></p>
+						<div id="type_options" style="display:none;">
+							<%= select_tag("application_type_id", options_for_select([["All", ""]] + ApplicationType.all(:order => 'name asc').map{|c| [c.name, c.id]}, params[:application_type_id].to_i)) %>
+						</div>
+          </div>
+          
+          <div class="changed-box show-box"> <!-- Industries-->
+            <p class="title"><a class="close-box" href="javascript:void(0);" id="industry_options"><%= t("views.applications.apps_industry") %></a></p>
+						<div id="industry_options" style="display:none;">
+							<ul class="checkboxOptions">
+								<li><label for="industry_select_all"><%= check_box_tag :industry_select_all, true, params[:industry_select_all], {:class => 'selectAll'} %> All</label></li>
+								<% collection_checks("industries_in", Industry.all(:order => 'industry asc').map{|c| [c.id, c.industry] }, params[:industries_in]) do |check| -%>
+									<li><%= check %></li>
+								<%end-%>
+							</ul>
+						</div>
+          </div>
+          
+          <div class="changed-box show-box"> <!-- Countries-->
+            <p class="title"><a class="close-box" href="javascript:void(0);" id="country_options"><%= t("views.applications.apps_country") %></a></p>
+						<div id="country_options" style="display:none;">
+							<ul class="checkboxOptions">
+								<li><label for="country_select_all"><%= check_box_tag :country_select_all, true, params[:country_select_all], {:class => 'selectAll'} %> All</label></li>
+								<% collection_checks("countries_in", Country.all(:order => 'country asc').map{|c| [c.id, c.country] }, params[:countries_in]) do |check| -%>
+									<li><%= check %></li>
+								<%end-%>
+							</ul>
+						</div>
+          </div>
+          
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div><!-- .left-short-side -->
+
+<script type="text/javascript" charset="utf-8">
+<% if request.params['employees_in'].present? %>
+	$('a#employee_options').attr('class', 'open-box');
+	$('div#employee_options').show();
+<% end %>
+<% if request.params['departments_in'].present? || request.params['department_select_all'].present? %>
+	$('a#department_options').attr('class', 'open-box');
+	$('div#department_options').show();
+<% end %>
+<% if request.params['categories_in'] || request.params['category_select_all'].present? %>
+	$('a#category_options').attr('class', 'open-box');
+	$('div#category_options').show();
+<% end %>
+<% if request.params['devices_in'].present? || request.params['my_devices'].present? || request.params['device_select_all'].present?%>
+	$('a#device_options').attr('class', 'open-box');
+	$('div#device_options').show();
+<% end %>
+<% if request.params['application_type_id'].present? %>
+	$('a#type_options').attr('class', 'open-box');
+	$('div#type_options').show();
+<% end %>
+<% if request.params['industries_in'].present? %>
+	$('a#industry_options').attr('class', 'open-box');
+	$('div#industry_options').show();
+<% end %>
+<% if request.params['countries_in'].present? %>
+	$('a#country_options').attr('class', 'open-box');
+	$('div#country_options').show();
+<% end %>
+
+
+$(function() {
+
+	$('a#search_options').click(function() {
+		var div_id = 'search_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#search_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#search_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#order_options').click(function() {
+		var div_id = 'order_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#order_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#order_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#employee_options').click(function() {
+		var div_id = 'employee_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#employee_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#employee_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#department_options').click(function() {
+		var div_id = 'department_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#department_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#department_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#category_options').click(function() {
+		var div_id = 'category_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#category_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#category_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#device_options').click(function() {
+		var div_id = 'device_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#device_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#device_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#type_options').click(function() {
+		var div_id = 'type_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#type_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#type_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#industry_options').click(function() {
+		var div_id = 'industry_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#industry_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#industry_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+	$('a#country_options').click(function() {
+		var div_id = 'country_options';
+		if($('div#' + div_id).is(':hidden')) {
+			$('a#country_options').attr('class', 'open-box');
+			$('div#' + div_id).show();
+		} else {
+			$('a#country_options').attr('class', 'close-box');
+			$('div#' + div_id).hide();
+		}
+		return false;
+	});
+
+});
+</script>

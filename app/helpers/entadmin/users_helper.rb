@@ -1,0 +1,2 @@
+module Entadmin::UsersHelper
+end

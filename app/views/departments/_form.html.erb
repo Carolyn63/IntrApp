@@ -1,0 +1,8 @@
+<%= hidden_field_tag :add_department_clicks, @departments.blank? ? '0' : @departments.size %>
+<% unless @departments.blank? %>
+  <% @departments.each_with_index do |d, index| %>
+    <div class="input-row" id="<%= 'department_field_' + index.to_s %>">
+      <%= text_field :department, "name_#{index}_#{d.id}".to_sym, :value => d.name  %>
+    </div>
+  <% end %>
+<% end %>

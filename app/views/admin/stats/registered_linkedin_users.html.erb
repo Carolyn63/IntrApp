@@ -1,0 +1,526 @@
+<%
+require 'date'
+
+date = Date.new
+
+time = Time.new
+
+first_date = get_date("linkedin_users", "ASC").to_s
+last_date = get_date("linkedin_users", "DESC").to_s
+
+today_startdate = time.strftime("%Y-%m-%d") + " 00:00:00"
+today_enddate = time.strftime("%Y-%m-%d") + " 23:59:59"
+
+today = time.strftime("%Y-%m-%d")
+todayhour = time.strftime("%Y-%m-%d_%H")
+
+#thisweek = time.strftime("%Y-%W")
+thismonth = time.strftime("%Y-%m")
+
+lastday_startdate = (time - 1.day).strftime("%Y-%m-%d") + " 00:00:00"
+lastday_enddate = (time - 1.day).strftime("%Y-%m-%d") + " 23:59:59"
+last2day_startdate = (time - 2.day).strftime("%Y-%m-%d") + " 00:00:00"
+last2day_enddate = (time - 2.day).strftime("%Y-%m-%d") + " 23:59:59"
+
+=begin
+lastweek = (time - 7.day).strftime("%Y-%W")
+if lastweek > thisweek
+	lastweek = (time - 7.day).strftime("%W")
+	lastyear = (time - 356.day).strftime("%Y")
+	lastweek = lastyear + "-" + lastweek
+end
+
+last2week = (time - 14.day).strftime("%Y-%W")
+if last2week > thisweek
+	last2week = (time - 14.day).strftime("%W")
+	last2week = (time - 356.day).strftime("%Y")
+	last2week = lastyear + "-" + last2week
+end
+
+lastweek_f = (time - 7.day).strftime("%W")
+=end
+
+lastmonth = (time - 1.month).strftime("%Y-%m")
+last2month = (time - 2.month).strftime("%Y-%m")
+
+today_friendly = last_date
+lastday_friendly = (time - 1.day).strftime("%Y-%m-%d")
+lastmonth_friendly = (time - 1.month).strftime("%b %Y")
+
+last7day_hour_from = (time - 7.day).strftime("%Y-%m-%d")
+last7day_hour_to = (time - 1.hour).strftime("%Y-%m-%d %H") + ":59:59"
+
+=begin
+thisweek_startdate = get_week_dates(thisweek, true) + " 00:00:00"
+thisweek_enddate = last_date
+lastweek_startdate = get_week_dates(lastweek, true) + " 00:00:00"
+lastweek_enddate = get_week_dates(lastweek, false) + " 23:59:59"
+last2week_startdate = get_week_dates(last2week, true) + " 00:00:00"
+last2week_enddate = get_week_dates(last2week, false) + " 23:59:59"
+
+lastweek_friendly = "week " + lastweek_f + ": " + lastweek_startdate + " - " + lastweek_enddate
+=end
+
+thismonth_startdate = thismonth + "-01 00:00:00"
+thismonth_enddate = today_enddate
+
+lastmonthinfo = get_year_month_info(lastmonth)
+
+lastmonth_startdate = lastmonth + "-01 00:00:00"
+lastmonth_enddate = lastmonth + "-" + lastmonthinfo + " 23:59:59"
+
+last2monthinfo = get_year_month_info(last2month)
+last2month_startdate = last2month + "-01 00:00:00"
+last2month_enddate = last2month + "-" + last2monthinfo + " 23:59:59"
+
+total_registrations = get_total("linkedin_users","","")
+total_today_registrations = get_total("linkedin_users",today_startdate,today_enddate)
+#total_thisweek_registrations = get_total("linkedin_users",thisweek_startdate,thisweek_enddate)
+total_thismonth_registrations = get_total("linkedin_users",thismonth_startdate,thismonth_enddate)
+total_lastday_registrations = get_total("linkedin_users",lastday_startdate,lastday_enddate)
+total_last2day_registrations = get_total("linkedin_users",last2day_startdate,last2day_enddate)
+percent_lastday = total_lastday_registrations.to_i!=0 ? sprintf("%.2f", 100*(total_lastday_registrations.to_i - total_last2day_registrations.to_i)/total_lastday_registrations.to_i) : 0
+#total_lastweek_registrations = get_total("linkedin_users",lastweek_startdate,lastweek_enddate)
+#total_last2week_registrations = get_total("linkedin_users",last2week_startdate,last2week_enddate)
+#percent_lastweek = total_lastweek_registrations.to_i!=0 ? sprintf("%.2f", 100*(total_lastweek_registrations.to_i - total_last2week_registrations.to_i)/total_lastweek_registrations.to_i) : 0
+total_lastmonth_registrations = get_total("linkedin_users",lastmonth_startdate,lastmonth_enddate)
+total_last2month_registrations = get_total("linkedin_users",last2month_startdate,last2month_enddate)
+percent_lastmonth = total_lastmonth_registrations.to_i!=0 ? sprintf("%.2f", 100*(total_lastmonth_registrations.to_i - total_last2month_registrations.to_i)/total_lastmonth_registrations.to_i) : 0
+
+firstdate_array = first_date.split(" ")
+firstdate = firstdate_array[0]
+lastdate_array = last_date.split(" ")
+lastdate = lastdate_array[0]
+
+dates = get_dates(firstdate, lastdate)
+#logger.info "dates: #{dates.to_json}" 
+
+daily_reg_stats = get_daily_stats("linkedin_users","","")
+#logger.info "daily_reg_stats: #{daily_reg_stats.to_json}" 
+
+#=begin
+daily_stats = Hash.new
+
+i = 0
+dates.each do |date|
+	date = date.to_s
+	daily = daily_reg_stats[date] ? daily_reg_stats[date] : 0
+	#logger.info "date: #{date}"
+	#logger.info "daily: #{daily}"
+	#daily_stats[date]['daily'] = daily
+	daily_stats[date] = daily
+end
+#=end
+#logger.info "daily_stats: #{daily_stats.to_json}" 
+
+=begin
+first_datehour = last7day_hour_from
+last_datehour = (time - 1.hour).strftime("%Y-%m-%d %H")
+
+datehours = get_date_hours(first_datehour, last_datehour)
+#logger.info "datehours: #{datehours}" 
+now = time.strftime("%Y-%m-%d")
+hourly_reg_stats = get_hourly_stats("linkedin_users",last7day_hour_from,now)
+
+if hourly_reg_stats
+	hourly_stats =Hash.new
+	i=0
+	datehours.each do |datehour|
+		datehour = datehour.to_s
+		hourly = hourly_reg_stats[datehour] ? hourly_reg_stats[datehour] : 0
+		#hourly_stats[datehour]['hourly'] = hourly
+		hourly_stats[datehour] = hourly
+	end
+end
+=end
+
+daily_stats = daily_stats.sort
+#hourly_stats = hourly_stats.sort
+
+#generate_csv("daily_registered", daily_stats, "Date,Number of Registered Users")
+#generate_csv("hourly_registered", hourly_stats, "Date Hour,Number of Registered Companies")
+
+#logger.info "hourly_stats: #{hourly_stats.to_json}" 
+founders_by_employee_stats = get_founders_by_employee()
+founders_by_country_stats = get_founders_by_country()
+founders_by_industry_stats = get_founders_by_industry()
+%>
+
+
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf"> 
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.registered_linkedin_companies"))}", registered_linkedin_companies_admin_stats_path%>
+			</li>
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.registered_linkedin_users"))}", registered_linkedin_users_admin_stats_path%>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.registered_users"))}", registered_users_admin_stats_path%>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.paid_users"))}", paid_users_admin_stats_path%>
+			</li>
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("helpers.application.payments"))}", payments_admin_stats_path%>
+			</li>
+		</ul>
+	</div>
+
+	<div class="content">  
+		<div class="inner">
+
+<!-- TOTAL REGISTRATIONS -->
+<script language="javascript" type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawData_total_current_registrations);
+
+function drawData_total_current_registrations() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', ' ');
+	data.addColumn('number', 'Today');
+	//data.addColumn('number', 'This Week');
+	data.addColumn('number', 'This Month');
+	data.addColumn('number', 'Total');
+
+	data.addRows(1);
+
+	data.setValue(0, 0, '<b>Total Registrations</b>');
+	data.setValue(0, 1, <%=total_today_registrations%>);
+	//data.setValue(0, 2, <%#=total_thisweek_registrations%>);
+	//data.setValue(0, 3, <%#=total_thismonth_registrations%>);
+	//data.setValue(0, 4, <%#=total_registrations%>);
+	data.setValue(0, 2, <%=total_thismonth_registrations%>);
+	data.setValue(0, 3, <%=total_registrations%>);
+
+	var table = new google.visualization.Table(document.getElementById('total_current_registrations_div'));
+	table.draw(data, {allowHtml:true});
+}
+</script>
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawData_total_registrations_compare);
+
+function drawData_total_registrations_compare() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', ' ');
+	data.addColumn('number', 'Last Day');
+	data.addColumn('number', '2 Days Ago');
+	data.addColumn('number', 'Change %');	
+	//data.addColumn('number', 'Last Week');
+	//data.addColumn('number', '2 Weeks Ago');
+	//data.addColumn('number', 'Change %');
+	data.addColumn('number', 'Last Month');
+	data.addColumn('number', '2 Months Ago');
+	data.addColumn('number', 'Change %');
+
+	data.addRows(1);
+
+	data.setValue(0, 0, '<b>Total Registrations</b>');
+	data.setValue(0, 1, <%=total_lastday_registrations%>);
+	data.setValue(0, 2, <%=total_last2day_registrations%>);
+	data.setValue(0, 3, <%=percent_lastday%>, '<%=percent_lastday%>%');
+	//data.setValue(0, 4, <%#=total_lastweek_registrations%>);
+	//data.setValue(0, 5, <%#=total_last2week_registrations%>);
+	//data.setValue(0, 6, <%#=percent_lastweek%>, '<%#=percent_lastweek%>%');
+	//data.setValue(0, 7, <%#=total_lastmonth_registrations%>);
+	//data.setValue(0, 8, <%#=total_last2month_registrations%>);
+	//data.setValue(0, 9, <%#=percent_lastmonth%>, '<%#=percent_lastmonth%>%');
+	data.setValue(0, 4, <%=total_lastmonth_registrations%>);
+	data.setValue(0, 5, <%=total_last2month_registrations%>);
+	data.setValue(0, 6, <%=percent_lastmonth%>, '<%=percent_lastmonth%>%');
+
+	var formatter = new google.visualization.TableArrowFormat();
+	formatter.format(data, 3); 
+	formatter.format(data, 6); 
+	//formatter.format(data, 9); 
+	var table = new google.visualization.Table(document.getElementById('total_registrations_compare_div'));
+	table.draw(data, {allowHtml:true});
+}
+</script>
+
+
+<!-- DAILY REGISTRATIONS -->
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["areachart"]});
+google.setOnLoadCallback(drawChart);
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Date');
+	data.addColumn('number', 'Num Registrations');
+<% 
+if num=daily_stats.count
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	daily_stats.each  do |key,val|
+%>
+	data.setValue(<%=i%>,0, '<%= key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+	
+end
+%>
+
+	var chart = new google.visualization.AreaChart(document.getElementById('daily_reg_stats_div'));
+	chart.draw(data, {width: 1200, height: 600, legend: 'top', legendFontSize:'14px', titleFontSize: '18px', title: 'Daily registrations'});
+}
+</script>
+
+<!-- BY EMPLOYEE COUNT -->
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Employee Count');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=founders_by_employee_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	founders_by_employee_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var chart = new google.visualization.PieChart(document.getElementById('founders_by_employee_stats_div'));
+	chart.draw(data, {width: 600, height: 400, is3D: true, title: ''});
+}
+</script>
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Employee Count');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=founders_by_employee_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	founders_by_employee_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var table = new google.visualization.Table(document.getElementById('founders_by_employee_stats_table_div'));
+	table.draw(data, {allowHtml:true, showTip: true, showRowNumber: true});
+}
+</script>
+
+<!-- BY COUNTRY -->
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Country');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=founders_by_country_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	founders_by_country_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var chart = new google.visualization.PieChart(document.getElementById('founders_by_country_stats_div'));
+	chart.draw(data, {width: 600, height: 400, is3D: true, title: ''});
+}
+</script>
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Country');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=founders_by_country_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	founders_by_country_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var table = new google.visualization.Table(document.getElementById('founders_by_country_stats_table_div'));
+	table.draw(data, {allowHtml:true, showTip: true, showRowNumber: true});
+}
+</script>
+
+<!-- BY INDUSTRY -->
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Industry');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=founders_by_industry_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	founders_by_industry_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var chart = new google.visualization.PieChart(document.getElementById('founders_by_industry_stats_div'));
+	chart.draw(data, {width: 600, height: 400, is3D: true, title: ''});
+}
+</script>
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Industry');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=founders_by_industry_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	founders_by_industry_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var table = new google.visualization.Table(document.getElementById('founders_by_industry_stats_table_div'));
+	table.draw(data, {allowHtml:true, showTip: true, showRowNumber: true});
+}
+</script>
+
+
+<div style="float:left;">
+<div style="padding: 20px 0 0 23px;font-weight:bold;font-size:16px;">Latest Data In Time: <%=today_enddate%></div>
+<table style="padding:10px 0 10px 20px;">
+	<tr>
+		<td><div id="total_current_registrations_div" style="border:1px solid #ccc;"></div></td>
+	</tr>
+</table>
+<table style="padding:10px 0 20px 20px;">
+	<tr>
+		<td><div id="total_registrations_compare_div" style="border:1px solid #ccc;"></div></td>
+	</tr>
+</table>
+
+<table style="padding:10px 0 20px 20px;">
+	<tr>
+		<td>
+			<div id="daily_reg_stats_div" style="border:1px solid #ccc;"></div>
+			<!--
+			<div style="padding-top:10px;"><a href="download/?filename=daily_registered_<%=today%>.csv" ><img src="/images/download.png" width="24" height="24" align="absmiddle" />&nbsp;Download Daily Stats CSV File</a></div>
+			-->
+		</td>
+	</tr>
+</table>
+
+<table style="padding:10px 0 20px 20px;">
+	<tr>
+		<td colspan="2" align="center" style="font-size:20px;padding-bottom:20px;"><strong>Founders' Companies by Employee Count</strong></td>
+	</tr>
+	<tr>
+		<td><div id="founders_by_employee_stats_div" style="border:1px solid #ccc;"></div></td>
+		<td style="padding-left:30px;"><div id="founders_by_employee_stats_table_div" style="border:1px solid #ccc;"></div></td>
+	</tr>
+</table>
+
+<table style="padding:10px 0 20px 20px;">
+	<tr>
+		<td colspan="2" align="center" style="font-size:20px;padding-bottom:20px;"><strong>Founders by Country</strong></td>
+	</tr>
+	<tr>
+		<td><div id="founders_by_country_stats_div" style="border:1px solid #ccc;"></div></td>
+		<td style="padding-left:30px;"><div id="founders_by_country_stats_table_div" style="border:1px solid #ccc;"></div></td>
+	</tr>
+</table>
+
+<table style="padding:10px 0 20px 20px;">
+	<tr>
+		<td colspan="2" align="center" style="font-size:20px;padding-bottom:20px;"><strong>Founders' Companies by Industry</strong></td>
+	</tr>
+	<tr>
+		<td><div id="founders_by_industry_stats_div" style="border:1px solid #ccc;"></div></td>
+		<td style="padding-left:30px;"><div id="founders_by_industry_stats_table_div" style="border:1px solid #ccc;"></div></td>
+	</tr>
+</table>
+
+</div>
+
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>
+</div>

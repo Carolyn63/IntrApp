@@ -1,0 +1,56 @@
+<div class="content right-column">
+  <div class="left-side">
+    <h1><%= t("views.companies.find_companies") %><%= help_icon %></h1>
+    <% if @companies.total_pages > 1 %>
+      <%= will_paginate @companies,:class => 'pagination-no-back float-right mr35 mt-25', :renderer => 'CustomLinkRenderer' %>
+      <div class="clear"></div>
+    <%end%>
+
+    <div class="alphabet-box">
+      <%= alphabetical_search_index("", params) %>
+      <div class="clear"></div>
+    </div>
+
+    <div class="search-row">
+      <% form_tag "", :method => "get", :id => "company-search" do %>
+        <%= hidden_field_tag "sort_by", params[:sort_by] %>
+        <%= search_drop_down("search_by", Company::Search::SEARCH_BY, :long => true, :selected => params[:search_by]) %>
+        <%= text_field_tag 'search', params[:search].blank? ? t("views.search") : params[:search], :id => "company_search", :class => "w368",:placeholder=>t("views.search") %>
+      <%end%>
+      <div class="clear"></div>
+    </div>
+    <ul class="list members-list profiles-list">
+      <%= render :partial => "company", :collection => @companies %>
+    </ul>
+    <% if @companies.total_pages > 1 %>
+      <%= will_paginate @companies, :class => 'pagination-no-back float-right mr35', :renderer => 'CustomLinkRenderer' %>
+    <%end%>
+    <div class="clear"></div>
+  </div>
+  <div class="right-side right-back">
+    <div class="inner-right-side">
+      <div class="w280">
+        <div class="sort-box right-deafult-box">
+          <div class="green-box">
+            <h2 class="orange-color"><%= t("views.companies.sort_your_companies") %></h2>
+            <% form_tag "", :method => "get", :id => "company_sort" do %>
+              <%= hidden_field_tag "alphabet", params[:alphabet] %>
+              <%= hidden_field_tag "search_by", params[:search_by] %>
+              <%= hidden_field_tag "search", params[:search] %>
+              <%= search_drop_down("sort_by", Company::Search::SORT_BY, :long => true, :selected => params[:sort_by], :submit => true) %>
+            <%end%>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      <% unless @recently_companies.blank? %>
+        <h2><%= t("views.companies.recent_companies") %></h2>
+        <ul class="list right-list w255">
+          <%= render :partial => "recently_company", :collection => @recently_companies %>
+          <li class="last">&nbsp;</li>
+        </ul>
+      <%end%>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>

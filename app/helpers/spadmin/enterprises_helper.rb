@@ -1,0 +1,2 @@
+module Spadmin::EnterprisesHelper
+end

@@ -1,0 +1,72 @@
+<%
+user_id = params['user_id']
+div_id = params['div_id']
+
+u = User.find_by_id(user_id)
+e = u.email
+n = u.name
+%>
+
+<h2><%=n%>'s Payment History</h2>
+<div>
+	<table class="table">
+		<tr>
+			<th class="last">payer email</th>
+			<th class="last">payment system</th>
+			<th class="last">transaction date</th>
+			<th class="last">transaction id</th>
+			<th class="last">transaction type</th>
+			<th class="last">transaction status</th>
+			<th class="last">subscription id</th>
+			<th class="last">services</th>
+		</tr>
+<%
+logger.info "email: #{e}"
+payments  ||= Array.new
+user_payments = Payment.find_all_by_email(e)
+if !user_payments.blank?
+	user_payments.each do |user_payment|
+		payments << user_payment
+	end
+
+	payments.each do |ph|
+		tt = ph.transaction_type.gsub("subscr_","subscription ")
+		plan_ids = ph.plan_ids
+		plan_names = ""
+
+		if !plan_ids.blank?
+			plan_ids = plan_ids.split(/\s*,\s*/)
+			plan_ids.each do |plan_id|
+				logger.info "plan_id: #{plan_id}"
+				plan_names += ApplicationPlan.find_by_id(plan_id).code.to_s+','
+			end
+			plan_names = plan_names.chop
+		end
+%>
+		<tr class="<%= cycle("odd", "even") %>">
+			<td class="first"><%= ph.payer_email %> </td>
+			<td class="first"><%= ph.payment_service %> </td>
+			<td class="first"><%= ph.transaction_date.strftime("%Y-%m-%d %H:%M:%S") %> </td>
+			<td class="first"><%= ph.transaction_id %> </td>
+			<td class="first"><%= tt %> </td>
+			<td class="first"><%= ph.transaction_status %> </td>
+			<td class="first"><%= ph.subscription_id %> </td>
+			<td class="first"><%= plan_names %> </td>
+		</tr>
+<% 
+	end
+end %>
+	</table>
+</div>
+
+<div><input type="button" name="close" id="close_history" value="CLOSE"/></div>
+
+<script type="text/javascript">
+$(function(){
+	$('input#close_history').click(function() {
+		var div_id='<%=div_id%>';
+		$('div#'+div_id).hide();
+		hideOverlay();
+	});
+});
+</script>

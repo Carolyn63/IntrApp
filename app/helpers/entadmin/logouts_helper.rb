@@ -1,0 +1,2 @@
+module Entadmin::LogoutsHelper
+end

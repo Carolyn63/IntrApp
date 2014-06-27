@@ -1,0 +1,48 @@
+  <p>
+    <b><%= t("views.audits.type") %>:</b>
+    <%= @audit.auditable_type %>
+  </p>
+
+  <p>
+    <b><%= t("views.audits.name") %>:</b>
+    <%= @audit.name %>
+  </p>
+
+  <p>
+    <b><%= t("views.audits.deleted_object_id") %>:</b>
+    <%= @audit.auditable_id %>
+  </p>
+
+  <p>
+    <b><%= t("views.audits.status") %>:</b>
+    <%= @audit.status %>
+  </p>
+
+  <% unless @audit.parent_id.blank? %>
+    <p>
+      <b><%= t("views.audits.parent") %>:</b>
+      <%=  link_to(@audit.parent_id, admin_audit_path(@audit.parent_id)) %>
+    </p>
+  <%end%>
+
+  <p>
+    <b><%= t("views.audits.description") %>:</b>
+    <%= @audit.description %>
+  </p>
+
+  <div class="group">
+    <%= f.label :status, t("views.audits.status"), :class => :label %>
+    <%= f.select :status, Audit::Statuses::LIST, :class => 'text_field' %>
+  </div>
+
+  <div class="group">
+    <%= f.label :comment, t("views.audits.comment"), :class => :label %>
+    <%= f.text_area :comment, :class => 'text_area' %>
+  </div>
+        
+<div class="group navform wat-cf">
+  <button class="button" type="submit">
+    <%= image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+  </button>  
+  <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")} #{t("web-app-theme.cancel", :default => "Cancel")}", admin_audits_path, :class => "button" %> 
+</div>

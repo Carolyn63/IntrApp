@@ -1,0 +1,44 @@
+domain: demo
+deploy:
+  demo:
+    ssh:
+      login: ebento
+      password: XiKL@12Z
+    scp:
+      login: mihail
+      password: skvirskiy
+      scm: "git"
+    server: ebento.gera-it-dev.com
+    group: ebento
+    domain: ebento.gera-it-dev.com
+    scm_command: /usr/local/bin/git
+    deploy_to: /home/ebento/application
+    product_tag: "git@github.com:Gera-IT/eBento.git"
+  www:
+    ssh:
+      login: pelesend
+      password: Mnu12N@h98
+    scp:
+      login: mihail
+      password: skvirskiy
+      scm: "git"
+    server: apps.ebento.net 
+    group: ebento
+    domain: apps.ebento.net
+    scm_command: /usr/bin/git
+    deploy_to: /home/pelesend/application
+    product_tag: "git@github.com:Gera-IT/eBento.git"
+  pdemo:
+    ssh:
+      login: pelesend
+      password: p3lese2011
+    scp:
+      login: mihail
+      password: skvirskiy
+      scm: "git"
+    server: portal.futurewei.ebento.net
+    group: pelesend
+    domain: portal.futurewei.ebento.net
+    scm_command: /usr/local/bin/git
+    deploy_to: /home/pelesend/application
+    product_tag: "git@github.com:Gera-IT/eBento.git"

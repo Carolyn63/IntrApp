@@ -1,0 +1,137 @@
+<div class="content left-column">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container" style="padding-top: 25px;">
+		<h1> Cost Trend Report by App </h1>
+	</div>
+
+<%
+stats = cost_trend_app_company_stat_path(current_own_company.id)
+
+logger.info "stats[:ym]: #{stats[:ym]}"
+apps = company_apps(current_own_company.id)
+app_count  = apps.count
+
+if apps.count
+%>
+<script language="javascript" type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+<!-- COST TREND REPORT BY APP TABLE CHART -->
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+
+	data.addColumn('string', '');
+<%
+apps.each do |name|
+%>
+	data.addColumn('number', '<%=name%>');
+<%
+end
+
+if num=stats[:ym].count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	stats.each do |ym|
+%>
+	data.setValue(<%=i%>,0, '<%=ym%>');
+<%
+		i += 1
+	end
+
+	stats.each do |key, val|
+		
+%>
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var table = new google.visualization.Table(document.getElementById('cost_trend_app_table_div'));
+	table.draw(data, {allowHtml:true, showTip: true, showRowNumber: false});
+}
+</script>
+
+<!-- COST TREND REPORT BY APP COLUMN CHART -->
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["columnchart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Country');
+<? foreach($portals as $portal){?>
+	data.addColumn('number', '<?=$portal->name()?>');
+<?}?>
+
+<?if($num=count($val)){?>
+	data.addRows(<?=$num?>);
+<?
+$i = 0;
+foreach ($val as $k=>$v){
+?>
+	data.setValue(<?=$i?>,0, '<?=addslashes($k)?>');
+<?$i++;}?>
+
+<?
+$j=1;
+foreach($portals as $portal){ 
+	$portal_name = $portal->name();
+	$i = 0;
+	foreach ($val as $k=>$v){
+		$num_users = $v[$portal_name] ? $v[$portal_name] : 0;
+?>
+		data.setValue(<?=$i?>,<?=$j?>, <?=$num_users?>);
+<?$i++;}$j++;}}?>
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('cost_trend_app_column_div'));
+	chart.draw(data, {width: 1200, height: 600, is3D: true, isStacked:true, legend:'top', legendFontSize:'14px', titleFontSize: '18px', title: 'Cost Trend Report by App'});
+}
+</script>
+
+<!-- COST TREND REPORT BY APP PIE CHART -->
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Service');
+	data.addColumn('number', 'Number');
+
+<% 
+if num=pre_total_apps_stats.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	pre_total_apps_stats.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var chart = new google.visualization.PieChart(document.getElementById('cost_trend_app_pie_div'));
+	chart.draw(data, {width: 600, height: 400, is3D: true, title: ''});
+}
+</script>
+
+	<div id="cost_trend_app_table_div" style="border:1px solid #ccc;"></div>
+	<div id="cost_trend_app_column_div" style="border:1px solid #ccc;"></div>
+	<div id="cost_trend_app_pie_div" style="border:1px solid #ccc;"></div>
+
+<% end %>
+	<div class="clear"></div>
+</div>

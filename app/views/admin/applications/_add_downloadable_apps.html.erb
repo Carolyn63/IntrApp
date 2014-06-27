@@ -1,0 +1,56 @@
+<!-- ADD BINFILE/DOWNLOAD URL ADMIN APPLICATION -->
+
+<% 
+existing_device_ids = ""
+new_device_ids = ""
+%>
+
+<div style="font-family: Arial; font-size: 17px; color: #7b7b7b; padding: 0px; position: relative;"><b>Add Bin Files and Download URLs</b></div>
+<% form_for :devicefication, :url => update_downloadable_apps_admin_application_path(@application.id), :html => { :multipart => true } do |f| -%>
+<input type="hidden" name = "_method" value= "put" />
+<div class="columns wat-cf" style="margin-top: 20px;line-height:180%;">
+<% 
+@devices.each do |device| 
+	if @application.devices.include?(device)
+		existing_device_ids += device.id.to_s + ","
+		devicefication = Devicefication.find_by_application_id_and_device_id(@application.id, device.id)
+		dl_url = devicefication.download_url
+	else
+		new_device_ids += device.id.to_s + ","
+		dl_url = ""
+	end
+%>
+		<div><b><%= device.name %></b></div>
+		<div class="downloadable_apps">
+			<ul>
+				<li style="width:40%;"><%= f.file_field "bin_file#{device.id}", :class => 'file_field' %></li>
+				<li style="width:50%;"><input type="text" name="devicefication[download_url<%=device.id%>]" value="<%= dl_url %>" class ="text_field" /></li>
+			</ul>
+		</div>
+	<% if devicefication.present? && devicefication.bin_file.present? %>
+		<div style="clear:both;"><%= File.basename(devicefication.bin_file.path) -%></div>
+	<% end %>
+	<div style="clear:both;padding-top:10px;"></div>
+<% end %>
+</div>
+
+<%= hidden_field("devicefication", "existing_device_ids", :value=> existing_device_ids.strip)%>
+<%= hidden_field("devicefication", "new_device_ids", :value=> new_device_ids.strip)%>
+
+<div class="group navform wat-cf" style="margin-top:10px;">
+	<button class="button" type="submit">
+		<%= image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+	</button>
+	<%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")} #{t("web-app-theme.cancel", :default => "Cancel")}", "javascript:void(0)", :class => "button", :id => "cancel_link" %>
+</div>
+<% end %> 
+
+<script type="text/javascript">
+$(function(){
+	$('a#cancel_link').click(function() {
+		var div_id='upload_file_div';
+		$('div#'+div_id).hide();
+		hideOverlay();
+	});
+});
+</script>

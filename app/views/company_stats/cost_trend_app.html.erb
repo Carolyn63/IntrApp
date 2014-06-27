@@ -1,0 +1,232 @@
+<div class="content left-column">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container" style="padding-top: 25px;">
+		<h1> Cost Trend Report by App </h1>
+	</div>
+
+<%
+#stats = CompanyStatsController::cost_trend_app(current_own_company.id)
+cost_trend_app_stats = @cost_trend_app_stats.sort_by { |key, value| key.keys.first.to_s }
+#logger.info "stats: #{cost_trend_app_stats.to_s}"
+
+#num = cost_trend_app_stats.count { |m, n| m.keys {|k,v| k}}
+yearmonths = get_paid_month(current_own_company.id)
+num = yearmonths.count
+logger.info "num: #{num}"
+
+#logger.info "stats: #{@cost_trend_app_stats.inspect}"
+#logger.info "stats: #{cost_trend_app_stats.inspect}"
+#logger.info "stats[:ym]: #{@stats[:ym]}"
+
+apps = company_apps(current_own_company.id)
+app_count  = apps.count
+apps = apps.sort_by {|key, value| key.to_i}
+logger.info "apps: #{apps.to_json}"
+
+total_cost = company_apps_total_cost(current_own_company.id)
+
+=begin
+apps.each do |key,val|
+	logger.info "apps key: #{key}"
+	logger.info "apps val: #{val}"
+end
+
+cost_trend_app_stats.each do |key, val|
+	logger.info "key: #{key.inspect}"
+	logger.info "val: #{val}"
+	key.each do |k, v|
+		logger.info "k: #{k.inspect}"
+		logger.info "v: #{v}"
+	end
+end
+=end
+
+#logger.info "cost_trend_app_stats val: #{cost_trend_app_stats['2012-08'=>'1'].to_s}"
+#=begin
+if app_count
+%>
+<script language="javascript" type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+<!-- COST TREND REPORT BY APP TABLE CHART -->
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["table"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+
+	data.addColumn('string', '');
+<%
+apps.each do |id, name|
+%>
+	data.addColumn('number', '<%=name%>');
+<%
+end
+
+if num
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	yearmonths.each do |ym|
+%>
+	data.setValue(<%=i%>,0, '<%=ym%>');
+<%
+		i += 1
+	end
+
+	i = 0
+	yearmonths.each do |ym|
+		j = 1
+		apps.each do |id, name|
+
+			#ym_id = ym.to_s + id.to_s
+			#logger.info "ym_id: #{ym_id}"
+			amount = 0
+			cost_trend_app_stats.each do |key, val|
+				key.each do |k, v|
+					#logger.info "k: #{k}"
+					#logger.info "v: #{v}"
+					#logger.info "val: #{val}"
+					#if v == id.to_s
+						#logger.info " v == id true"
+					#end
+
+					if k == ym && v == id
+						amount = val
+						#logger.info "amount: #{amount}"
+						break
+					end
+				end
+			end
+%>
+	data.setValue(<%=i%>,<%=j%>, <%=amount%>);
+<%
+		j += 1
+		end 
+		i += 1
+	end 
+end #if num
+%>
+
+	var formatter = new google.visualization.NumberFormat({prefix: '$'});
+
+<% for k in 1..apps.count %>
+	formatter.format(data, <%=k%>);
+<% end %>
+
+	var table = new google.visualization.Table(document.getElementById('cost_trend_app_table_div'));
+	table.draw(data, {allowHtml:true, showTip: true, showRowNumber: false});
+}
+</script>
+
+<!-- COST TREND REPORT BY APP COLUMN CHART -->
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["columnchart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', '');
+<%
+apps.each do |id, name|
+%>
+	data.addColumn('number', '<%=name%>');
+<%
+end
+
+if num
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	yearmonths.each do |ym|
+%>
+	data.setValue(<%=i%>,0, '<%=ym%>');
+<%
+		i += 1
+	end
+
+	i = 0
+	yearmonths.each do |ym|
+		j = 1
+		apps.each do |id, name|
+
+			#ym_id = ym.to_s + id.to_s
+			#logger.info "ym_id: #{ym_id}"
+			amount = 0
+			cost_trend_app_stats.each do |key, val|
+				key.each do |k, v|
+					if k == ym && v == id
+						amount = val
+						break
+					end
+				end
+			end
+%>
+	data.setValue(<%=i%>,<%=j%>, <%=amount%>);
+<%
+		j += 1
+		end 
+		i += 1
+	end 
+end #if num
+%>
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('cost_trend_app_column_div'));
+	chart.draw(data, {width: 900, height: 800, is3D: true, isStacked:true, legend:'top', legendFontSize:'14px', titleFontSize: '18px', title: 'Cost Trend Report by App'});
+}
+</script>
+
+<!-- COST TREND REPORT BY APP PIE CHART -->
+
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'App/Service');
+	data.addColumn('number', 'Cost');
+
+<% 
+if num=total_cost.count 
+%>
+	data.addRows(<%=num%>);
+<%
+	i = 0
+	total_cost.each do |key, val|
+%>
+	data.setValue(<%=i%>,0, '<%=key%>');
+	data.setValue(<%=i%>,1, <%=val%>);
+<%
+		i += 1
+	end
+end
+%>
+
+	var chart = new google.visualization.PieChart(document.getElementById('cost_trend_app_pie_div'));
+	chart.draw(data, {width: 900, height: 600, is3D: true, titleFontSize: '18px', title: 'Cost by App'});
+}
+</script>
+
+
+	<div class="clear"></div>
+
+	<div id="cost_trend_app_table_div" style="border:1px solid #ccc;margin-top:40px;"></div>
+
+	<div class="clear"></div>
+
+	<div id="cost_trend_app_column_div" style="border:1px solid #ccc;margin-top:30px;"></div>
+
+	<div class="clear"></div>
+
+	<div id="cost_trend_app_pie_div" style="border:1px solid #ccc;margin-top:30px;"></div>
+
+<% end %>
+<%
+#=end
+%>
+	<div class="clear"></div>
+</div>

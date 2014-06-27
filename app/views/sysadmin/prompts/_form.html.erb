@@ -1,0 +1,55 @@
+<table cellspacing="10px" style="width:500px;">
+	<tr>
+		<td><span style="float:left"><%= f.label :lable_name, t("views.labels.name"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+		<td><%= f.text_field :name, :class=>"text_border", :size=>"62%"%><div id="name_error" style="display:none;color:red;"></div></td>
+	</tr>
+	<tr>
+		<td><span style="float:left"><%= f.label :lable_name, t("views.labels.treatment"), :class => :label %></span></td>
+		<td><%= f.text_field :treatment, :class=>"text_border", :size=>"62%"%></td>
+	</tr>
+	<tr>
+		<td><span style="float:left"><%= f.label :lable_name, t("views.labels.type"), :class => :label %></span></td>
+		<td><%= f.text_field :type, :class=>"text_border", :size=>"62%"%></td>
+	</tr>
+</table>
+<div class="group navform wat-cf">
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<style>
+	.submit_finish {
+		background-image: url('/images/web-app-theme/tick.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$('input.submit_finish').click(function() {
+		$('div#name_error').hide();
+
+		var flag = true;
+
+		if($('input#prompt_name').val()==""){
+			$('div#name_error').html("Please enter prompt name").show();
+			flag = false;
+		}
+
+		return flag;	
+	});
+});
+</script>

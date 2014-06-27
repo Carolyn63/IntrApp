@@ -1,0 +1,19 @@
+<h4>Hi, <%= @username  %> </h4>
+
+
+<p>Thank you. Your cloud storage account has been successfully created. Here is your login information:</p> </br>
+<p>Login Name: <%= @username%></p>
+<p>Password: <%= @password%></p>	
+	
+<p>If you want to login as an admin to  manage your company users, please use this URL to login: </p>
+<p><%=link_to @url_admin , @url_admin%></p>
+</br>
+
+<p>If you want to login as cloud storage user, please use this URL to login:</p>
+<p><%=link_to @url_user , @url_user%></p>
+</br>
+
+<p>If the above link does not work, try copying it and pasting it into your browser.</p></br>
+
+
+<p>Thank you!</p>

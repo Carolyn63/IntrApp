@@ -1,0 +1,211 @@
+<div class="content right-column">
+  <div class="left-side">
+    <% if @company.employee_pending?(current_user) %>
+      <h3 style="margin-left:30px">
+        <%= t("views.companies.you_have_invite_from_company") %>
+        <%= link_to(link_name("#{t("views.accept")}"), accept_user_employer_path(current_user, @company)) %>
+        or
+        <%= link_to(link_name("#{t("views.reject")}"), reject_user_employer_path(current_user, @company)) %>
+      </h3>
+    <%end%>
+    <h1 class="ml30"><%= "#{@company.name} &nbsp;" %><span class="grey-color fwn"><%= "#{t("views.employees_title")}&nbsp;(#{@company.active_employees.size})" %></span><%= help_icon %></h1>
+    <div class="first-column">
+      <div class="img-box">
+        <%= image_tag @company.logo.url(:big) %>
+      </div>
+      <!--a class="standart-button standart-button-plus"><b class="f"></b><b class="s">&nbsp;Upload New Logo</b><b class="t"></b></a-->
+      <% if @company.owner?(current_user) %>
+        <%= link_to wide_button("#{t("views.see_employees_list")} (#{@company.active_employees.size})"), company_employees_path(@company), :class=>"standart-button" %>
+      <%else%>
+        <%= link_to wide_button("#{t("views.see_employees_list")} (#{@company.active_employees.size})"), profile_company_path(@company), :class=>"standart-button" %>
+      <%end%>
+      <ul class="notes-list">
+        <li>
+          <p><%= @company.description %></p>
+        </li>
+      </ul>
+
+			<div class="right-box">
+<% if @company.owner? current_user %>
+				<%= link_to wide_button(t("views.companies.edit_company_profile")), edit_user_company_path(current_user, @company), :class=>"standart-button"%><br/>
+				<%= link_to wide_button(t("views.companies.generate_employees_accounts")), new_company_employee_path(:company_id => @company.id), :class=>"standart-button"%><br/>
+
+<% if property(:use_ondeego) %>
+			<% unless @company.ondeego_connect? %>
+				<%= link_to wide_button(t("views.companies.create_appcentral_company")), company_create_user_ondeego_path(current_user, :company_id => @company.id), :class=>"standart-button"%><br/>
+			<% end %>
+<% end %>
+
+<% if property(:use_sogo) %>
+			<%  if !@company.employee(current_user).sogo_connect? && !@company.employee(current_user).company_email.blank?%>
+					<%= link_to(wide_button(t("views.companies.create_sogo_account")), sogo_connect_company_employee_path(@company, @company.employee(current_user)), :class=>"standart-button") %>
+			<% end %>
+<% end %>
+
+				<%= link_to wide_button(t("views.companies.delete_company")), user_company_path(current_user, @company), :method => :delete, :confirm => t("views.companies.waring_company_delete"), :class=>"standart-button"%><br/><br/>
+
+<% end %>
+      </div>
+    </div>
+
+    <div class="second-column">
+      <% if @company.owner? current_user %>
+        <div class="green-box">
+          <p class="float-left"><b class="blue-color"><%= t("views.companies.company_profile_is_only")%></b></p>
+          <div id="progressbar" class="float-right" style="width: 135px; margin-top: 14px;">
+            <span><%= @company.profile_complete%> %&nbsp;<%= t("views.companies.completed")%></span>
+          </div>
+
+          <div class="clear"></div>
+          <p class="fz11 grey-color" style="margin-top: 0px;"><i><%= "#{t("views.companies.add_more_info_now")}&nbsp;#{link_to t("views.companies.clicking_here"), edit_user_company_path(current_user, @company)}"%></i></p>
+        </div>
+
+      <%end%>
+      <h3><%= t("views.companies.company_information") %></h3>
+      <ul class="info-list">
+        <li>
+          <p class="left"><b><%= t("views.companies.name") %></b></p>
+          <p class="right"><i><%= @company.name %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.address") %></b></p>
+          <p class="right"><i><%= @company.address %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.address2") %></b></p>
+          <p class="right"><i><%= @company.address2 %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.city") %></b></p>
+          <p class="right"><i><%= @company.city %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.state") %></b></p>
+          <p class="right"><i><%= @company.state %></i></p>
+          <div class="clear"></div>
+        </li>
+					<li>
+						<p class="left"><b><%= t("views.companies.country") %></b></p>
+						<p class="right"><i><%= @company.country %></i></p>
+
+						<%# TRAC 214 - Views - Companies - Show  %>
+						<%# %>
+						<%# Fixed the text being cludged together %>
+						<div class="clear"></div>
+					</li>
+	    <li>
+          <p class="left"><b><%= t("views.companies.zipcode") %></b></p>
+          <p class="right"><i><%= @company.zipcode%></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.phone") %></b></p>
+          <p class="right"><i><%= @company.phone %></i></p>
+          <div class="clear"></div>
+        </li>
+        <%if check_company_ippbx?%>
+        <li>
+          <p class="left"><b><%= t("views.companies.corporate_main") %></b></p>
+           <% unless @company.ippbx.blank? %>
+          <p class="right"><i><%= Ippbx.retrieve_public_number(@company.id)%></i></p>
+          <%end%>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.corporate_vm") %></b></p>
+           <% unless @company.ippbx.blank? %>
+          <p class="right"><i><%= Ippbx.retrieve_vm_number(@company.id)%></i></p>
+          <%end%>
+          <div class="clear"></div>
+        </li>
+        <%end%>
+        <li>
+          <p class="left"><b><%= t("views.companies.website") %></b></p>
+          <p class="right"><i><%= link_to @company.website, @company.website, :class => "grey-color green-link", :target => "_blank" %></i></p>
+          <div class="clear"></div>
+        </li>
+        
+         <li>
+          <p class="left"><b><%= t("views.companies.domain") %></b></p>
+          <p class="right"><i><%= @company.domain_name %></i></p>
+          <div class="clear"></div>
+        </li>
+        
+        <li>
+          <p class="left"><b><%= t("views.companies.twitter") %></b></p>
+          <p class="right"><i><%= link_to @company.twitter , @company.twitter , :class => "grey-color green-link", :target => "_blank"%></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.facebook") %></b></p>
+          <p class="right"><i><%= link_to @company.facebook, @company.facebook, :class => "grey-color green-link", :target => "_blank" %></i></p>
+          <div class="clear"></div>
+        </li>
+	<li>
+          <p class="left"><b><%= t("views.companies.linkedin") %></b></p>
+          <p class="right"><i><%= link_to @company.linkedin, @company.linkedin, :class => "grey-color green-link", :target => "_blank" %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.company_type") %></b></p>
+          <p class="right"><i><%= @company.company_type %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.industry") %></b></p>
+          <p class="right"><i><%= @company.industry %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.size") %></b></p>
+          <p class="right"><i><%= @company.size %></i></p>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <p class="left"><b><%= t("views.companies.team") %></b></p>
+          <p class="right"><i><%= @company.team %></i></p>
+          <div class="clear"></div>
+        </li>
+      </ul>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="right-side right-back">
+    <div class="inner-right-side">
+      <h2><%= t("views.companies.other_companies_profiles") %></h2>
+      <ul class="list right-list w255">
+        <%= render :partial => "recently_company", :collection => @recently_companies %>
+        <li class="last">&nbsp;</li>
+      </ul>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<script type="text/javascript">
+$( "#progressbar" ).progressbar({
+	value: <%= @company.profile_complete %>
+});
+$('a#add_ippbx').click(function(){
+	if($('div#loader_div').is(':hidden')){
+		$('div#loader_div').show();
+	}
+	else{
+		$('div#loader_div').hide();
+	}
+});
+
+$(function(){
+	$('a#remove_ippbx').click(function(){
+		if($('div#loader_div').is(':hidden')){
+			$('div#loader_div').show();
+		}
+		else{
+			$('div#loader_div').hide();
+		}
+	});
+});
+</script>

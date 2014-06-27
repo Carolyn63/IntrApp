@@ -1,0 +1,57 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => "Profile")}", spadmin_adminprofiles_path %>
+			</li>
+			<li>
+				<%= link_to "#{t("web-app-theme.list", :default => "Edit")}", edit_spadmin_adminprofile_path(@uid)  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<h2 class="title"><%= t("web-app-theme.new", :default => "Service Provider Admin Profile")%></h2>
+		<div class="inner">
+			<% form_for :view_profile,  :html => { :class => :form } do |f| -%>
+			<table cellspacing="12px">
+				<tr >
+					<td > <%= f.label :label_name, t("views.spadmin.spprofiles.name"), :class => :label %> </td>
+					<td ><%= f.label :loginName, @loginName%></td>
+					<td > <%= f.label :label_email, t("views.spadmin.spprofiles.email"), :class => :label %></td>
+					<td><%= f.label :emailId, @emailId%></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_state, t("views.spadmin.spprofiles.state"), :class => :label %></td>
+					<td><%= f.label :state,  @state %></td>
+					<td ><%= f.label :label_city, t("views.spadmin.spprofiles.city"), :class => :label %></td>
+					<td><%= f.label :city,  @city %></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_country, t("views.spadmin.spprofiles.country"), :class => :label %></td>
+					<td><%= f.label :country,  @country%></td>
+					<td ><%= f.label :label_timezone, t("views.spadmin.spprofiles.timezone"), :class => :label %></td>
+					<td><%= f.label :timezone,  @timezone %></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_locale, t("views.spadmin.spprofiles.locale"), :class => :label %></td>
+					<td><%= f.label :locale,  @locale %></td>
+					<td > <%= f.label :label_zipCpde, t("views.spadmin.spprofiles.zipCode"), :class => :label %></td>
+					<td><%= f.label :zipCode,  @zipCode%></td>
+				</tr>
+				<tr>
+					<td > <%= f.label :label_language, t("views.spadmin.spprofiles.language"), :class => :label %></td>
+					<td><%= f.label :language,  @language%></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_address1, t("views.spadmin.spprofiles.address1"), :class => :label %></td>
+					<td><%= f.label :addressLine1,  @addressLine1 %></td>
+				</tr>
+				<tr>
+					<td ><%= f.label :label_address2, t("views.spadmin.spprofiles.address1"), :class => :label %></td>
+					<td><%= f.label :addressLine2,  @addressLine2%></td>
+				</tr>
+			</table>
+			<% end -%>
+		</div>
+	</div>
+</div>

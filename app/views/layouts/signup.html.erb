@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+	<title><%= t("views.sp_name", :sp_name => property(:sp_name)) %></title>
+	<link type="image/x-icon" href="/images/favicon.ico" rel="shortcut icon"/>
+	<%#= stylesheet_link_tag "web_app_theme", "web_app_theme_override", "themes/warehouse/style", :cache => true %>
+	<%#= stylesheet_link_tag "base", :media => "screen" %>
+	<%= stylesheet_link_tag "style", :media => "screen" %>
+	<%= stylesheet_link_tag "hack", :media => "screen" %>
+	<%= stylesheet_link_tag "jquery.bt.css" %>
+	<%= javascript_include_tag :defaults %>
+	<script language="JavaScript" type="text/javascript" src="/javascripts/mt01.js"></script>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/mt01.css"/>
+	<%= javascript_include_tag "jquery.placeholder.js" %>
+	<%= javascript_include_tag "jquery.bt.js" %>   
+<!--[if IE 6]>
+	<%= stylesheet_link_tag "style_ie.css", :media => "screen" %>
+<![endif]-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-39742012-1', 'otogomobile.net');
+  ga('send', 'pageview');
+</script>
+  <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+  api_key: <%=property(:linkedin_api_key)%>
+  onLoad: onLinkedInLoad
+  authorize: false
+</script>
+<script type="text/javascript">
+
+  // 2. Runs when the JavaScript framework is loaded
+  function onLinkedInLoad() {
+    IN.Event.on(IN, "auth", onLinkedInAuth);
+	IN.User.logout();
+  }
+
+  // 2. Runs when the viewer has authenticated
+  function onLinkedInAuth() {
+    IN.API.Profile("me").result(displayProfiles);
+  }
+
+  // 2. Runs when the Profile() API call returns successfully
+  function displayProfiles(profiles) {
+<%
+	logger.info("The Login Process")
+	logger.info("The controller is >>> #{params[:controller]}")
+	%>
+    member = profiles.values[0];
+    var member_id = ""
+	if (member != null)
+	{
+	    member_id = member.id
+	 	if (member_id != "")
+		{
+		<%logger.info("11111111111111111111111111")%>
+		<%if params[:controller] == "users"%>
+		document.getElementById('user_firstname').value = member.firstName;
+		document.getElementById('user_lastname').value = member.lastName;
+		document.getElementById('user_memberid').value = member.id;
+		var response = $.ajax({dataType:'script', type:'get', url:'/user_sessions/do_login?member_id=' + member.id, async: false})
+		//alert(response.responseText);
+		if (response.responseText == "")
+		{
+		$('div#captcha_row').hide();
+		$('div#username_row').hide();
+		$('div#password_row').hide();
+		$('div#confirm_password_row').hide();
+		<%= remote_function :method => :get, :url => {:controller=>'users', :action=>'linkedin_signup'}%>
+		}
+		else
+		{
+		window.location = "http://apps.mobiletribe.net"
+		}
+		<%elsif params[:controller] == "user_sessions"%>
+ 
+			 document.getElementById('memberid').value = member.id;
+			 document.getElementById('first_name').value = member.firstName;
+		     document.getElementById('last_name').value = member.lastName;
+			<%= remote_function :method => :get, :url => {:controller=>'users', :action=>'linkedin_signin'}, :success => "submit_form()"%>
+			//alert(response.code);
+			/*if (response.code == "200" && response.text == "true")
+			{
+			document.getElementById('new_user_session').submit();
+			}
+			*/
+		<%end%>
+		 IN.User.logout();
+		}
+	}
+	   	
+  }
+  function submit_form()
+  {
+  document.getElementById('new_user_session').submit();
+  }
+</script>
+</head>
+<body id="auth-page">
+ <div id="inner-wrapper">
+	 <div id="header">
+			<div class="logo-box">
+				<%= link_to image_tag("logo.png"), root_path, :class=>"logo"  %>
+				<p><%= t('views.self_service_provisioning') %></p>
+			</div>
+		</div>
+	<div class="flash">
+		<span class="space-flash">&nbsp;</span>
+		<% flash.each do |type, message| -%>
+			<div class="message <%= type %>">
+				<p><%= message %></p>
+			</div>
+		<% end -%>
+		<% flash = nil %>
+	</div>
+	<%= yield %>
+</div><!-- #inner-wrapper -->
+</body>
+</html>

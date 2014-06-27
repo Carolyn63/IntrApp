@@ -1,0 +1,18 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container">
+    <%= render :partial => "select_company" %>
+    <%= error_messages_for :department %>
+    <% form_for :department, :url => company_departments_path(@company), :html => { :id => "new_department"} do |f| -%>
+      <div class="employees-box">
+        <h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("views.departments.new_department") %></h3>
+          <%= render :partial => "form", :locals => {:f => f} %>
+      </div>
+      <div class="bottom-gradient-box tac">
+        <%= link_to_function link_name(t("views.save_department")), "$('#new_department').submit()", :class=>"standart-button" %>
+      </div>
+    <% end -%>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->

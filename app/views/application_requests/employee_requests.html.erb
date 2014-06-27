@@ -1,0 +1,58 @@
+<div class="content left-column applications-layout">
+  <div class="clear"></div>
+  <div class="left-short-side left-back">
+    <div class="head">
+      <h1><%= t("views.application_requests.app_requests") %></h1>
+    </div>
+    <ul class="left-menu">
+      <li class="selected">
+        <%= link_to("#{t("views.application_requests.app_requests")}", employee_requests_company_application_requests_path(current_employee.company_id, :employee_id => current_employee.id)) %>
+      </li>
+    </ul>
+  </div><!-- .left-short-side -->
+
+  <div class="right-wider-side">
+    <div class="filter-title-holder">
+      <h1><%= t("views.application_requests.app_requests") %></h1>
+      <%= will_paginate(@employee_application_requests, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if @employee_application_requests && @employee_application_requests.total_pages > 1 %>
+      <div class="clear"></div>
+    </div>
+    <% unless @employee_application_requests.blank? %>
+      <ul class="list applications-list profiles-list">
+        <% @employee_application_requests.each do |request| %>
+          <li>
+            <div class="img-box img-box-size-135">
+              <table class="verticalMiddle" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <% if request.application.logo.present? %>
+                    <td><%= image_tag request.application.logo.normal.url -%></td>
+                  <% else %>
+                    <td><a href="#"></a></td>
+                  <% end %>
+                </tr>
+              </table>
+            </div>
+            <div class="right-box">
+              <%= link_to(content_tag(:h2,h(request.application.name)), user_application_path(current_user, request.application)) -%>
+              <ul class="application-details-list">
+                <%= status_li(request.status) %>
+                <li><strong><%= t("views.applications.requested_date") %></strong> <%= request.requested_at.try(:to_s, :long) -%></li>
+              </ul>
+              <p>&nbsp;</p>
+              <% if request.rejected? %>
+                <p>
+                  <%= link_to link_name(t("views.application_requests.resend_request")), resend_employee_request_company_application_request_path(@company, request, :employee_id => request.employee_id), :method => :put, :class => 'standart-button' %>
+                </p>
+              <%end%>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <%= will_paginate(@employee_application_requests, :params => params, :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer') if @employee_application_requests.total_pages > 1 %>
+    <% else %>
+      <%= no_items_title(t("views.no_requests")) %>
+    <% end %>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->

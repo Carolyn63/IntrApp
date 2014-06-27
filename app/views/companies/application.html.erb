@@ -1,0 +1,19 @@
+<div class="content right-column">
+  <div class="left-side">
+    <% if @applications.blank? %>
+      <h1><%= t("views.companies.no_application") %><%= help_icon %></h1>
+    <%else%>
+      <h1><%= t("views.companies.your_applications") %><%= help_icon %></h1>
+      <ul class="list left-list applications-list">
+        <%= render :partial => "application", :collection => @applications, :locals => {:count => @applications.size} %>
+      </ul>
+      <% if @applications.total_pages > 1 %>
+        <div class="bottom-gradient-box">
+          <%= will_paginate @applications, :class => 'pagination float-right', :renderer => 'CustomLinkRenderer' %>
+        </div>
+      <%end%>
+    <%end%>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>

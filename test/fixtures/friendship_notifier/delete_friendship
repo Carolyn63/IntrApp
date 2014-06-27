@@ -1,0 +1,3 @@
+FriendshipNotifier#delete_friendship
+
+Find me in app/views/friendship_notifier/delete_friendship.erb

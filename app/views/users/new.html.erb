@@ -1,0 +1,72 @@
+<br />
+<div><%= error_messages_for :user %></div>
+<div class="auth-box register-box">
+	<div class="inner-auth-box">
+		<div class="head tac">
+			<h1><%= t("views.users.want_to_be_part", :sp_name => property(:sp_name)) %><%= help_icon(:image => "info_blue.png") %></h1>
+			<p><%= "#{t('views.users.already_member')}&nbsp;#{link_to t("views.shared.login_menu.login"), login_path}" %></p>
+		<div style="margin-top:15px;">
+<script type="IN/Login">
+</script>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp; <a href="JavaScript:void(0);"  id = "spiceworks"><img src="http://developers.spiceworks.com/images/btn_login.png" title="Spiceworks Login" alt="Spiceworks Login" /></a>
+</div>
+		</div>
+
+		<% form_for :user, :url => users_path, :html=>{:id => "user_form"} do |f| -%>
+			<%= render :partial => "form", :locals => {:f => f} %>
+			<div class="input-row button-row">
+				<%= f.check_box :terms_and_conditions, :class => "checkbox" %>
+				<label for="r1"><%= t("views.users.read_agree") %><%= link_to t("views.users.term"), "javascript:void(0)", :class =>"show_site_terms" %></label>
+				<button class="max-button" type="submit"><b class="f"></b><b class="s"><%= t("views.users.register") %></b><b class="t"></b></button>
+			</div>
+
+			<div id="site_terms_div" class="t_popup" style="width:700px;height:300px;overflow:auto;"></div>
+		<% end -%>
+	</div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+	
+	
+	$(document).ready(function(){
+	
+	$('a.show_site_terms').click(function() {
+		var div_id='site_terms_div';
+		if($('div#'+div_id).is(':hidden')) {
+			showOverlay(div_id);
+			$('div#'+div_id).html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('/terms.html', {});
+			$('div#'+div_id).show();
+		} else {
+			$('div#'+div_id).hide();
+		}
+	});
+	
+
+	$("#spiceworks").click(function(ev) {
+		var url = $.ajax({type:'GET', url:'/users/spiceworks', async: false}).responseText;
+		window.open(String(url), "Spiceworks", "height=500,width=800");
+		ev.preventDefault();
+		return false;
+	});
+
+	var spice_works = '<%=@spiceworks_success%>';
+	if (spice_works){
+		if(spice_works=="200")
+		{
+      				window.opener.location.href = '<%=property(:app_site)%>/signup?spice_works=true';
+	  	}
+		else if(spice_works=="401")
+        {		
+		window.opener.location.href = '<%=property(:app_site)%>/signup';
+		}
+		window.close();
+}
+
+<%if session[:spice_lname].present? %>
+$('#new_user_session').submit();
+<%end%>
+});
+
+</script>
+

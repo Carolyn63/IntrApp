@@ -1,0 +1,15 @@
+<div class="left-short-side left-back">
+  <div class="head">
+    <h1>Search</h1>
+    <p><i>You can search by users and companies here</i></p>
+  </div>
+  <ul class="left-menu">
+    <li class="<%= controller.action_name == 'users' ? 'selected' : ''%>">
+      <%= link_to("Users", users_search_path(:search => params[:search])) %>
+    </li>
+    <li class="<%= controller.action_name == 'companies' ? 'selected' : ''%>">
+      <%= link_to("Companies", companies_search_path(:search => params[:search])) %>
+    </li>
+  </ul>
+  <a href="#" class="help-box"></a>
+</div><!-- .left-short-side -->

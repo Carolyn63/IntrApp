@@ -1,0 +1,22 @@
+<div class="content left-column">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container" style="padding-top: 25px;">
+		<div class="secondary-navigation">
+			<ul class="wat-cf">
+				<li class="first"><%=link_to "List", company_company_applications_path(current_own_company)%></li>
+				<li class="active"><%=link_to "Edit", edit_company_company_application_path(current_own_company)%></li>
+			</ul>
+		</div>
+
+		<h1> Edit Application</h1>
+		<div class="content">
+			<div class="inner">
+				<% web_app_theme_form_for resource, :url => company_company_application_path(current_own_company,@application.id), :html => { :class => 'form', :multipart => true } do |f| -%>
+					<%= render :partial => "form", :locals => { :f => f } %>
+				<% end -%>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,1 @@
+<%= select_tag "employee[department_id]", options_for_select([["", ""]] + company.departments.all.collect {|d| [ d.name, d.id ] }, !@employee.blank? ? @employee.department_id.to_i : 0)%>

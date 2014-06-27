@@ -1,0 +1,148 @@
+<div class="content right-column">
+  <div class="left-side">
+    <h1><%= t("views.my_friends") %><%= help_icon %></h1>
+    <ul class="list members-list profiles-list">
+      <%= render :partial => "friend", :collection => @friends %>
+    </ul>
+    <% if @friends.total_pages > 1 %>
+      <div class="bottom-gradient-box">
+        <%= will_paginate @friends, :class => 'pagination float-right', :renderer => 'CustomLinkRenderer' %>
+      </div>
+    <%end%>
+    <div class="clear"></div>
+  </div>
+  <div class="right-side right-back">
+    <ul class="list right-list w255">
+    </ul>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div id="subscription_id" style="display:none;"></div>
+
+<script type="text/javascript">
+function poll() {
+	var str = document.getElementById('subscription_id').innerHTML;
+	if (str != ""){
+		var str_array = str.split(":");
+		var div_id = str_array[0];
+		var sid = str_array[1];
+		var failed = false;
+
+		$.get('/voip/event_code?sid='+sid,{},function(data) {
+			if(data=='EC01') {
+				$("div#"+div_id).html("calling party invalid");
+				failed = true;
+			}
+			else if(data=='EC02') {
+				$("div#"+div_id).html("calling party ringing");
+			}
+			else if(data=='EC03') {
+				$("div#"+div_id).html("calling party answered");
+			}
+			else if(data=='EC04') {
+				$("div#"+div_id).html("calling party rejected");
+				failed = true;
+			}
+			else if(data=='EC05') {
+				$("div#"+div_id).html("calling party no answer");
+				failed = true;
+			}
+			else if(data=='EC06') {
+				$("div#"+div_id).html("calling party call waiting");
+				failed = true;
+			}
+			else if(data=='EC07') {
+				$("div#"+div_id).html("calling party call blocking");
+				failed = true;
+			}
+			else if(data=='EC08') {
+				$("div#"+div_id).html("calling party hung up");
+				failed = true;
+			}
+			else if(data=='EC09') {
+				$("div#"+div_id).html("calling party unreachable");
+				failed = true;
+			}
+			else if(data=='EC10') {
+				$("div#"+div_id).html("calling party not found");
+				failed = true;
+			}
+			else if(data=='EC11') {
+				$("div#"+div_id).html("called party invalid");
+				failed = true;
+			}
+				else if(data=='EC12') {
+				$("div#"+div_id).html("called party ringing");
+			}
+				else if(data=='EC13') {
+				$("div#"+div_id).html("called party answered");
+			}
+			else if(data=='EC14') {
+				$("div#"+div_id).html("called party rejected");
+				failed = true;
+			}
+			else if(data=='EC15') {
+				$("div#"+div_id).html("called party no answer");
+				failed = true;
+			}
+			else if(data=='EC16') {
+				$("div#"+div_id).html("called party call waiting");
+			}
+			else if(data=='EC17') {
+				$("div#"+div_id).html("called party call blocking");
+				failed = true;
+			}
+			else if(data=='EC18') {
+				$("div#"+div_id).html("called party unreachable");
+				failed = true;
+			}
+			else if(data=='EC19') {
+				$("div#"+div_id).html("called party not found");
+				failed = true;
+			}
+			else{
+				setTimeout("poll()",10000);
+				return;
+			}
+
+			if(failed){
+				document.getElementById('subscription_id').innerHTML = "";
+				$.get('/voip/delete_sid?sid='+sid,{},function(data) {
+					$("div#"+div_id).html(data);
+				});
+			}
+			else{
+				setTimeout("poll()",10000);
+				return;
+			}
+		});
+	}
+	else{
+		$("div#"+div_id).html("call ended");
+		return;
+	}
+}
+
+$('a#call_phone').click(function() {
+	var div_id = "call_status_" + $(this).attr('callee_id');
+	var sid = "";
+	sid = $.ajax({
+			type: "PUT",
+			url: '/voip/update',
+			data: {"calledNumber": $(this).attr('calledNumber'), "employee_id": $(this).attr('employee_id'), "user_id": $(this).attr('user_id'), },
+			async: false,
+	}).responseText;
+
+	if(sid.length > 0){
+		$("div#"+div_id).html("calling...");
+		document.getElementById('subscription_id').innerHTML = div_id + ":" + sid;
+		poll();
+	}
+	else{
+		$("div#"+div_id).html("error");
+		return;
+	}
+});
+</script>

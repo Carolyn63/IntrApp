@@ -1,0 +1,78 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to_collection %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> <%= "Company Application Requests" %></h2>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <th class="first">&nbsp;</th>
+        
+
+					<%= sortable_table_header :name => t("views.titles.user_name"),  :sort => "name" %>
+					<th> <%=t("views.titles.subscription_id")%></th>
+					<th> <%=t("views.titles.paymentsystem")%></th>
+				    <%= sortable_table_header :name => t("views.titles.requested_at"),  :sort => "requested_at" %>
+					<th><%= t("views.titles.action")%></th>
+
+        </tr>
+				<% unless collection.blank? %>
+        <% collection.each do |request| -%>
+				<% unless request.blank? %>
+        <%payment = request.payment%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="first">&nbsp;</td>
+            <td><%= request.user.name%></td>
+            <td><a href="javascript:void(0);" id="payment_<%=payment.id%>" class="show_payment" payment_id="<%=payment.id%>"><%=payment.subscription_id %> </a> </td>
+            <td><%= payment.payment_service.titleize %>  </td>
+            <td><%= request.requested_at.to_s(:long) %></td>
+
+            <td>
+            	<%if request.request == "cancel"%>
+			             	<% if payment.payment_service == "amazon" %>
+								 <%= link_to "#{t("web-app-theme.show", :default => t("views.links.cancel"))}", cancel_amazon_admin_user_payment_request_path(request,:subscription_id => payment.subscription_id), :method => :put, :confirm => t("views.notices.confirm_cancel_subscription")%>
+							<%elsif payment.payment_service == "paypal" %>	
+							    <%= link_to "#{t("web-app-theme.show", :default => t("views.links.cancel"))}", cancel_paypal_admin_user_payment_request_path(request,:subscription_id => payment.subscription_id), :method => :put, :confirm => t("views.notices.confirm_cancel_subscription")%>
+							<%end%>
+				<%elsif request.request == "refund"%>
+					        <% if payment.payment_service == "amazon" %>
+								<%= link_to "#{t("web-app-theme.show", :default => t("views.links.refund"))}", refund_amazon_admin_user_payment_request_path(request,:transaction_id=>payment.transaction_id), :method => :put, :confirm => t("views.notices.confirm_refund_subscription")%>
+							<%elsif payment.payment_service == "paypal" %>	
+							<%= link_to "#{t("web-app-theme.show", :default => t("views.links.refund"))}", refund_paypal_admin_user_payment_request_path(request,:transaction_id=>payment.transaction_id), :method => :put, :confirm => t("views.notices.confirm_refund_subscription")%>
+							<%end%>
+				<%end%>			
+							
+					
+            </td>
+          </tr>
+					<% end %>
+        <% end -%>
+				<% end %>
+      </table>
+      <div id="show_payment_div" class="t_popup" style="display:none;width:90%;overflow:auto;"></div>
+      <%= will_paginate collection  %>
+      <div class="actions-bar wat-cf">
+        <div class="actions"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	$('a.show_payment').click(function(){
+		var payment_id = $(this).attr('payment_id');
+		var div_id = 'show_payment_div';
+		if ($('div#'+div_id).is(':hidden')) {
+			showOverlay(div_id);
+			$('div#'+div_id).html('<div style="position:absolute;top:40%;left:50%;margin:0 0 0 -25px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('user_payment_requests/payment', { div_id:div_id, payment_id:payment_id });
+			$('div#'+div_id).show();
+		}
+		else{
+			$('div#'+div_id).hide();
+			hideOverlay();
+		}
+	});
+</script>

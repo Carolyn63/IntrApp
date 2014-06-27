@@ -1,0 +1,102 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container">
+  	<%= will_paginate @user_payments , :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer'%>
+  <div class="employees-box" style="margin-top:0px;">
+  	 
+      <ul class="list members-list profiles-list">
+<% 
+@user_payments.each do |payment| 
+	payment_reason = ""
+	payment.plan_ids.blank? ? plan_ids = Array.new : plan_ids = payment.plan_ids.split(",")
+	plan_ids.each do |a_id|
+		plan_id = a_id.to_i
+		plan= ApplicationPlan.find_by_id(plan_id)
+		payment_reason += plan.code + "</br>"
+	end
+%>
+      <li> 
+     <div style="margin-bottom:10px;"> <span> <b><%= t("views.titles.date") %> </b></span> &nbsp;&nbsp;&nbsp;&nbsp; <span><%= payment.transaction_date.to_s(:long)%></span>
+     	
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<span> <b><%= t("views.titles.payment_system")%> </b></span> &nbsp;&nbsp;&nbsp;&nbsp; <span><%=payment.payment_service.titleize%></span>
+     </div> 	
+     <%if params[:status] == "active" or params[:status].blank?%>
+		     <%if payment.transaction_type == "subscr_signup"%>
+		      <div style="margin-bottom:10px;"> <span> <b><%= t("views.titles.subscription_id")%></b></span>&nbsp;&nbsp;&nbsp;<span><%=payment.subscription_id%></span></div> 
+		     <%elsif payment.transaction_type == "subscr_payment"%>
+		     <div style="margin-bottom:10px;"> <span> <b><%= t("views.titles.transaction_id")%></b></span>&nbsp;&nbsp;&nbsp;&nbsp;<span><%=payment.transaction_id%></span></div>
+		     <%end%>
+     <%end%>
+     
+     
+     
+     <div> <span> <b><%= t("views.titles.payment_reason")%></b></span> &nbsp;&nbsp;&nbsp;&nbsp;<span><p style="line-height: 15px;"><%=payment_reason%></p></span></div> 
+     
+ 	
+     
+     <%if params[:status] == "cancelled" or params[:status] == "refunded"%>
+     <div>
+     <%if !payment.cancelled_on.blank?%>
+		<span> <b><%=t("views.users.cancelled_on")%></b></span>&nbsp;&nbsp;&nbsp;&nbsp;  <span> <%=payment.cancelled_on.to_s(:long)%></span>
+		<%elsif !payment.refunded_on.blank?%>
+	 <span> <%=t("views.users.refunded_on")%> </span> &nbsp;&nbsp;&nbsp;&nbsp; <span><%= payment.refunded_on.to_s(:long)%></span> 
+		<%end%>
+		</div></br>
+		<%end%>
+
+     <%if @active%>
+     <div align="center">          
+     	            <%if payment.user_requests[0].blank?%>
+     	            <% if payment.transaction_type == "subscr_payment" %>
+						<%= link_to wide_button(t("views.links.cancel")), generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "cancel"),  :method => :put , :confirm => t("views.notices.confirm_cancel_subscription"), :class=>"standart-button"%> &nbsp;&nbsp;&nbsp;<%= link_to wide_button(t("views.links.refund")),generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "refund" ), :method => :put, :confirm => t("views.notices.confirm_refund_subscription"), :class=>"standart-button"%> 
+					<% elsif payment.transaction_type == "subscr_signup" %>
+						<%= link_to wide_button(t("views.links.cancel")), generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "cancel"), :method => :put , :confirm => t("views.notices.confirm_cancel_subscription"), :class=>"standart-button"%> 
+					
+					<% end %>
+					<% end %>
+		</div>			
+
+     <div align="center">          
+     	              <%if !payment.user_requests[0].blank?%>
+     	              <%if payment.user_requests[0].approved? and payment.user_requests[0].request == "refund"%>
+                           	      <%= link_to wide_button(t("views.links.cancel")), generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "cancel"), :method => :put , :confirm => t("views.notices.confirm_cancel_subscription"), :class=>"standart-button"%>        
+
+					  <%elsif payment.user_requests[0].approved? and payment.user_requests[0].request == "cancel"%>
+					  <b style="color:#007CB9"> <%=t("views.users.cancel_request_success")%></b>
+					  <%elsif payment.user_requests[0].pending?%>
+					  <b style="color:#007CB9"> <%=t("views.users.payment_request_processing")%></b>
+					  <%elsif payment.user_requests[0].failed? and payment.transaction_type == "subscr_payment" %>
+					  <%= link_to wide_button(t("views.links.cancel")), generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "cancel"),  :method => :put , :confirm => t("views.notices.confirm_cancel_subscription"), :class=>"standart-button"%> &nbsp;&nbsp;&nbsp;<%= link_to wide_button(t("views.links.refund")),generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "refund" ), :method => :put, :confirm => t("views.notices.confirm_refund_subscription"), :class=>"standart-button"%>
+					  <%elsif payment.user_requests[0].failed? and payment.transaction_type == "subscr_signup" %>
+					  <%= link_to wide_button(t("views.links.cancel")), generate_user_payment_requests_user_path(current_user.id, :payment_id => payment.id, :request=> "cancel"),  :method => :put , :confirm => t("views.notices.confirm_cancel_subscription"), :class=>"standart-button"%> 
+					  <%end%>
+					  <%end%>
+	</div> 
+	<%end%>
+	
+
+     </li>
+      <%end%>
+      </ul>
+
+
+
+		
+	</div>
+
+     <%= will_paginate @user_payments , :class => 'pagination-no-back float-right', :renderer => 'CustomLinkRenderer'%>    
+      </div>
+          
+ 
+
+  <div class="clear"></div>
+ </div><!-- .content -->
+
+<style>
+	.w140 {
+		width: 28px;
+	}
+</style>
+
+ 

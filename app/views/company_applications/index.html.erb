@@ -1,0 +1,42 @@
+<div class="content left-column applications-layout">
+	<div class="clear"></div>
+	<%= render :partial => "nav_menu" %>
+	<div class="right-wide-side employees-container" style="padding-top: 25px;">
+		<div class="secondary-navigation">
+			<ul class="wat-cf">
+				<li class="first active"><%=link_to "List", company_company_applications_path(current_own_company)%></li>
+				<li><%=link_to "New", new_company_company_application_path(current_own_company)%></li>
+			</ul>
+		</div>
+
+		<h1> Applications </h1>
+		<table class="ca_table">
+			<tr>
+				<%= sortable_table_header :name => 'name',  :sort => "name" %>
+				<th>basic price</th>
+				<th>provider</th>
+				<th>auto approve</th>
+				<th class="action" style="min-width:150px;">action</th>
+			</tr>
+	<% @applications.each do |app| -%>
+	<% basic_plan = ApplicationPlan.find_by_application_id_and_application_nature(app.id, 'basic')%>
+			<tr class="<%= cycle("odd", "even") %>">
+				<td class="first"><%= app.name %></td>
+				<td><%= sprintf("%.2f",basic_plan.amount) -%></td>
+				<td><%= app.provider -%></td>
+				<td><%= Application::Approve::TO_LIST[app.auto_approve] -%></td>
+				<td class="action">
+					<%= link_to "Edit", edit_company_company_application_path(current_own_company, app.id) %> |
+					<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  company_company_application_path(current_own_company, app.id) , :method => "delete", :confirm => "Are you sure want to delete?" %> |
+					<%= link_to "App Plan", list_plan_company_company_application_path(current_own_company, app.id) -%>
+				</td>
+			</tr>
+	<% end -%>
+		</table>
+
+		<%= will_paginate @applications%>
+
+	</div>
+
+	<div class="clear"></div>
+</div>

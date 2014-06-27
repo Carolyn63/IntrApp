@@ -1,0 +1,20 @@
+<div class="left-short-side left-back">
+	<div class="head">
+		<h1><%= t("views.users.manage_payments") %><%= help_icon %></h1>
+		<p><i><%= t("views.users.you_can_manage_payments", :sp_name => property(:sp_name)) %></i></p>
+	</div>
+	<ul class="left-menu">
+		<li class="<%= params[:status] == "history" ? 'selected' : ''%>">
+			<%= link_to "Payment History", payment_requests_user_path(current_user, :status => "history")%>
+		</li>
+		<li class="<%= (params[:status] == "active" or params[:status].blank?) ?'selected' : ''%>">
+			<%= link_to "Active payments", payment_requests_user_path(current_user, :status => "active")%>
+		</li>
+		<li class="<%= params[:status] == "cancelled" ? 'selected' : ''%>">
+			<%= link_to "Cancelled payments", payment_requests_user_path(current_user, :status => "cancelled")%>
+		</li>
+		<li class="<%= params[:status] == "refunded" ? 'selected' : ''%>">
+			<%= link_to "Refunded payments", payment_requests_user_path(current_user, :status => "refunded")%>
+		</li>
+	</ul>
+</div><!-- .left-short-side -->

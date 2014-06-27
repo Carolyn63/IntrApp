@@ -1,0 +1,23 @@
+<div class="input-row">
+  <label><span><%= t("views.users.first_name") %><b class="green-color fz14">&nbsp;*</b></span></label>
+  <%= f.text_field :firstname %>
+</div>
+
+<div class="input-row">
+  <label><span><%= t("views.users.last_name") %><b class="green-color fz14">&nbsp;*</b></span></label>
+  <%= f.text_field :lastname %>
+</div>
+
+<div class="input-row">
+  <label><span><%= t("views.users.username") %><b class="green-color fz14">&nbsp;*</b></span></label>
+  <%= f.text_field :login %>
+</div>
+
+  <div class="input-row">
+    <label><span><%= t("views.users.personal_email") %><b class="green-color fz14">&nbsp;*</b></span></label>
+    <%= f.text_field :email %>
+  </div>
+  <% fields_for :employee do |employee| %>
+    <%= render :partial => "employee_form", :locals => {:f => employee, :company => @company, :email_uniq_description => t("views.companies.as_member_company_get_uniq_email"),:name_for_company_email => ""} %>
+  <% end %>
+

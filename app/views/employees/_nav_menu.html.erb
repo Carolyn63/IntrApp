@@ -1,0 +1,16 @@
+<div class="left-short-side left-back">
+  <div class="head">
+    <h1><%= t("views.employees.manage_employee_accounts", :name => @company.name) %><%= help_icon %></h1>
+    <p><i><%= t("views.employees.you_can_generate_employee_accounts_here") %></i></p>
+  </div>
+  <ul class="left-menu">
+    <li class="<%= ["new", "create"].include?(controller.action_name) ? 'selected' : '' %>"><%= link_to t("views.employees.create_employee"), new_company_employee_path(@company) %></li>
+    <li class="<%= ["new_bulk", "bulk_create"].include?(controller.action_name) ? 'selected' : '' %>"><%= link_to t("views.employees.bulk_create_employees"), new_bulk_company_employees_path(@company) %></li>
+    <% Employee::Status::LIST.each do |status| %>
+      <li class="<%= params[:status] == status[1] ? 'selected' : ''%>">
+        <%= link_to status[0], company_employees_path(@company, :status => status[1])%>
+      </li>
+    <%end%>
+  </ul>
+  <a href="#" class="help-box"></a>
+</div><!-- .left-short-side -->

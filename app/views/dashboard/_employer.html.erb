@@ -1,0 +1,22 @@
+<li>
+  <div class="img-box">
+    <%= image_tag employer.logo.url(:thumb) %>
+  </div>
+  <div class="right-box">
+    <p class="name">
+    <b>
+      <%= link_to employer.name, company_path(employer) %>
+     </b></p>
+     <b><%= link_to(t("views.employees.pending"), user_employers_path(current_user), :style=>"color:green;") if employer.employee_pending?(current_user) %></b>
+    <p class="placement"><%= employer.address %>&nbsp;</p>
+    <p class="type"><i><%= employer.industry %>&nbsp;</i></p>
+    <p class="description"><%= employer.description %>&nbsp;</p>
+    <%= link_to link_name(t("views.employees.see_company_profile"), company_path(employer), :class=>"standart-button" %>
+    <br/>
+    <% if employer.owner?(current_user) %>
+      <%= link_to %Q!<i>#{t("views.employees.see_employee_list")}&nbsp;#{image_tag('right_double_arrow.gif')}</i>!, company_employees_path(employer), :class=>"link-list" %>
+    <%else%>
+      <%= link_to %Q!<i>#{t("views.employees.see_employee_list")}&nbsp;#{image_tag('right_double_arrow.gif')}</i>!,  profile_company_path(employer), :class=>"link-list" %>
+    <%end%>
+  </div>
+</li>

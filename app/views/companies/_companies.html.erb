@@ -1,0 +1,37 @@
+<table class="table">
+  <tr>
+    <%= sortable_table_header :name => t("views.companies.name"),  :sort => "name" %>
+    <%= sortable_table_header :name => t("views.companies.address"),  :sort => "address" %>
+    <%= sortable_table_header :name => t("views.companies.city"),  :sort => "city" %>
+    <%= sortable_table_header :name => t("views.companies.phone"),  :sort => "phone" %>
+    <%= sortable_table_header :name => t("views.companies.company_type"),  :sort => "company_type" %>
+    <%= sortable_table_header :name => t("views.companies.industry"),  :sort => "industry" %>
+    <%= sortable_table_header :name => t("views.companies.size"),  :sort => "size" %>
+    <%= sortable_table_header :name => t("views.companies.team"),  :sort => "team" %>
+    <%= sortable_table_header :name => t("views.companies.privacy"),  :sort => "privacy" %>
+    <%= sortable_table_header :name => t("views.companies.created_at"),  :sort => "created_at" %>
+    <th class="last">&nbsp;</th>
+  </tr>
+  <% companies.each do |company| -%>
+  <tr class="<%= cycle("odd", "even") %>">
+    <td><%= link_to company.name, user_company_path(current_user, company) %></td>
+    <td><%= company.address %></td>
+    <td><%= company.city %></td>
+    <td><%= company.phone %></td>
+    <td><%= company.company_type %></td>
+    <td><%= company.industry %></td>
+    <td><%= company.size %></td>
+    <td><%= company.team %></td>
+    <td><%= Company::Privacy::TO_LIST[company.privacy] %></td>
+    <td><%= company.created_at.to_s(:db) %></td>
+    <td class="last">
+      <%= link_to "#{t("views.employees_title")}", company_employees_path(company) %> |
+      <%= link_to "#{t("views.profile")}", profile_company_path(company) %> |
+      <%#= link_to "#{t("web-app-theme.show", :default => "Show")}", user_company_path(current_user, company) %> 
+      <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_user_company_path(current_user, company) %> |
+      <%#= link_to "#{t("web-app-theme.delete", :default => "Delete")}", user_company_path(current_user, company), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+    </td>
+  </tr>
+  <% end -%>
+</table>
+<%= will_paginate companies %>

@@ -1,0 +1,65 @@
+<% form_for :find_me_follow_me, :url => update_find_me_follow_me_useradmin_callcontrols_path, :html => {:multipart => true,  :class => :form } do |f| -%>
+<input type="hidden" name="_method" value="put" />
+<table align="left" cellspacing="10" cellpadding="5" border="0" style="font-size:12px;width:350px;">
+	<tr valign="top" >
+		<td align="left" style="width:75px;"><%=t("views.labels.phone_number")%></td>
+		<td align="left" style="width:160px;">
+		<input type="text" id="phone_number_fmfm" name="phone_number_fmfm" value="" style="width:150px;" class="text_border" /><div id="phone_error_fmfm" style="display:none;color:red;"></div>
+		</td>
+		<td align="left"><a href="#" class="add_phone_fmfm">&nbsp;&nbsp;<img src="/images/plus.png" width="16" height="16" align="absmiddle"></a>&nbsp;&nbsp;&nbsp;<a href="#" class="remove_phone_fmfm"><img src="/images/minus.png" width="16" height="16" align="absmiddle"></a></td>
+	</tr>
+	<tr valign="top">
+		<td colspan="3" align="left" style="padding-top:10px;"> <%= f.select :list,  @feature_number.collect{|number| [number, number]}, {},:name=>"find_me_follow_me_list[]", :onclick=>"javascript:document.getElementById('phone_number_fmfm').value=this.value;return false;",:size=>"3" , :multiple => true%>
+	</tr>
+	<tr valign="top">
+		<td colspan="3" align="left">
+		<input type="submit" class="submit_apply_fmfm" id="apply_find_me_follow_me" name="apply_find_me_follow_me" value= <%=t("views.buttons.apply")%> />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="cancel_find_me_follow_me" name="cancel_find_me_follow_me" value=<%=t("views.buttons.cancel")%>  />
+		</td>
+	</tr>
+</table>
+<% end -%>
+
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+$('a.add_phone_fmfm').click(function() {
+var phone_number=document.getElementById('phone_number_fmfm').value;
+
+	$('div#phone_error_fmfm').hide();	
+	var flag = true;
+	if(phone_number == "") {
+		$('div#phone_error_fmfm').html('Please enter a phone number').show();
+		flag = false;
+	}
+	else{
+		if(!/^\+*$/.test(phone_number.substring(0,1))) {
+			$('div#phone_error_fmfm').html('Phone number starts with \'+\'').show();
+			flag = false;
+		}	
+		else if(!/^[0-9]+$/.test(phone_number.substring(1))) {
+			$('div#phone_error_fmfm').html('Phone number is not valid').show();
+			flag = false;
+		}
+		}
+	if(flag){
+		$('#find_me_follow_me_list').append($(document.createElement("option")).attr("value",phone_number).text(phone_number));
+	}
+});
+$('a.remove_phone_fmfm').click(function() {
+$("#find_me_follow_me_list option:selected").remove();
+});
+$("#apply_find_me_follow_me").click(function() {
+$("#find_me_follow_me_list").each(function() {
+$("#find_me_follow_me_list option").attr("selected","selected");
+});
+$("#change_password_form").submit
+});
+$('input#cancel_find_me_follow_me').click(function() {
+$('span#arrow_find_me_follow_me').html('<img src="/images/arrow_down.jpg" align="absmiddle" width="16" height="16"">');
+$('div#find_me_follow_me_div').hide();
+});
+});
+
+</script>

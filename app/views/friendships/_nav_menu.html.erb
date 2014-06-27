@@ -1,0 +1,32 @@
+<div class="left-short-side left-back" style="width:325px; min-height:300px">
+  <div class="head">
+    <h1><%= t("views.friendships.your_friendship_request") %><%= help_icon %></h1>
+    <p><i><%= t("views.friendships.you_can_accept_or_reject_friendship_request_here") %></i></p>
+  </div>
+  <ul class="left-menu">
+   <% friendship_menu.each_with_index do |item, index|  %>
+     <% if menu_item_permited?(current_user, item )
+        controller_names = []
+        controller_actions = {}
+        unless item[:controllers].blank?
+          controller_names += item[:controllers].keys
+          item[:controllers].each do |k,v|
+            controller_actions[k] = v
+          end
+        end
+
+        item[:submenu].each do |i|
+          controller_names += i[:controllers].keys
+        end
+
+        class_item = ""
+
+        if controller_names.include?(controller.controller_path) &&
+           (controller_actions[controller.controller_path].blank? || controller_actions[controller.controller_path].include?(controller.action_name))
+            class_item += "selected"
+        end %>
+        <li class="<%= class_item %>"><%= link_to(menu_tab(item[:name]), eval( item[:path] )) %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div><!-- .left-short-side -->

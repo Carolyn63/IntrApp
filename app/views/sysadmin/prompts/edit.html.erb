@@ -1,0 +1,22 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", sysadmin_prompts_path  %>
+			</li>
+			<li class="active">
+				<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.edit"))}", edit_sysadmin_prompt_path%>
+			</li>
+		</ul>
+	</div>
+	<div class="content">	
+		<br> 	
+		<div class="inner">
+			<%= error_messages_for :prompts %>
+			<% form_for :prompts, :url => sysadmin_prompts_path(@uid, :form => @form), :html => {:multipart => true, :name => 'prompts',  :class => :form} do |f| -%>
+			<input type="hidden" name="_method" value="put" />
+			<%= render :partial => "form",  :locals => {:f => f} %>
+			<% end -%>
+		</div>
+	</div>
+</div>

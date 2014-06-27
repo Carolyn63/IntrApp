@@ -1,0 +1,38 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", spadmin_publicnumbers_path  %>
+			</li>
+			</ul>
+	</div>
+	<div class="content">		
+		<br> 
+		<div class="inner" style="width:50%">
+
+		<table id="sortableTable" class="tablesorter">
+				<thead>
+					<tr>
+						<th><%= t("views.titles.name")%></th>
+						<th><%= t("views.titles.assigned_public_numbers")%></th>
+						<th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @employees.each do |employee| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"> <%= employee["firstName"] + " " + employee["lastName"] %> </td>
+						<td class="first"> <%= @public_numbers[employee["userTbl"]["uid"]][0]["number"] unless @public_numbers[employee["userTbl"]["uid"]].blank?%> </td>
+						<td><%unless @public_numbers[employee["userTbl"]["uid"]].blank?%> 
+							<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.reassign"))}",  employee_assign_spadmin_publicnumber_path(employee["userTbl"]["uid"], :enterprise_id=>@ent_id)%>&nbsp;|&nbsp;
+							<%else%>
+							<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.assign"))}",  employee_assign_spadmin_publicnumber_path(employee["userTbl"]["uid"], :enterprise_id=>@ent_id)%>&nbsp;|&nbsp;
+							<%end%>
+							<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.unassign"))}", employee_unassign_spadmin_publicnumber_path(employee["userTbl"]["uid"],:enterprise_id=>@ent_id)%></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

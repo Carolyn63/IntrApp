@@ -1,0 +1,60 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_audits_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_audit_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      
+        <p>
+          <b><%= t("views.audits.type") %>:</b>
+          <%= @audit.auditable_type %>
+        </p>
+
+        <p>
+          <b><%= t("views.audits.name") %>:</b>
+          <%= @audit.name %>
+        </p>
+
+        <p>
+          <b><%= t("views.audits.deleted_object_id") %>:</b>
+          <%= @audit.auditable_id %>
+        </p>
+
+        <p>
+          <b><%= t("views.audits.status") %>:</b>
+          <%= Audit::Statuses::TO_LIST[@audit.status] %>
+        </p>
+
+        <% unless @audit.parent_id.blank? %>
+          <p>
+            <b><%= t("views.audits.parent") %>:</b>
+            <%=  link_to(@audit.parent_id, admin_audit_path(@audit.parent_id)) %>
+          </p>
+        <%end%>
+        <p>
+          <b><%= t("views.audits.messages") %>:</b>
+          <div style="margin-left:20px"><%= @audit.to_html(:messages) %></div>
+        </p>
+
+        <p>
+          <b><%= t("views.audits.attributes") %>:</b>
+          <div style="margin-left:20px"><%= @audit.to_html(:auditable_attributes) %></div>
+        </p>
+
+        <p>
+          <b><%= t("views.audits.comment") %>:</b>
+          <%= h(@audit.comment) %>
+        </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_admin_audit_path(@audit), :class => "button" %>
+
+        <%= link_to("#{image_tag("web-app-theme/tick.png", :alt => "#{t("views.audits.relative_audits")}")} #{t("views.audits.relative_audits")}" , association_audits_admin_audit_path(@audit), :class => "button") unless @audit.associations_audits.blank? %>
+        <%= link_to "#{image_tag("web-app-theme/tick.png", :alt => "#{t("views.audits.send_emails")}")} #{t("views.audits.send_emails")}", new_email_admin_audit_path(@audit), :class => "button" %>
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", admin_audit_path(@audit), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+      </div>      
+    </div>
+  </div>
+</div>

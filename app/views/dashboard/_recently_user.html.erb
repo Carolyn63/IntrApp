@@ -1,0 +1,28 @@
+<%if recently_user.company_pending == 0%>
+<li>
+	<div class="img-box">
+		<%= image_tag recently_user.avatar.url(:medium), :class => "img-square-box-logo" %>
+		</div>
+		<div class="right-box">
+		<div class="left">
+		<p class="first-row"><span class="title"><b><%= link_to recently_user.name, user_path(recently_user) %></b></span></p>
+		<% company = recently_user.top_company %>
+		<% unless company.blank? %>
+		<p>
+		<span class="fz10 blue-color"><i><b><%= link_to company.name, company_path(company) %></b></i></span>&nbsp;
+		<%#= link_to %Q!<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>!, company_path(company), :class=>"orange-color fz10" %>
+		</p>
+		<% if !company.employee(recently_user).blank? %>
+		<p><span class="fz10"><i><%= company.employee(recently_user).department_name %></i></span></p>
+		<% end %>
+		<p><span class="fz10"><i><%= recently_user.job_title %></i></span></p>
+		<% end %>
+		<p><span class="fz10 green-color"><%= recently_user.full_address %></span></p>
+		</div>
+		<div class="right">
+		<% render :partial => "users/add_coworker_and_friend_links", :locals => {:user => recently_user} %>
+		</div>
+		<div class="clear"></div>
+	</div>
+</li>
+<%end%>

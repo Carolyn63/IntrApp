@@ -1,0 +1,40 @@
+<li style="background-color:#EFEFEF; margin-bottom: 10px;">
+	<div class="img-box " style="padding-left:10px;">
+		<%= image_tag recently_employee.user.avatar.url(:thumb), :class => "img-mini-box-logo" %>
+	</div>
+	<div class="right-box">
+		<div class="left" style="float:left; width:160px;">
+			<p class="first-row"><%= link_to "<b>#{recently_employee.user.name}</b>",user_path(recently_employee.user.id), :class => 'grey-color green-link' %></p>
+			<p><span class="fz10 grey-color"><i><%= recently_employee.company.blank? ? "&nbsp;" : recently_employee.company.name %></i></span></p>
+<% if check_user_ippbx?%>
+			<p><b class="fz10 grey-color"><%= recently_employee.ippbx.blank? ? "&nbsp;" :recently_employee.ippbx.extension %></b></p>
+<% end %>
+		</div>
+
+<% if check_user_ippbx?%>
+	<% if current_user.user_has_ippbx?(current_user) && !current_user.employees[0].ippbx.public_number.blank? %>
+		<% if !recently_employee.ippbx.blank? %>
+			<% unless current_user.id == recently_employee.user_id %>
+<% 
+						if !recently_employee.ippbx.public_number.blank? 
+							called_number = recently_employee.ippbx.public_number
+						#elsif !recently_employee.ippbx.extension.blank? 
+							#called_number = recently_employee.ippbx.extension
+						else
+							called_number = ""
+						end 
+
+						unless called_number.blank?
+%>
+		<div style="margin-left: 140px;padding-top:5px;">
+			<div style="text-align:center;"><a href="javascript:void(0)" calledNumber="<%=called_number%>" employee_id="<%=current_user.employees[0].id.to_s%>" user_id="<%=current_user.id%>" id="call_phone" callee_id="<%=recently_employee.id.to_s%>"><img alt="Call Phone" height="24" src="/images/calling_icon.png" width="24" /></a></div>
+			<div id="call_status_<%=recently_employee.id.to_s%>" style="color:#666;padding-top:5px;text-align:center;"></div>
+		</div>
+						<% end %>
+			<% end # end of unless current_user.id == recently_employee.user_id%>
+		<% end %>
+	<% end %>
+<% end %>
+	</div>
+	<div class="clear"></div>
+</li>

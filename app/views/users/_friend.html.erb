@@ -1,0 +1,70 @@
+<li>
+  <div class="img-box">
+    <%= image_tag friend.avatar.url(:medium), :class => "img-square-box-logo" %>
+  </div>
+  <div class="with-buttons right-box">
+    <div class="left">
+      <p class="first-row"><span class="title"><b><%= link_to friend.name, user_path(friend) %></b></span></p>
+      <% company = friend.top_company %>
+      <% unless company.blank?%>
+        <p>
+          <span class="fz10 blue-color"><i><b><%= link_to company.name, company_path(company) %></b></i></span>&nbsp;
+          <%#= link_to %Q!<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>!, company_path(company), :class=>"orange-color fz10" %>
+        </p>
+        <p><span class="fz10"><i><%=company.employee(friend).department_name %></i></span></p>
+<%if current_user.user_has_ippbx?(current_user)%>      
+<% if !company.employee(friend).ippbx.blank? and check_user_ippbx?%> 
+			<p>
+			<span class="fz10"><i><%= Ippbx.retrieve_public_number(company.id)%> ext. <%= company.employee(friend).ippbx.extension%></i></span>
+		</p>	
+      <%end%>
+      <%end%>
+      <%end%>
+      <p><span class="fz10"><i><%= friend.job_title %></i></span></p>
+      <p><span class="fz10 green-color"><%= friend.full_address %></span></p>
+    </div>
+    <div class="right">
+      <div class="inner" style="margin-top:0px;">
+      <% if check_user_ippbx?%>
+      <%if current_user.user_has_ippbx?(current_user) && !current_user.employees[0].ippbx.public_number.blank?%>
+      <% unless company.blank?%>
+      <%employee = company.employee(friend)%>
+      <% unless employee.blank? %>
+      <%if !employee.ippbx.blank?%>
+<% 
+						if !employee.ippbx.public_number.blank? 
+							called_number = employee.ippbx.public_number
+						#elsif !employee.ippbx.extension.blank? 
+							#called_number = employee.ippbx.extension
+						else
+							called_number = ""
+						end
+						
+						unless called_number.blank?
+%>
+			<div style="margin-left: 160px;padding-top:5px;">
+				<div style="text-align:center;"><a href="javascript:void(0)" calledNumber="<%=called_number%>" employee_id="<%=current_user.employees[0].id.to_s%>" user_id="<%=current_user.id%>" id="call_phone" callee_id="<%=employee.id.to_s%>"><img alt="Call Phone" height="24" src="/images/calling_icon.png" width="24" /></a></div>
+				<div id="call_status_<%=employee.id.to_s%>" style="color:#666;padding-top:5px;text-align:center;"></div>
+			</div>
+						<% end %>
+      <%else%>
+      <div style="margin-left: 160px;margin-top:15px;height:24px;width:24px;"> </div>
+      <%end%>
+      <%else%>
+      <div style="margin-left: 160px;margin-top:15px;height:24px;width:24px;"> </div>
+      <%end%>
+      <%else%>
+      <div style="margin-left: 160px;margin-top:15px;height:24px;width:24px;"> </div>
+      <%end%>
+      <%end%>
+      <%end%>
+        <% if current_user.friend? friend %>
+          <p class="one-row" style="margin-top:17px;">
+            <%= link_to "<b>#{t('views.delete_from_friends')}</b>", friendship_delete_user_path(current_user, :friend_id => friend.id), :class=>"green-color green-link"%>
+          </p>
+        <%end%>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</li>

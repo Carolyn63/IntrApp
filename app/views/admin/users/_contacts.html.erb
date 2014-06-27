@@ -1,0 +1,26 @@
+<h3 class="title"><%= t("views.users.contacts")  %></h3>
+<% unless @contacts.blank? %>
+  <table class="table">
+    <tr>
+      <th class="first">&nbsp;</th>
+      <th><%= t("views.users.name") %></th>
+      <th><%= t("views.users.email") %></th>
+      <th><%= t("views.users.cellphone") %></th>
+      <th><%= t("views.users.address") %></th>
+      <th class="last">&nbsp;</th>
+    </tr>
+    <% @contacts.each do |contact| -%>
+    <tr class="<%= cycle("odd", "even") %>">
+      <td class="first">&nbsp;</td>
+      <td><%= link_to contact.user.name, admin_user_path(contact.user) %></td>
+      <td><%= contact.user.email %></td>
+      <td><%= contact.user.cellphone %></td>
+      <td><%= contact.user.address %></td>
+      <td class="last">&nbsp;</td>
+    </tr>
+    <% end -%>
+  </table>
+<% else %>
+  <p><%= t("views.users.no_contacts") %></p>
+<% end %>
+

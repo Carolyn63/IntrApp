@@ -1,0 +1,15 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container">
+    <%= render :partial => "select_company" %>
+    <%= render :partial => "employees", :object => @employees %>
+    <%# if params[:status] != Employee::Status::PENDING %>
+      <!--div class="bottom-gradient-box tac">
+        <a class="standart-button"><b class="f"></b><b class="s">&nbsp;Go Send Email Invitation</b><b class="t"></b></a>
+      </div-->
+    <%#end%>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->
+

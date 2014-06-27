@@ -1,0 +1,31 @@
+<div style="font-family: Arial; font-size: 17px; color: #7b7b7b; padding: 0px; position: relative;"><b>Download Options</b></div>
+
+<%
+download_url = @application.download_url
+unless download_url.starts_with? 'http'
+download_url = "http://" + download_url
+end
+%>
+<table style="margin:20px 0;">
+<tr> 
+<td> Link </td>
+<td> <%= link_to download_url, download_url, :remote => true%> </td>
+</tr>
+<tr> 
+<td> Send Link to email</td>
+<td> <%= link_to simple_button("Send"), send_download_link_user_application_path(current_user, @application), :style => 'font-weight: bold; width:140px', :class => "standart-button" %>
+</td>
+</tr>
+</table>
+
+<div><input type="button" name="close" id="close_download" value="CLOSE"/></div>
+
+<script type="text/javascript">
+$(function(){
+	$('input#close_download').click(function() {
+		var div_id='download_application_div';
+		$('div#'+div_id).hide();
+		hideOverlay();
+	});
+});
+</script>

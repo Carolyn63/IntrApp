@@ -1,0 +1,29 @@
+<li>
+  <div class="img-box img-square-box-logo">
+    <%= image_tag recently_company.logo.url(:medium), :class => "img-square-box-logo" %>
+  </div>
+  <div class="right-box">
+    <div class="left">
+      <p class="first-row"><span class="title"><b><%= link_to recently_company.name, company_path(recently_company) %></b></span>&nbsp;<%#= link_to "<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>", company_path(recently_company), :class => 'orange-color fz10'  %></p>
+      <p><span class="fz10"><i><%= recently_company.industry %></i></span></p>
+      <p class="fz10">
+        <% if recently_company.owner?(current_user) %>
+          <%= link_to %Q!<span class="blue-color"><b><i>#{recently_company.active_employees.size}&nbsp;#{t("views.employees_title")}</i></b></span>!, company_employees_path(recently_company), :class => 'blue-color' %>
+        <%else%>
+          <%= link_to %Q!<span class="blue-color"><b><i>#{recently_company.active_employees.size}&nbsp;#{t("views.employees_title")}</i></b></span>!, profile_company_path(recently_company), :class => 'blue-color' %>
+        <%end%>
+      </p>
+      <p><span class="fz10 green-color"><%= recently_company.full_address %></span></p>
+    </div>
+    <div class="right">
+      <div class="inner">
+        <%# if current_user != recently_company.admin && (!current_user.friend?(recently_company.admin) || current_user.reject_friend?(recently_company.admin))%>
+          <!--p><%#= link_to "<b>#{t("views.add_as_friend")}</b>", friendship_request_user_path(current_user, :friend_id => recently_company.admin.id), :class => 'green-color green-link' %></p-->
+        <%#end%>
+          &nbsp;
+        <p><span><b><%= t("views.companies.company_main_contact") %></b>&nbsp;<%= link_to "<b>#{recently_company.admin.name}</b>", user_path(recently_company.admin), :class => 'blue-color' %></span></p>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</li>

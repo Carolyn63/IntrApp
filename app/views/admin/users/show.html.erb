@@ -1,0 +1,82 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      <p>
+        <b><%= t("views.users.first_name") %>:</b>
+        <%= @user.firstname %>
+      </p>
+      <p>
+        <b><%= t("views.users.last_name") %>:</b>
+        <%= @user.lastname %>
+      </p>
+      <p>
+        <b><%= t("views.users.username") %>:</b>
+        <%= @user.login %>
+      </p>
+      <p>
+        <b><%= t("views.users.alt_email") %>:</b>
+        <%= @user.email %>
+      </p>
+      <p>
+        <b><%= t("activerecord.attributes.admin_user.privacy", :default => t("activerecord.labels.privacy", :default => "Privacy")) %>:</b>
+        <%= User::Privacy::TO_LIST[@user.privacy] %>
+      </p>
+
+      <div class="img-box">
+        <p><b><%= "Avatar" %>:</b></p>
+        <%= image_tag @user.avatar.url(:medium) %>
+      </div>
+      <p>
+        <b><%= t("activerecord.attributes.admin_user.mobile_tribe_login", :default => t("activerecord.labels.mobile_tribe_login", :default => "Mobile tribe login")) %>:</b>
+        <%= @user.mobile_tribe_login %>
+      </p>
+      <p>
+        <b><%= t("views.users.address") %>:</b>
+        <%= @user.address %>
+      </p>
+      <p>
+        <b><%= t("views.users.phone") %>:</b>
+        <%= @user.phone %>
+      </p>
+      <p>
+        <b><%= t("views.users.cellphone") %>:</b>
+        <%= @user.cellphone %>
+      </p>
+      <p>
+        <b><%= t("views.users.age")  %>:</b>
+        <%= @user.age %>
+      </p>
+      <p>
+        <b><%= t("views.users.sex") %>:</b>
+        <%= @user.sex %>
+      </p>
+      <p>
+        <b><%= t("views.users.site") %>:</b>
+        <%= @user.site %>
+      </p>
+      <p>
+        <b><%= "Description" %>:</b>
+        <%= @user.description %>
+      </p>
+      <p>
+        <b><%= t("activerecord.attributes.admin_user.role", :default => t("activerecord.labels.role", :default => "Role")) %>:</b>
+        <%= User::Role::TO_LIST[@user.role] %>
+      </p>
+      <p>
+        <b><%= t("activerecord.attributes.admin_user.status", :default => t("activerecord.labels.status", :default => "Status")) %>:</b>
+        <%= User::Status::TO_LIST[@user.status] %>
+      </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_admin_user_path(@user), :class => "button" %> 
+        <%= link_to "#{image_tag("web-app-theme/tick.png", :alt => "#{t("web-app-theme.edit", :default=> "User information")}")} #{t("web-app-theme.edit", :default=> "User information")}", info_admin_user_path(@user), :class => "button" %>
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(@user), :method => "delete", :class => "button", :confirm => t("views.companies.waring_user_delete", :sp_name => property(:sp_name)) %>
+      </div>      
+    </div>
+  </div>
+</div>

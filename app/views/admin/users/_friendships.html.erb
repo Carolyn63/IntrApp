@@ -1,0 +1,28 @@
+<h3 class="title"><%= "Friends" %></h3>
+<% unless @friendships.blank? %>
+  <table class="table">
+    <tr>
+      <th class="first">&nbsp;</th>
+      <th><%= "Name" %></th>
+      <th><%= "Email" %></th>
+      <th><%= t("views.users.cellphone") %></th>
+      <th><%= t("views.users.address") %></th>
+      <th><%= "Status" %></th>
+      <th class="last">&nbsp;</th>
+    </tr>
+    <% @friendships.each do |friendship| -%>
+    <tr class="<%= cycle("odd", "even") %>">
+      <td class="first">&nbsp;</td>
+      <td><%= link_to friendship.friend.name, admin_user_path(friendship.friend) %></td>
+      <td><%= friendship.friend.email %></td>
+      <td><%= friendship.friend.cellphone %></td>
+      <td><%= friendship.friend.address %></td>
+      <td><%= Friendship::Status::TO_LIST[friendship.status] %></td>
+      <td class="last">&nbsp;</td>
+    </tr>
+    <% end -%>
+  </table>
+<% else %>
+  <p><%= "No friends" %></p>
+<% end %>
+

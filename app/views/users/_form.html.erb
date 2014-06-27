@@ -1,0 +1,91 @@
+<%= hidden_field_tag request_forgery_protection_token.to_s, form_authenticity_token -%>
+<div class="input-row">
+	<label><span><%= t("views.users.first_name") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.text_field :firstname, :value => custom_default_value(@user.firstname, session[:spice_fname], t("views.users.enter_first_name")), :placeholder => t("views.users.enter_first_name") %>
+</div>
+<div class="input-row" >
+	<label><span><%= t("views.users.last_name") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.text_field :lastname, :value => custom_default_value(@user.lastname,session[:spice_lname], t("views.users.enter_last_name")), :placeholder => t("views.users.enter_last_name") %>
+</div>
+<% unless session[:linkedin_signup] or session[:spice_fname]%>
+<div class="input-row" id = "username_row">
+	<label><span><%= t("views.users.username") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.text_field :login, :value => default_value(@user.login, t("views.users.create_username")), :placeholder => t("views.users.create_username") %> <span class="info-icon" id="login-info"><%= image_tag("info.png") %></span>
+</div>
+<% end %>
+<% if session[:linkedin_signup]%>
+<div class="input-row">
+	<label><span><%= t("views.users.alt_email") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.text_field :email, :value =>  default_value(@user.email, t("views.users.enter_linkedin_email")), :placeholder => t("views.users.enter_linkedin_email") %> <span class="info-icon" id="email-info"><%= image_tag("info.png") %></span>
+</div>
+
+<%elsif session[:spice_lname]%>
+<input type ="hidden" id = "user_email" name="user[email]" value = "<%=session[:spice_email]%>" />
+<%else%>
+<div class="input-row">
+	<label><span><%= t("views.users.alt_email") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.text_field :email, :value =>  default_value(@user.email, t("views.users.enter_alt_email")), :placeholder => t("views.users.enter_alt_email") %> <span class="info-icon" id="email-info"><%= image_tag("info.png") %></span>
+</div>
+<% end %>
+<% unless session[:linkedin_signup] or session[:spice_fname]%>
+<div class="input-row" id = "password_row">
+	<label><span><%= t("views.users.password") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.password_field :password, :value => default_value(@password, ""), :autocomplete => "off", :placeholder => ""  %> <span class="info-icon" id="password-info"><%= image_tag("info.png") %></span>
+</div>
+<div class="input-row" id = "confirm_password_row">
+	<label><span><%= t("views.users.confirm") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.password_field :password_confirmation, :value => default_value(@confirmed_password, ""),  :autocomplete => "off", :placeholder => "" %>
+</div>
+<%end%>
+<div class="input-row">
+	<label><span><%= t("views.users.privacy") %></span></label>
+	<%= f.select :privacy, User::Privacy::LIST %>
+</div>
+<%logger.info("This is session #{session[:linkedin_signup]}")%>
+<%logger.info("This is session #{session}")%>
+<% unless session[:linkedin_signup] or session[:spice_fname]%>
+<div class="input-row" id = "captcha_row">
+	<label><span><%= t("views.signUp_validation") %></span></label>
+	<img id="captcha" src="/code_image"  width="192" height="30" /> &nbsp;&nbsp;&nbsp; <a href="javascript:void(0)" onclick="refresh_captcha();">Refresh</a>
+</div>
+
+<div class="input-row" id = "captcha_row">
+	<label><span><%= t("views.captcha_input") %><b class="green-color fz14">&nbsp;*</b></span></label>
+	<%= f.text_field :captcha, :value => default_value(@input_captcha, t("views.captcha_input")), :placeholder => t("views.captcha_input") %>
+</div>
+<% end %>
+<%logger.info("Session Member....#{session[:member_id]}")%>
+<input id="user_memberid" name="user[memberid]" type="hidden" value="<%=session[:member_id]%>"/>
+
+<script type="text/javascript">
+function refresh_captcha(){
+	$("#captcha").attr("src","/refresh_code_image?r=" + Math.random());
+}
+
+$(document).ready(function() {
+	var options = {positions:'right'};
+	$("#login-info").bt('<%= t("views.users.account_name_must_be_unique") %>', options);
+		$("#user_login").mouseover(function(){
+		$("#login-info").mouseover();
+	});
+	$("#user_login").mouseleave(function(){
+		$("#login-info").mouseleave();
+	});
+
+	$("#email-info").bt('<%= t("views.users.valid_email_is_used") %>', options);
+		$("#user_email").mouseover(function(){
+		$("#email-info").mouseover();
+	});
+	$("#user_email").mouseleave(function(){
+		$("#email-info").mouseleave();
+	});
+
+	$("#password-info").bt('<%= t("views.users.password_must_be") %>', options);
+		$("#user_password").mouseover(function(){
+		$("#password-info").mouseover();
+	});
+	$("#user_password").mouseleave(function(){
+		$("#password-info").mouseleave();
+	});
+});
+</script>

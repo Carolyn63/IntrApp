@@ -1,0 +1,187 @@
+development: &defaults
+  
+  #######
+  # Application specific configurations
+  #######
+  app_site: "http://apps.otogomobile.net"
+  host: "apps.otogomobile.net"
+  domain: "otogomobile.net"
+  session_domain: "otogomobile.net"
+  cookies_domain: "otogomobile.net"
+  email_from: "appadmin@otogomobile.net"
+  aes_key: "nK9XUuzzoGeR/Hr/eXFQ0g=="
+  session_key: "_staging_otogo_session"
+  serviceProvider: "otogomobile"
+  version: "3.0.5"
+  copyright: "oToGo Mobile, Inc."
+
+  # GENERATECOMPANYEMAIL FUNCTION IN APPLICATION.JS ALSO HAS TO BE CHANGED ACCORDING TO SP DOMAIN
+
+  ######
+  # Service Provider Specific Configuration
+  ######
+  sp_name: "oToGo"
+  sp_contact: "oToGo Mobile, Inc."
+  sp_address1: "425 Broadway Street"
+  sp_address2: "Redwood City, CA 94063, USA."
+  #sp_tel1: "Inside US:  +1 877-448-2934"
+  #sp_tel2: "Outside US:  +1 408-350-5000"
+  #sp_fax: "Fax:  +1 408-350-5088"
+  sp_tel1: " "
+  sp_tel2: " "
+  sp_fax: " "
+  sp_email_link: "<a href='mailto:support@otogomobile.com'>support@otogomobile.com</a>"
+  sp_web_link: "<a href='http://www.otogomobile.com' target='_blank'>www.otogomobile.com</a>"
+  sp_portal_help_url: "http://docs.otogomobile.net/display/HELP"
+  sp_mtclient_help_url: "http://docs.otogomobile.net/display/MobileClient"
+  sp_support_url: "http://support.otogomobile.net"
+  sp_sla_url: "http://docs.otogomobile.net/display/SLA"
+  sp_faq_url: "http://docs.otogomobile.net/display/FAQ"
+  sp_help_url: "http://docs.otogomobile.net/display/HELP"
+
+  ######
+  # usage Configuration
+  ######
+  multi_company: false
+  is_multi_tenant: true
+
+  use_mobile_tribe: true
+  use_mtclient: true
+  use_ondeego: false
+  use_sogo: true
+  use_ippbx: true
+  use_billing: true
+  use_digidata: true
+  use_c2call: true
+
+  ######
+  # email Configuration
+  ######
+  email_host: "apps.otogomobile.net"
+  email_port: 25
+  email_password: "mtribe98754"
+
+  ######
+  # Mtbox Api Configuration
+  ######
+  box_server_url: "https://www.box.net"
+  mtbox_api_key: "p8cxvq27qhmj8817o652omteyy6j8yu1"
+
+  ######
+  # IPPBX Configuration
+  ######
+  ippbx_server_ip: "69.42.127.22"
+  ippbx_server_port: "8080"
+
+  voip_remotehost: "69.42.127.41"
+
+  ippbx_system_url: "/provisioning/voip/v1/system/"
+  ippbx_serviceProvider_url: "/provisioning/voip/v1/serviceprovider/"
+  ippbx_enterprise_url: "/provisioning/voip/v1/enterprise/"
+  ippbx_user_url: "/provisioning/voip/v1/user/"
+  ippbx_voip_url: "/provisioning/voip/v1/user/callcontrol/click2call"
+  ippbx_vm_url: "/provisioning/voip/v1/user/callcontrol"
+  ippbx_general_search_url: "/provisioning/voip/v1/search/advanced?"
+  results_per_page: 20
+
+  #######
+  # Billing
+  #######
+  paid_true_after_refund: false
+  #amazon_payment_url: "https://authorize.payments.amazon.com/pba/paypipeline"
+  amazon_payment_url: "https://authorize.payments-sandbox.amazon.com/pba/paypipeline"
+  #paypal_payment_url: "http://www.paypal.com/cgi-bin/webscr"
+  paypal_host: "www.sandbox.paypal.com"
+  paypal_payment_url: "https://www.sandbox.paypal.com/cgi-bin/webscr"
+  paypal_payment_seller_email: "june12_1332429030_biz@gmail.com"
+  amazon_subscription_button: "http://g-ecx.images-amazon.com/images/G/01/asp/golden_small_subscribe_withlogo_darkbg.gif"
+
+  ######
+  #Paypal Api Credentials
+  ######
+  paypal_api_user_id: "softes_1332940240_biz_api1.gmail.com"
+  paypal_api_password: "9646XJYLJ5PTE4Z4"
+  paypal_api_signature: "AwW8iil53kGtoEvGQxUDHbt8qZ2.A3mlBc5jLCY8cfsWpf.6otQxCezN"
+
+  ######
+  # Default Locale
+  ######
+  default_timezone: "GMT-08:00"
+  default_country: "United States"
+  default_language: "English"
+  default_locale: "en"
+  default_currency: "USD"
+
+  #######
+  # MobileTribe configuration
+  #######
+  mobile_client_link: "http://mobile.otogomobile.net/"
+  mobile_tribe_api: "http://mobile.otogomobile.net/ws"
+
+  #######
+  # DigiData configuration
+  #######
+  cloudstorage_unit: "MB"
+  cloudstorage_admincp_url: "http://core5demo.digidatagrid.com/otogo/admin/Core/Login.aspx"
+  cloudstorage_usercp_url: "http://core5demo.digidatagrid.com/otogo/obw/Core/Login.aspx"
+  #cloudstorage_admincp_url: "http://core5qa.digidatagrid.com/current/admin/Core/Login.aspx"
+  #cloudstorage_usercp_url: "http://core5qa.digidatagrid.com/current/obw/Core/Login.aspx"
+
+  #######
+  # Ondeego configuration
+  #######
+  on_deego_api: "https://ondeego.futurewei.ebento.net:8443/appcentral"
+  ondeego_smb_login: "PelesendSMB"
+  ondeego_smb_password: "peleSMB123"
+  ondeego_consumer_key: "Ag=="
+  ondeego_consumer_secret: "d+cYHMqMyik3x7lieltd37yMqih9ECvLFHQCju0+gGc="
+
+  #######
+  # SOGo configurations
+  #######
+  wrapper_login: "myapp"
+  wrapper_password: "beta"
+  wrapper_api: "http://sogo.otogomobile.net"
+  sogo_url: "https://sogo.otogomobile.net/SOGo"
+  cas_url: "https://cas.otogomobile.net"
+  sogo_email_domain: "otogomobile.net"
+
+  #######
+  # LinkedIn configurations
+  #######
+  linkedin_api_key: "3zw8df764vlo"
+  linkedin_secret_key: "ryIBbRtCBzV5n5o5"
+  linkedin_oauth_user_token: "474eded4-c5e0-480d-9614-13b86609b495"
+  linkedin_oauth_user_secret: "076bb478-65cf-44cf-882e-682000bf735a"
+
+  #api keys for mtproxy8
+  #linkedin_api_key: "uvdzbwf85huf"
+  #linkedin_secret_key: "Ac68GDkRakt7Ib0P"
+  #linkedin_oauth_user_token: "3330a7bf-db0f-4248-b182-3cd897eb7dd4"
+  #linkedin_oauth_user_secret: "3538c057-5eb3-42b5-b2e0-205f04c09d7f"
+
+  #######
+  # Spiceworks configurations
+  #######
+  spiceworks_consumer_key: "iaKJwkvaPAAlHfxDxJBI"
+  spiceworks_consumer_secret_key: "06QdYrY7cOyGIa3V3ond1wIzcmvjIPOvhRzh26Pk"
+  spiceworks_request_token_url: "http://community.spiceworks.com/oauth/request_token"
+  spiceworks_access_token_url: "http://community.spiceworks.com/oauth/access_token"
+  spiceworks_authorize_url: "http://community.spiceworks.com/public_oauth/authorize"
+
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  use_mobile_tribe: true
+  use_mtclient: true
+  use_ondeego: false
+  use_sogo: true
+  use_ippbx: true
+  use_billing: true
+  use_digidata: true
+  use_c2call: true
+
+  voip_remotehost: "69.42.127.41"

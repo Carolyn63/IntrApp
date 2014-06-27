@@ -1,0 +1,71 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first">
+				<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", spadmin_publicnumbers_path %>
+			</li>
+			</li>
+		</ul>
+	</div>
+	<div class="content">		
+		<br> 
+		<div class="inner">
+        <% form_for :public_number, :url => spadmin_publicnumber_path(params[:id], :operation => "assign"), :html => { :class => :form } do |f| -%>
+	    <input type="hidden" name="_method" value="put" />
+		<table id="sortableTable" class="tablesorter">
+	<thead>
+		<tr>
+			<th><%= t("views.titles.available_public_numbers")%></th>			
+			<th><%= t("views.titles.assign")%></th>
+		</tr>
+	</thead>
+	<% row = 0%>
+	<tbody>
+		<% @page_results.each do |public_number| -%>
+		<tr class="<%= cycle("odd", "even") %>">
+			<td align="left"> <%= f.label :label_name,  public_number["number"]%>
+	    		<%= hidden_field("number", row, :value=>public_number["number"])%></td>
+				<td><%= check_box ("assign", row, {:checked => false}, true, false)%></td>
+			
+		</tr>
+		<% row += 1%>
+		<% end %>
+	</tbody>
+</table>
+<% if @page_results.total_pages > 1 %>
+<div style="height:30px;">
+	<%= will_paginate @page_results %>
+</div>
+<% end %>
+<div class="group navform wat-cf">
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<%= hidden_field("row", "count", :value=>row)%>
+<%end%>
+
+		</div>
+	</div>
+</div>
+
+<style>
+	.submit_finish {
+		background-image: url('/images/web-app-theme/next.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>

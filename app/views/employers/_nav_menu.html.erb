@@ -1,0 +1,13 @@
+<div class="left-short-side left-back" style="width:325px; min-height:300px">
+  <div class="head">
+    <h1><%= t("views.employees.your_employers") %><%= help_icon %></h1>
+    <p><i><%= t("views.employees.you_can_accept_or_reject_employers_invitations_here") %></i></p>
+  </div>
+  <ul class="left-menu">
+    <% Employee::Status::EMPLOYERS_LIST.each do |status| %>
+      <li class="<%= params[:status] == status[1] ? 'selected' : ''%>">
+        <%= link_to status[0], user_employers_path(current_user, :status => status[1])%>
+      </li>
+    <%end%>
+  </ul>
+</div><!-- .left-short-side -->

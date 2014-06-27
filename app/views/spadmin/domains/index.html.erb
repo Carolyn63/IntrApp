@@ -1,0 +1,42 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}",
+        spadmin_domains_path  %>
+			</li>
+			<li >
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.add"))}",
+        new_spadmin_domain_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content" >
+		<br>
+		<div class="admin-filter">
+			<% form_tag "", {:method => :get} do %> <span><%= t("views.titles.name")%>:</span>
+			<%= text_field_tag("search", params[:search], :id =>"spadmin_domain_search", :class => "text_border") %> <span><%= submit_tag t("views.buttons.search") %></span>
+			<% end %>
+		</div>
+		<div class="inner" style="width:50%">
+			<table id="sortableTable" class="tablesorter">
+				<thead>
+					<tr>
+						<th><%= t("views.titles.name")%></th>
+						<th class="last" style="text-align: left"> <%= t("views.titles.action")%> </th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @domains.each do |domain| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"><%= domain["name"]%></td>
+						<td class="last"> <%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  spadmin_domain_path(domain["uid"]) , :method => "delete", :confirm => t("views.notices.ippbx_delete_domain")%></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,174 @@
+<%
+quantity = 0
+amount = 0
+item_number = ""
+name = ""
+#application = Application.find_by_id(@orders[0].application_id)
+logger.info "orders: #{@orders.to_json}"
+plan = ApplicationPlan.find_by_id(@orders[0].plan_id)
+application = Application.find_by_id(plan.application_id)
+@orders.each do |order|
+
+
+quantity += order.quantity.to_i
+amount += (order.quantity * order.amount)
+
+item_number = item_number + order.plan_id.to_s + ","
+if order.application_nature == "basic"
+name += "Application " + order.application_plan.code + ","
+elsif order.application_nature == "addon"
+name += "Addon " + order.application_plan.code + ","
+end
+
+end
+
+item_number = item_number.chop
+name = name.chop 
+
+trial = application.trial_period.to_i * 86400
+trial_period = Time.now.to_i +  trial
+amount = format("%.2f",amount)
+
+%>
+
+<div align="center">
+
+<div class="auth-box register-box">
+	<div class="inner-auth-box">
+		<div class="head tac">
+			<div style="color:white;font-size:2em;font-weight:bold;padding-bottom:20px;"><%=t("views.users.select_payment")%></div>
+			
+<%if !plan.once?%><h2 style="color:red"><%=t("views.users.cancel_payment")%></h2><%end%>
+		</div>
+		<div style="margin-top: 30px;"></div>
+
+<%if plan.payment_type.include?("once")%>
+<!-- amazon once -->
+
+
+<!-- paypal once -->
+
+
+		<div class="box" align="center" style="margin-left:190px;">
+			<h1 style="color:white"><%=t("views.users.paypal")%></h1>
+			<div  margin:10px;>
+				<%=image_tag("paypal.jpg", :alt => "Paypal Logo")%>
+
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="softes_1332940240_biz@gmail.com"> 
+<input type="hidden" name="hosted_button_id" value="H5SFHE3HNH8G2">
+<input type="hidden" name="currency_code" value="USD" />
+<input type="hidden" name="quantity" value="<%=quantity%>" />
+<input type="hidden" name="amount" value="<%=amount%>"/>
+<input type="hidden" name="image_url" value="<%=property(:app_site)%>/images/logo.png" />
+<input type="hidden" name="return" value="<%=property(:app_site)%>/users/payment_thanks" />
+<input type="hidden" name="item_name" value="Payment to buy <%=name%>" />
+<input type="hidden" name="item_number" value="<%=item_number%>"/>
+<input type="hidden" name="notify_url" value="<%=@paypal_ipn_url%>&items=<%=item_number%>"/>
+<input type="hidden" name="cancel_return" value="/" />
+<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+		</div>
+		</div>
+
+	
+<%elsif  plan.payment_type.include?("monthly")%>
+<!-- amazon monthly -->
+<div class="box" align="center" style="margin-left:70px;">
+			<h1 style="color:white"><%=t("views.users.amazon")%></h1>
+			<div margin:10px;>
+				<%=image_tag("amazon.jpg", :alt => "Amazon Logo")%>
+				<form action="<%=property(:amazon_payment_url)%>" method="post">
+					<input type="hidden" name="immediateReturn" value="1" />
+					<input type="hidden" name="collectShippingAddress" value="0" />
+					<input type="hidden" name="signatureVersion" value="2" />
+					<input type="hidden" name="signatureMethod" value="HmacSHA256" />
+					<input type="hidden" name="accessKey" value="11SEM03K88SD016FS1G2" />
+					<input type="hidden" name="subscriptionPeriod" value="60 months" />
+					<input type="hidden" name="referenceId" value="<%=item_number%>" />
+					<input type="hidden" name="recurringFrequency" value="1 month" />
+					<input type="hidden" name="amount" value="USD <%=amount%>" />
+					<input type="hidden" name="signature" value="o1IXYROtpyvmJAf1GOv2jqF+xr7Zt7QXUt4myyGicck=" />
+					<input type="hidden" name="description" value="Monthly Subscription for <%=name%>"" >
+					<input type="hidden" name="amazonPaymentsAccountId" value="XHERXUICEMEZPLCREC1EBI3CHCS2A2PQSJG1GJ" />
+					<input type="hidden" name="ipnUrl" value="<%=@amazon_ipn_url%>" />
+					<input type="hidden" name="returnUrl" value="<%=property(:app_site)%>/users/<%=current_user.id%>/thanks" />
+					<input type="hidden" name="recurringStartDate" value="<%=trial_period%>" /> 
+					<input type="hidden" name="processImmediate" value="1" />
+					<input type="hidden" name="cobrandingStyle" value="logo" />
+					<input type="hidden" name="abandonUrl" value="<%=property(:app_site)%>/" />
+					<input type="image" src="http://g-ecx.images-amazon.com/images/G/01/asp/golden_medium_paynow_withmsg_whitebg.gif" border="0" />
+				</form>
+			</div>
+		</div>
+		
+	   
+<!-- paypal monthly -->
+		<div class="box" align="center">
+			<h1 style="color:white"><%=t("views.users.paypal")%></h1>
+			<div  margin:10px;>
+				<%=image_tag("paypal.jpg", :alt => "Paypal Logo")%>
+
+              <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+					<input type="hidden" name="cmd" value="_xclick-subscriptions">
+					<input type="hidden" name="hosted_button_id" value="X92DQST8DSF4Y">
+                    <input type="hidden" name="business" value="softes_1332940240_biz@gmail.com">
+					<!--<input type="hidden" name="hosted_button_id" value="UURL5GUH4896N">--><!-- no trial period -->
+
+					<input type="hidden" name="notify_url" value="<%=@paypal_ipn_url%>&items=<%=item_number%>" />
+					<input type="hidden" name="cancel_return" value="/" />
+					<input type="hidden" name="return" value="<%=property(:app_site)%>/users/<%=current_user.id%>/thanks" />
+					<input type="hidden" name="a1" value="0" />
+					<input type="hidden" name="p1" value="<%=application.trial_period%>" />
+					<input type="hidden" name="t1" value="D" /> 
+					<input type="hidden" name="a3" value="<%=amount%>"/>
+					<input type="hidden" name="p3" value="1" />
+					<input type="hidden" name="t3" value="M" /> 
+					<input type="hidden" name="currency_code" value="USD" />  
+					<input type="hidden" name="item_name" value="Monthly Subscription for <%=name%>" />
+					<input type="hidden" name="item_number" value="<%=item_number%>"/>
+					<input type="hidden" name="src" value="1" />
+					<input type="hidden" name="sra" value="1" />
+					<input type="hidden" name="image_url" value="<%=property(:app_site)%>/images/logo.png" />
+					<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+					<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+					</form>
+		</div>
+		</div>
+
+<%end%>
+
+   <div style="clear: both"></div>
+   <% form_for :users, :url => user_application_path(application.id, current_user.id), :html => { :class => :form } do |f| -%>
+   <input type="hidden" name="_method" value="get" />
+   <div style="margin-top:10px;"><button class="max-button" type="submit"><b class="f"></b><b class="s" style="width:130px;padding-left:10px;"><%= t("views.users.no_thanks") %></b><b class="t"></b></button></div>
+   <%end%>
+    
+	
+	    	
+	    </div>
+		
+	</div>
+</div>
+	   
+<style>
+	.w140 {
+		width: 50px;
+	}
+	.box {
+		float: left;
+		height: 200px;
+		width: 200px;
+		border-style: solid;
+		border-width: 3px;
+		border-color: white;
+		margin-right: 30px;
+		border-radius: 15px;
+	}
+	.label
+	{
+		font-weight: bold;
+	}
+</style>

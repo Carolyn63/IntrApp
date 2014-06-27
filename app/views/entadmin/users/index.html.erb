@@ -1,0 +1,81 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.portal_users"))}", entadmin_users_path %>
+			</li>
+			<li>
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.ippbx_users"))}", ippbx_entadmin_users_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<br>
+		<div class="admin-filter">
+			<table >
+				<% form_tag "", {:method => :get} do %> <span>&nbsp;</span>
+				<tr>
+					<td><span><%= t("views.labels.firstName")%>:</span></td>
+					<td> <%= text_field_tag("firstName", params[:firstName], :id => "entadmin_users_firstnam", :class => "text_border") %> </td>
+					<td><span><%= t("views.labels.lastName")%>:</span></td>
+					<td> <%= text_field_tag("lastName", params[:lastName], :id => "entadmin_users_lastname", :class => "text_border") %> </td>
+					<td><span><%= t("views.labels.emailId")%>:</span></td>
+					<td> <%= text_field_tag("emailId", params[:emailId], :id => "entadmin_users_email", :class => "text_border") %> </td>
+					<td><span><%= submit_tag t("views.buttons.search") %></span></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+		<div class="inner">
+			<%if params[:firstName]!=nil or params[:lastName] != nil  or params[:emailId] != nil%>
+			<div align="right" style="font-weight: bold">
+				<%= @result%><%if @result == 1%>&nbsp;<%= t("views.titles.result")%><%else%>&nbsp;<%= t("views.titles.results")%><%end%>
+			</div>
+			<%end%>
+			<table id="sortableTable" class="tablesorter">
+				<thead>
+				<tr>
+					<th><%= t("views.titles.name") %></th>
+					<th><%= t("views.titles.email") %></th>
+					<th><%= t("views.titles.phoneNumbers") %></th>
+					<th><%= t("views.titles.jobTitle") %></th>
+					<th class="last"><%= t("views.titles.action")%></th>
+				</tr>
+				</thead>
+				<tbody>
+				<% @employees.each do |employee| -%>
+				<%if employee.ippbx.blank?%>
+				<tr class="<%= cycle("odd", "even") %>">
+					<td class="first"><%= employee.user.name%></td>
+					<td><%= employee.user.email%></td>
+					<td><%= employee.phone%></td>
+					<td><%= employee.job_title%></td>
+					<% form_for :user, :url => new_entadmin_user_path(:form => 1), :html => {:multipart => true,  :class => :form} do |f| -%> <td>
+					<input type="hidden" name="_method" value="get" />
+					<input type="hidden" name="empid" id ="empid" value=<%= employee.id%> />
+					<input type="hidden" name="firstname" id ="firstname" value="<%= employee.user.firstname%>" />
+					<input type="hidden" name="lastname" id ="lastname" value="<%= employee.user.lastname%>" />
+					<input type="hidden" name="phone" id ="phone" value="<%= employee.user.phone%>" />
+					<input type="hidden" name="cellphone" id ="cellphone" value="<%= employee.user.cellphone%>" />
+					<input type="hidden" name="address" id ="address" value="<%= employee.user.address%>"/>
+					<input type="hidden" name="address2" id ="address2" value="<%= employee.user.address2%>"/>
+					<input type="hidden" name="city" id ="city" value="<%= employee.user.city%>" />					
+					<input type="hidden" name="loginName" id ="loginName" value="<%= employee.user.login%>" />
+					<input type="hidden" name="state" id ="state" value="<%= employee.user.state%>" />
+					<input type="hidden" name="country" id ="country" value="<%= employee.user.country%>" />
+					<input type="hidden" name="email" id ="email" value="<%= employee.user.email%>" />
+					<input type="submit" value=<%= t("views.buttons.add") %> />
+					</td>
+					<%end%>
+				</tr>
+				<%end%>
+				<%end-%>
+				</tbody>
+			</table>
+			<%= will_paginate @employees%>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,196 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+employee_001:
+  id: 1
+  user_id: 1
+  company_id: 1
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+  
+employee_002:
+  id: 2
+  user_id: 3
+  company_id: 1
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  published_at: <%= 1.hour.ago %>
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  company_email: "test1@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+employee_003:
+  id: 3
+  user_id: 2
+  company_id: 1
+  status: <%= Employee::Status::REJECTED %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test2@ebento.net"
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test341@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+
+user_001_employee_company_003:
+  id: 5
+  user_id: 1
+  company_id: 3
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test4@ebento.net"
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test12@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+employee_004:
+  id: 6
+  user_id: 4
+  company_id: 2
+  status: <%= Employee::Status::REJECTED %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test5@ebento.net"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test32@ebento.net"
+
+employee_005:
+  id: 7
+  user_id: 2
+  company_id: 3
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test6@ebento.net"
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test@ebento.net"
+
+employee_006:
+  id: 8
+  user_id: 6
+  company_id: 3
+  status: <%= Employee::Status::REJECTED %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test7@ebento.net"
+  is_ondeego_connect: "1"
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_mobile_tribe_connect: 1
+  
+employee_007:
+  id: 9
+  user_id: 1
+  company_id: 2
+  status: <%= Employee::Status::PENDING %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test8@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+not_logged_employee:
+  id: 10
+  user_id: 5
+  company_id: 2
+  status: <%= Employee::Status::PENDING %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "test10@ebento.net"
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+destroy_owner_employee:
+  id: 11
+  user_id: 7
+  company_id: 4
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "destroy@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+employee_of_destroy_company:
+  id: 12
+  user_id: 6
+  company_id: 4
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "destroy1@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1
+
+destroy_user_as_employee:
+  id: 13
+  user_id: 7
+  company_id: 3
+  status: <%= Employee::Status::ACTIVE %>
+  phone: "12345566"
+  job_title: "Manager"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  oauth_token: "key"
+  oauth_secret: "secret"
+  is_ondeego_connect: "1"
+  invitation_token: <%= Authlogic::Random.friendly_token %>
+  company_email: "destroy2@ebento.net"
+  is_sogo_connect: 1
+  is_mobile_tribe_connect: 1

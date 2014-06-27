@@ -1,0 +1,68 @@
+<div style="font-family: Arial; font-size: 17px; color: #7b7b7b; padding: 0px; position: relative;"><b>Download Options</b></div>
+
+<div style="margin:20px 0;line-height:180%;">
+<%
+#devices = Device.find(:all)
+
+devices = @application.devices
+
+devices.each do |device|
+	#if @application.devices.include?(device)
+	dl_bttn = dl_email_bttn = ""
+	i = j = 0
+	devicefication = Devicefication.find_by_application_id_and_device_id(@application.id, device.id)
+	if devicefication.bin_file.present?
+		dl_bttn = link_to simple_button(t("views.applications.download_application")), device_bin_file_download_user_application_path(current_user, @application, :devicefication_id => devicefication.id), :style => 'font-weight: bold;', :class => "standart-button"
+		if devicefication.bin_file.to_s.end_with?(".apk")
+			dl_email_bttn = link_to simple_button("Send File to Email"), send_bin_file_user_application_path(current_user, @application, :devicefication_id => devicefication.id), :style => 'font-weight: bold;', :class => "standart-button"
+		end
+		i += 1
+	end
+	if devicefication.download_url.present? 
+		j += 1
+	end
+	if i == 0 and j == 0
+		next
+	end
+%>
+		<div><b><%= device.name %></b></div>
+		<div class="downloadable_apps">
+			<ul>
+<% unless dl_bttn=="" %>
+				<li style="margin-right:30px;"><%= dl_bttn %></li>
+<% end %>
+<% unless dl_email_bttn=="" %>
+				<li style="margin-right:30px;"><%= dl_email_bttn %></li>
+<% end %>
+<%
+#this part should be put above
+	if devicefication.download_url.present? 
+		download_url = devicefication.download_url
+		unless download_url.starts_with? 'http'
+			download_url = "http://" + download_url
+		end
+%>
+				<li><%= link_to simple_button("Send Link to Email"), send_download_link_user_application_path(current_user, @application, :devicefication_id => devicefication.id), :style => 'font-weight: bold;', :class => "standart-button" %></li>
+			</ul>
+		</div>
+		<div style="clear:both;"><%= link_to download_url, download_url, :remote => true, :target => "_blank" %></div>
+<% else %>
+			</ul>
+		</div>
+<% end %>
+		<div style="clear:both;padding-top:10px;"></div>
+<% end %>
+
+</div>
+
+<div><input type="button" name="close" id="close_download" value="CLOSE"/></div>
+
+<script type="text/javascript">
+$(function(){
+	$('input#close_download').click(function() {
+		var div_id='download_application_div';
+		$('div#'+div_id).hide();
+		hideOverlay();
+	});
+});
+</script>

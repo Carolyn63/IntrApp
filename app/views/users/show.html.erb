@@ -1,0 +1,612 @@
+<%
+is_ie = client_browser_name=="IE" ? true : false;
+%>
+<div class="content right-column">
+	<div class="left-side">
+		<h1 class="ml30"><%= t("views.users.sp_profile", :name => @user.name, :sp_name => property(:sp_name)) %><%= help_icon %></h1>
+		<div class="first-column">
+			<% unless @user.new_record? %>
+			<%= image_tag @user.avatar.url(:big) %>
+			<%else%>
+			<div class="img-box img-big-box">
+				<table class="verticalMiddle" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td><a href="#"></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<%end%>
+			<ul class="notes-list">
+				<li>
+					<p>
+						<%= h(@user.description) %>&nbsp;
+					</p>
+				</li>
+			</ul>
+			<% if @user == current_user %>
+			<%= link_to wide_button(t("views.users.edit_profile")), edit_user_path(current_user), :class=>"standart-button"%>
+			<% else %>
+				<%= user_profile_friend_link(current_user, @user) %>
+				
+			<% end %>
+		</div>
+		<div class="second-column">
+			<% if @user == current_user %>
+			<div class="green-box">
+				<p class="float-left">
+					<b class="blue-color"><%= t("views.users.your_user_profile_is_only") %></b>
+				</p>
+				<div id="progressbar" class="float-right" style="width: 135px; margin-top: 14px;">
+					<span><%= current_user.profile_complete%> %&nbsp;<%= t("views.users.completed") %></span>
+				</div>
+				<div class="clear"></div>
+				<p class="fz11 grey-color" style="margin-top: 0px;">
+					<i><%= t("views.users.add_more_info") %>&nbsp;<%= link_to t("views.users.clicking_here"), edit_user_path(current_user) %></i>
+				</p>
+			</div>
+			<%end%> <h3><%= t("views.users.basic_information")%></h3>
+			<ul class="info-list wrap-text">
+				<li>
+					<p class="left">
+						<b><%= t("views.users.first_name") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.firstname) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.last_name") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.lastname) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.username") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.login) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.age") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.age) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.sex") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.sex) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.job_title") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.job_title) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.site") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.site) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<% if current_user == @user %>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.privacy") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(User::Privacy::TO_LIST[@user.privacy]) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p style="width:280px" class="left">
+						<b><%= t("views.users.receive_notification_friendship") %>&nbsp;&nbsp;<%= check_box_tag "", "", @user.friendship_notification, :disabled => true %></b>
+					</p>
+					<p class="right"></p>
+					<div class="clear"></div>
+				</li>
+				<%end%> <h3><%= t("views.users.contact_information")%></h3>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.alt_email") %></b>
+					</p>
+					<p class="right">
+						<b><%= link_to h(@user.email), "mailto:#{h(@user.email)}", :title => h(@user.email) %></b>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<% unless @user.employees.blank? %>
+				<% @user.employees.each do |e| %>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.corporate_emails") %></b>
+					</p>
+					<p class="right">
+						<b><%= link_to h(e.company_email), "mailto:#{h(e.company_email)}", :title => h(e.company_email)  %></b>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<%if check_user_ippbx?%>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.corporate_phone") %></b>
+					</p>
+					<%unless e.ippbx.blank?%>
+					<p class="right">
+						<i><%= h(Ippbx.retrieve_public_number(e.company_id))%> ext.<%= h(e.ippbx.extension)%></i>
+					</p>
+					<%end%> <div class="clear"></div>
+				</li>
+				<%end%>
+				<%end%>
+				<%end%>
+
+			<li>
+					<p class="left">
+						<b><%= t("views.users.cellphone") %></b>
+					</p>
+					<p class="right">
+						<i style="vertical-align: top"><%= h(@user.cellphone) %></i> 
+						<!--<% unless @user.cellphone.blank? || current_user.employees[0].blank?%> <a onClick="call()" language="JavaScript" style="margin-left:10px;" ><img src="/images/mobile_phone.gif" align="absmiddle" /></a><%end%>-->
+					</p>
+					<div class="clear"></div>
+				   <!--    <%if property(:use_c2call)%>
+					<% unless @user.cellphone.blank? || current_user.employees[0].blank?  %> 
+					<% unless @user.employees[0].ippbx.blank? && current_user.employees[0].ippbx.blank? %>
+					<div id="c2xcall_applet_mini" style="overflow:hidden;">
+						<applet codebase="/applets/" code="mobiletribe.c2callapplet.C2CallWapper.class" archive="mtapplet.jar, c2call.jar" 
+							name="c2x_call_applet" align="center" width="280" height="60">
+							<param name="username" value="<%= current_user.employees[0].company_email.to_s%>" >
+							<param name="password" value="<%= Tools::NormalCrypt.new.encrypt(Tools::AESCrypt.new.decrypt(current_user.user_password.to_s))%>">
+							<param name="bg_color" value="#9FBFBA">
+						</applet>
+					</div>
+					<% end %>
+					<% end %>
+					<% end %> -->
+				</li>
+
+				<li>
+					<p class="left">
+						<b><%= t("views.labels.workPhone") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.phone) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.linkedin") %></b>
+					</p>
+
+					<p class="right">
+					<% unless @user.linkedin.blank? %>
+						<i><%= link_to @user.linkedin, @user.linkedin, :class => "grey-color green-link", :target => "_blank" %></i>
+					<% end %>
+					</p>
+					<div class="clear"></div>
+				</li>
+
+				<li>
+					<p class="left">
+						<b><%= t("views.users.address") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.address) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.address2") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.address2) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.city") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.city) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.state") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.state) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.zipcode") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.zipcode) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<p class="left">
+						<b><%= t("views.users.country") %></b>
+					</p>
+					<p class="right">
+						<i><%= h(@user.country) %></i>
+					</p>
+					<div class="clear"></div>
+				</li>
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="right-side right-back">
+		<div class="inner-right-side">
+			<% @user.employees.each do |u| %>
+			<% if check_user_ippbx?%>
+			<% unless u.ippbx.blank? %>
+
+				<% if @user == current_user %>
+				<div style="margin-bottom: 10px;" class="w280">
+					<a href="javascript:void(0)" class="voice_mail"><span id="arrow_voice_mail"><img src="/images/arrow_down.jpg" align="absmiddle" width="16" height="16"></span> <%=t("views.labels.voicemail")%> <%="(" + @vm.count().to_s + ")"%></a>
+					<div id="voice_mail_div" style="display:none;padding:10px;border:1px solid #999;margin:10px 0;max-height:320px;">
+						<div  style="margin-top:5px;overflow:auto;">
+							<div style="font-size:12px;"><input type="radio" name="vm_filter" class ="checkbox" id="vm_new" uid="<%=u.ippbx.uid%>" /> <label ><%= "New" %></label>&nbsp;&nbsp;<input type="radio" name="vm_filter" class ="checkbox" id="vm_saved" uid="<%=u.ippbx.uid%>" /> <label><%= "Seen" %></label>&nbsp;&nbsp;<input type="radio" name="vm_filter" class ="checkbox" id="vm_all" uid="<%=u.ippbx.uid%>" /> <label ><%= "All" %></label></div>
+							<div id="vm_div">
+						<%unless @vm.blank?%>
+								<div>
+									<table align="left" cellspacing="10" cellpadding="0" border="0">
+										<%count = 1%>
+										<% @vm.each do |vm| -%>
+										<tr valign="top" >
+											<td><%=count%></td>
+											<td align="left" style="width:150px;"><%=vm['callerNumber']%></td>
+											<td align="left"><a href="javascript:void(0)" id="vm_play" vm_filter="vm_new" uid="<%=u.ippbx.uid%>" vm_id="<%=vm['uid']%>" vm_url="<%=vm['filePath']%>">play</a></td>
+											<td align="left"><a href="javascript:void(0)" id="vm_delete" vm_filter="vm_new" uid="<%=u.ippbx.uid%>" vm_id="<%=vm['uid']%>">delete</a></td>
+											<td align="left" nowrap="nowrap"><%=vm['callTime']%></td>
+										</tr>
+											<%count += 1%>
+										<%end%>
+									</table>
+								</div>
+						<%else%>
+								<div style="color:red;font-size:12px;margin-top:20px;" align="center"><%=t("views.labels.no_voicemail")%></div>
+						<%end%>
+							</div>
+						</div>
+					</div>
+					<div id="vm_player_div" style="display:none;">
+					<% if is_ie %>
+						<object id="vm_player" width="280" height="40" classid="CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701" standby="Loading Microsoft Windows Media Player components..." type="application/x-oleobject"> <param name="fileName" value=""><param name="animationatStart" value="true"><param name="transparentatStart" value="true"><param name="autostart" value="true"><param name="showcontrols" value="true"><param name="ShowAudioControls" value="true"><param name="showstatusbar" value="false"><param name="loop" value="false"></object>
+					<% else %>
+						<audio id="vm_player" src="" controls="controls" preload="auto" autoplay="autoplay" loop="false">If you are reading this, it is because your browser does not support the audio element.</audio>
+					<% end %>
+					</div>
+
+				</div>
+				<% end %>
+				
+				<div class="w280" style="margin-bottom: 10px;">
+				<%if @user == current_user%>
+				<div style="margin-top: 10px;">
+					<%= link_to t("views.labels.ippbx_cp"), useradmin_path%>
+				</div>
+				<%end%>
+			</div>
+			<%end%>
+			<%end%>
+			<%end%>
+			<div class="w280">
+				<div class="right-deafult-box">
+					<div class="green-box">
+						<% if @user == current_user %>
+						<% if property(:multi_company) %> <h2 class="orange-color"><%= @companies.size > 1 ? "#{t("views.users.my_companies")}(#{@companies.size})" : t("views.users.my_company") %></h2>
+						<%else%> <h2 class="orange-color"><%= t("views.users.my_company") %></h2>
+						<%end%>
+						<p class="text-content">
+							<% if property(:multi_company) %>
+							<%= t("views.users.list_of_companies_so_far", :sp_name => property(:sp_name)) %>
+							<%else%>
+							<%= t("views.users.list_of_my_company", :sp_name => property(:sp_name)) %>
+							<%end%>
+						</p>
+						<%else%> <h2 class="orange-color"><%= @companies.size > 1 ? "#{t("views.users.user_companies")}(#{@companies.size})" : t("views.users.user_company") %></h2>
+						<%end%>
+						<% unless @companies.blank? %>
+						<ul class="list members-list employers-list actions-list">
+							<%= render :partial => "recently_company", :collection => @companies %>
+						</ul>
+						<% if @user == current_user %>
+						<% if property(:multi_company) %>
+						<%= link_to link_name(t("views.users.create_new_company")), new_company_path, :class => 'standart-button standart-button-plus' %>
+						<%end%>
+						<%end%>
+						<%end%>
+					</div>
+				</div>
+			</div>
+			<div class="w280">
+				<% if @user == current_user %>
+				<% unless @employees.blank? %> <h2 class="mt-40"><%= @companies.size > 1 ? t("views.users.employee_profile_of_companies") : t("views.users.employee_profile_of_company") %></h2>
+				<ul class="list members-list employers-list">
+					<%= render :partial => "recently_employee", :collection => @employees %>
+					<li class="last">
+						&nbsp;
+					</li>
+				</ul>
+				<%end%>
+				<%else%>
+				<% unless @recently_users.blank? %> <h2 class="mt-40"><%= t("views.users.recommended_members_to_you") %></h2>
+				<ul class="list members-list employers-list">
+					<%= render :partial => "recently_profile_user", :collection => @recently_users %>
+					<li class="last">
+						&nbsp;
+					</li>
+				</ul>
+				<%end%>
+				<%end%>
+			</div>
+		</div>
+		<% unless @employers.blank? %>
+		<h2>Employee of Companies</h2>
+		<ul class="list right-list w255">
+			<%= render :partial => "companies/recently_company", :collection => @employers %>
+			<li class="last">
+				&nbsp;
+			</li>
+		</ul>
+		<%end%> 
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="subscription_id" style="display:none;"></div>
+
+<script type="text/javascript">
+function hide_mini_applet(delay, duration) {
+	setTimeout(function() {
+    $( "#c2xcall_applet_mini" ).animate({height: 0}, duration );
+  }, delay);	
+}
+function call() {
+	$( "#c2xcall_applet_mini" ).animate({height: 60}, 500 );
+	document.c2x_call_applet.start_call("<%= h(@user.cellphone) %>"); 
+}
+
+function poll() {
+	var str = document.getElementById('subscription_id').innerHTML;
+	if (str != ""){
+		var str_array = str.split(":");
+		var div_id = str_array[0];
+		var sid = str_array[1];
+		var failed = false;
+
+		$.get('/voip/event_code?sid='+sid,{},function(data) {
+			if(data=='EC01') {
+				$("div#"+div_id).html("calling party invalid");
+				failed = true;
+			}
+			else if(data=='EC02') {
+				$("div#"+div_id).html("calling party ringing");
+			}
+			else if(data=='EC03') {
+				$("div#"+div_id).html("calling party answered");
+			}
+			else if(data=='EC04') {
+				$("div#"+div_id).html("calling party rejected");
+				failed = true;
+			}
+			else if(data=='EC05') {
+				$("div#"+div_id).html("calling party no answer");
+				failed = true;
+			}
+			else if(data=='EC06') {
+				$("div#"+div_id).html("calling party call waiting");
+				failed = true;
+			}
+			else if(data=='EC07') {
+				$("div#"+div_id).html("calling party call blocking");
+				failed = true;
+			}
+			else if(data=='EC08') {
+				$("div#"+div_id).html("calling party hung up");
+				failed = true;
+			}
+			else if(data=='EC09') {
+				$("div#"+div_id).html("calling party unreachable");
+				failed = true;
+			}
+			else if(data=='EC10') {
+				$("div#"+div_id).html("calling party not found");
+				failed = true;
+			}
+			else if(data=='EC11') {
+				$("div#"+div_id).html("called party invalid");
+				failed = true;
+			}
+			else if(data=='EC12') {
+				$("div#"+div_id).html("called party ringing");
+			}
+			else if(data=='EC13') {
+				$("div#"+div_id).html("called party answered");
+			}
+			else if(data=='EC14') {
+				$("div#"+div_id).html("called party rejected");
+				failed = true;
+			}
+			else if(data=='EC15') {
+				$("div#"+div_id).html("called party no answer");
+				failed = true;
+			}
+			else if(data=='EC16') {
+				$("div#"+div_id).html("called party call waiting");
+			}
+			else if(data=='EC17') {
+				$("div#"+div_id).html("called party call blocking");
+				failed = true;
+			}
+			else if(data=='EC18') {
+				$("div#"+div_id).html("called party unreachable");
+				failed = true;
+			}
+			else if(data=='EC19') {
+				$("div#"+div_id).html("called party not found");
+				failed = true;
+			}
+			else{
+				setTimeout("poll()",10000);
+				return;
+			}
+
+			if(failed){
+				document.getElementById('subscription_id').innerHTML = "";
+				$.get('/voip/delete_sid?sid='+sid,{},function(data) {
+					$("div#"+div_id).html(data);
+				});
+			}
+			else{
+				setTimeout("poll()",10000);
+				return;
+			}
+		});
+	}
+	else{
+		$("div#"+div_id).html("call ended");
+		return;
+	}
+}
+
+$(function(){
+
+	$( "#progressbar" ).progressbar(
+	{
+		value: <%= current_user.profile_complete %>
+	});
+
+	$('a#add_ippbx').click(function() {
+		var url = '<%=property(:app_site)%><%=addippbx_user_path(@user)%>';
+		if($('input#enable_pn').is(':checked')){
+			$(this).attr('href',url+'?enable_pn=1');
+			//window.location.href = url+"?enable_pn=1";
+			//$(location).attr('href',url+"?enable_pn=1");
+		}
+		else{
+			 $(this).attr('href',url+'?enable_pn=0');
+		}
+		if($('div#loader_div').is(':hidden')) {
+			$('div#loader_div').show();
+		} 
+		else {
+			$('div#loader_div').hide();
+		}
+	});
+
+	$('a#remove_ippbx').click(function(){
+		if($('div#loader_div').is(':hidden')){
+			$('div#loader_div').show();
+		}
+		else{
+			$('div#loader_div').hide();
+		}
+	});
+
+	$('a#call_phone').click(function() {
+		var div_id = "call_status_" + $(this).attr('callee_id');
+		var sid = "";
+		sid = $.ajax({
+				type: "PUT",
+				url: '/voip/update',
+				data: {"calledNumber": $(this).attr('calledNumber'), "employee_id": $(this).attr('employee_id'), "user_id": $(this).attr('user_id'), },
+				async: false,
+		}).responseText;
+
+		if(sid.length > 0){
+			$("div#"+div_id).html("calling...");
+			document.getElementById('subscription_id').innerHTML = div_id + ":" + sid;
+			poll();
+		}
+		else{
+			$("div#"+div_id).html("error");
+			return;
+		}
+	});
+
+	$('a.voice_mail').click(function() {
+			var div_id = 'voice_mail_div';
+			if($('div#' + div_id).is(':hidden')) {
+				$('span#arrow_voice_mail').html('<img src="/images/arrow_up.jpg" align="absmiddle" width="16" height="16">');
+				$('div#' + div_id).show();
+				$('input#vm_new').attr('checked',true);
+			} else {
+				$('span#arrow_voice_mail').html('<img src="/images/arrow_down.jpg" align="absmiddle" width="16" height="16"">');
+				$('div#' + div_id).hide();
+			}
+			return false;
+	});
+
+	$("input[name*='vm_filter']").change(function(){
+		var div_id = 'vm_div';
+		var vm_filter = $(this).attr('id');
+		var uid = $(this).attr('uid');
+		$(this).attr('checked',true);
+		$('div#' + div_id).html('<div style="padding-left:114px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('voice_mail', {uid:uid, vm_filter:vm_filter});
+		return false;
+	});
+
+	$('a#vm_play').click(function() {
+		var div_id = 'vm_div';
+		var uid = $(this).attr('uid');
+		var vm_filter = $(this).attr('vm_filter');
+		var vm_id = $(this).attr('vm_id');
+		var vm_url = $(this).attr('vm_url');
+		$('div#vm_player_div').show();
+<% if is_ie %>
+		$('div#vm_player_div').html('<object id="vm_player" width="280" height="40" classid="CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701" standby="Loading Microsoft Windows Media Player components..." type="application/x-oleobject"><param name="fileName" value="'+vm_url+'"><param name="animationatStart" value="true"><param name="transparentatStart" value="true"><param name="autostart" value="true"><param name="showcontrols" value="true"><param name="ShowAudioControls" value="true"><param name="showstatusbar" value="false"><param name="loop" value="false"></object>');
+<% else %>
+		$('audio#vm_player').attr('autostart','true');
+		$('audio#vm_player').attr('src',vm_url);
+<% end %>
+		$('div#' + div_id).load('voice_mail', {uid:uid, vm_filter:vm_filter,vm_id:vm_id,vm_action:'play'});
+		return false;
+	});
+
+	$('a#vm_delete').click(function() {
+		var div_id = 'vm_div';
+		var uid = $(this).attr('uid');
+		var vm_filter = $(this).attr('vm_filter');
+		var vm_id = $(this).attr('vm_id');
+		$('div#' + div_id).html('<div style="padding-left:114px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('voice_mail', {uid:uid, vm_filter:vm_filter,vm_id:vm_id,vm_action:'delete'});
+		return false;
+	});
+
+});
+</script>

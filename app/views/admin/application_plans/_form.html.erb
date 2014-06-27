@@ -1,0 +1,130 @@
+<div class="group">
+	<table table cellspacing="10px;" style="width:700px;"> 
+		<tr>
+			<td><span style="float:left"><%= f.label :lable_app_name, t("views.labels.app_name"), :class => :label %></span></td>
+			<td><%= f.select :application_id,  @application.collect{|app| [app["name"], app["id"]]}, {}%></td>
+		</tr>
+
+		<tr>
+			<td><span style="float:left"><%= f.label :lable_plan_name, t("views.labels.plan_name"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+			<td><%= f.text_field :code, :class=>"text_border", :size=>"25%", :value=> @name%><div id="plan_name_error" style="display:none;color:red;"></div></td>
+		</tr>
+
+		<tr>
+			<td><%= f.label :label_active_status, t("views.labels.active_status"), :class => :label %></td>
+			<td><label><%= "Active" %></label> <%= f.radio_button :active, 1, :checked => "checked", :class => "checkbox"%> <label ><%= "Inactive" %></label> <%= f.radio_button :active, 0, :class => "checkbox"%></td> 
+		</tr>
+
+		<tr>
+			<td><span style="float:left"><%= f.label :lable_payment_type, "payment type", :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+			<td><%= f.select :payment_type, ApplicationPlan::PaymentType::LIST %></td>
+		</tr>
+
+		<tr>
+			<td><span style="float:left"><%= f.label :lable_application_nature, "Application Nature", :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+			<td><%= f.select :application_nature, ApplicationPlan::Nature::LIST %></td>
+		</tr>
+
+		<tr id = "amount">
+			<td><span style="float:left"><%= f.label :lable_amount, t("views.labels.amount"), :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+			<td><%= f.text_field :amount, :class=>"text_border", :size=>"25%" , :value=> @amount ? sprintf("%.2f",@amount) : "0.00" %><div id="plan_amount_error" style="display:none;color:red;"></div></td>
+		</tr>
+
+		<tr>
+			<td><span style="float:left"><%= f.label :lable_default_employee_count, "Default Employees Count", :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+			<td><%= f.text_field :default_employees_count, :class=>"text_border", :size=>"3" , :value=> @default_employee_count%>&nbsp;<span style="color:red;">set 0 if unlimited (all employees will have the app)</span><div id="plan_employee_error" style="display:none;color:red;"></div></td>
+		</tr>
+
+		<tr valign="top">
+			<td style="padding-top:5px;"><span style="float:left"><%= f.label :lable_description, "Thanks Page Text", :class => :label %></span><span style="font-weight:bold;color:red;padding-left:5px;">*</span></td>
+			<td style="padding-top:5px;"><textarea class="text_border" name="application_plan[description]" style="width:300px; height:200px;"><%=@description%></textarea></td>
+		</tr>
+	</table>
+</div>
+<div class="group navform wat-cf">
+<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+
+<style>
+.submit_finish {
+	background-image: url('/images/web-app-theme/tick.png');
+	background-repeat: no-repeat;
+	background-position: left center;
+	width: 100px;
+	height: 27px;
+	font-weight: bold;
+	font-size: 16px;
+}
+.submit_cancel {
+	background-image: url('/images/web-app-theme/cross.png');
+	background-repeat: no-repeat;
+	background-position: left center;
+	width: 100px;
+	height: 27px;
+	font-weight: bold;
+	font-size: 16px;
+}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+
+	$('input.submit_finish').click(function() {
+		$('div#plan_name_error').hide();
+		$('div#plan_code_error').hide();
+		$('div#plan_amount_error').hide();
+
+		var flag = true;
+
+		if($('input#applicationplan_plan_code').val()==""){
+			$('div#plan_name_error').html("Please enter plan name").show();
+			flag = false;
+		}
+
+		if($('select#application_plan_payment_type option:selected').val()!="free"){
+			if($('input#application_plan_amount').val()==""){
+				$('div#plan_amount_error').html("Please enter plan amount").show();
+				flag = false;
+			}
+			else{
+				var filter = /^[0-9\.]+$/;
+				if(!filter.test($('input#application_plan_amount').val())) {
+					$('div#plan_amount_error').html('Please enter numbers only').show();
+					flag = false;
+				}
+				else{
+					var price = parseFloat($("input#application_plan_amount").val())
+					if (price <= 0){
+						$('div#plan_amount_error').html('Please enter amount more than 0').show();
+						flag = false;
+					}
+				}
+			}
+		}
+
+		if($('input#application_plan_default_employees_count').val()==""){
+			$('div#plan_employee_error').html("Please enter default employees count").show();
+			flag = false;
+		}
+		else{
+			var filter = /^[0-9\.]+$/;
+			if(!filter.test($('input#application_plan_default_employees_count').val())) {
+				$('div#plan_employee_error').html('Please enter numbers only').show();
+				flag = false;
+			}
+		}
+		return flag;
+	});
+
+	$('#application_plan_payment_type').change(function(){
+		if($('#application_plan_payment_type').val()=="free"){
+			$('#amount').hide();
+		}
+		else{
+			$('#amount').show();
+		}
+	});
+
+});
+</script>

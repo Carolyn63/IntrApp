@@ -1,0 +1,27 @@
+<div class="auth-box login-box">
+  <div class="head tac">
+    <h1><%= t("views.password_resets.update_your_password") %></h1>
+    <p><%= t("views.password_resets.please_enter_new_password") %></p>
+  </div>
+  <%= error_messages_for :user %>
+  <% form_for @user, :url => password_reset_path(@user.perishable_token), :html => {:method => :put} do |f| -%>
+    <div class="input-row">
+      <label><span><%= t("views.password_resets.new_password") %><b class="green-color fz14">&nbsp;*</b></span></label>
+      <%= f.password_field :password, :class => 'text_field' %>
+    </div>
+    <div class="input-row">
+      <label><span><%= t("views.users.confirm") %><b class="green-color fz14">&nbsp;*</b></span></label>
+      <%= f.password_field :password_confirmation, :class => 'text_field' %>
+    </div>
+    <div class="input-row require">
+      <label><span><%= t("views.required_fields") %><b class="green-color fz14">&nbsp;*</b></span></label>
+    </div>
+    <div class="input-row button-row">
+      <label>&nbsp;</label>
+      <button class="max-button" type="submit"><b class="f"></b><b class="s"><%= t("views.password_resets.update_password") %></b><b class="t"></b></button>
+    </div>
+  <% end -%>
+</div>
+
+
+

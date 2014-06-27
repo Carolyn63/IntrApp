@@ -1,0 +1,8 @@
+<div class="inner">
+  <p class="one-row">
+    <% may_coworker = current_user.may_be_coworker?(user) %>
+    <% if current_user != user && (!current_user.friend?(user) || current_user.reject_friend?(user))%>
+      <%= link_to "<b>#{t("views.add_as_friend")}</b>", friendship_request_user_path(current_user, :friend_id => user.id), :class => 'green-color green-link' %>
+    <%end%>
+  </p>
+</div>

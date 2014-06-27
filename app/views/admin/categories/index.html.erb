@@ -1,0 +1,48 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", collection_path  %></li>
+      <li> <%= link_to_new_resource -%> </li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> <%= resource_class.name.pluralize %></h2>
+    <div class="admin-filter">
+      <%# <% form_tag "", {:method => :get} do %>
+      <%#   <span>Name</span>
+      <%#   <%= text_field_tag("search", params[:search], :id => "admin_resource_search") %>
+      <%#   <%= submit_tag "Search" %>
+      <%# <% end %>
+    </div>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <%= sortable_table_header :name => 'Id',  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => 'Name',  :sort => "name" %>
+          <%= sortable_table_header :name => 'Applications count',  :sort => "applications_count" %>
+          <%= sortable_table_header :name => 'Description',  :sort => "description" %>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% collection.each do |resource| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="first"><%= resource.id %></td>
+          <td><%= h resource.name %></td>
+          <td><%= resource.applications_count %></td>
+          <td><%= h resource.description %></td>
+          <td class="last">
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", resource_path(resource) %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_resource_path(resource) %> |
+            <%= link_to_delete resource -%>
+          </td>
+        </tr>
+        <% end -%>
+      </table>
+      <%= will_paginate collection, :status => params[:status], :search => params[:search]  %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

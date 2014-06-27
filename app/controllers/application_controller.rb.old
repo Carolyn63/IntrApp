@@ -1,0 +1,324 @@
+require 'net/http'
+require 'rubygems'
+require 'json'
+
+  
+class ApplicationController < ActionController::Base
+  
+  helper :all # include all helpers, all the time
+  helper_method :current_user_session, :current_user, :help_url, :current_own_company, :current_employee
+
+  include ExceptionNotification::Notifiable
+  include SortableTable::App::Controllers::ApplicationController
+
+  # Protects the user sessions from being spoofed
+  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+
+  # Actions to be performed before the controller is loaded
+  before_filter :require_only_active
+  before_filter :help_system_url
+
+  # Scrub sensitive parameters from your log
+  filter_parameter_logging :password, :password_confirmation
+
+  # Prettifies the pagination
+  begin
+    WillPaginate::ViewHelpers.pagination_options[:previous_label] = I18n.t("views.pagination_prev")
+    WillPaginate::ViewHelpers.pagination_options[:next_label] = I18n.t("views.pagination_next")
+  rescue => e
+  end
+
+  def user_admin_login_required
+ logger.info("session name/.........#{session[:user_admin]}")
+			logger.info("session pass........#{session[:user_pass]}")
+    if session[:user_admin] and session[:user_pass]
+    return true
+    end
+    session[:user_return_to]=request.request_uri
+    redirect_to  useradmin_logins_path
+    return false
+  end
+
+  def ent_admin_login_required    
+    if session[:ent_admin] and session[:ent_pass]
+    return true
+    end
+    session[:ent_return_to]=request.request_uri
+    redirect_to  entadmin_logins_path
+    return false
+  end
+
+  def sp_admin_login_required    
+    if session[:sp_admin] and session[:sp_pass]
+    return true
+    end
+    session[:sp_return_to]=request.request_uri
+    redirect_to  spadmin_logins_path
+    return false
+  end
+
+  def sys_admin_login_required
+    #session[:sys_admin] = nil
+    #logger.info "sys_admin_login_required session sys_user #{session[:sys_admin]}"
+    #logger.info "sys_admin_login_required session sys_pass #{session[:sys_pass]}"
+    if session[:sys_admin] and session[:sys_pass]
+    return true
+    end
+    session[:sys_return_to] = request.request_uri
+    redirect_to  sysadmin_logins_path
+    return false
+  end
+
+  # If any bad data is entered into a message, then this method will report it
+  # back to the user.
+  def report_maflormed_data(message = nil)
+    flash[:error] = message || t("controllers.bad_data")
+    redirect_to(root_path) and return
+  end
+
+  # If there is a problem with the APIs integrated into the site, this method
+  # will report it back to the user and throw them back to the index page.
+  def report_integrate_problem
+    flash[:error] = t("controllers.problem_with_ondeego_request")
+    redirect_to(root_path) and return
+  end
+   def current_own_company
+    @current_own_company ||= current_user.companies.first
+  end
+  protected
+
+  def require_only_active
+    if !current_user.blank? && !current_user.status_active?      
+      current_user_session.destroy
+      if current_user.blocked?
+        flash[:error] = t("controllers.your_account_blocked")
+      elsif current_user.status_unconfirmed?
+        flash[:error] = t("controllers.your_account_uncomfirmed")
+        
+      end
+      redirect_back_or_default root_path
+    end
+  end
+
+  # Defines what should happen if the user enters an area that is meant for
+  # users with the administrators role.
+  def admin_only
+    if !current_user.blank? && !current_user.admin?
+    flash[:error] = t("controllers.access_denied")
+    redirect_to root_path
+    end
+  end
+  
+  def current_user_session
+    return @current_user_session if defined?(@current_user_session)
+    @current_user_session = UserSession.find
+  end
+
+  # Defines who the current user is. If no user is defined, the method pulls
+  # the data from the current user session. If no user is present, then the
+  # <code>current_user</code> variable is rendered empty.
+  def current_user
+    return @current_user if defined?(@current_user)
+    @current_user = current_user_session && current_user_session.user
+  end
+  
+
+
+  def current_employee
+    @current_employee ||= current_user.first_active_employee
+  end
+
+  def current_employee?; current_employee.present?; end
+
+  def current_user_company
+    @current_user_company ||= current_user.try(:first_active_employee).try(:company)
+  end
+
+  def current_user_company?; current_user_company.present?; end
+
+  # Defines what should happen to people who need to be logged in to see
+  # a certain area of the site.
+  #
+  # Authenticates over a simple HTTP request with the username and the
+  # password.
+  def require_user
+    unless current_user
+      respond_to do |format|
+        format.html do
+          store_location
+          flash[:notice] = t("controllers.you_must_be_logged")
+          redirect_to new_user_session_url
+          return false
+        end
+        format.any(:xml, :json) do
+          authenticate_or_request_with_http_basic do |username, password|
+            @user_session = UserSession.new(:login => username, :password => password)
+            @user_session.save
+          end
+        end
+      end
+    end
+  end
+  
+  # Checks users or company can use ippbx service
+	def check_user_ippbx
+		success = false
+		if property(:use_ippbx)
+			success = true
+		else
+			message =  t("controllers.ippbx_disabled") 
+		end
+		if !success
+			flash[:error] = "#{t("controllers.access_denied")}.  #{message}"
+			redirect_to root_path
+		end
+		return success
+	end
+ 
+	def check_company_ippbx
+		success = false
+		if property(:use_ippbx)
+			success = true
+		else
+			message =  t("controllers.ippbx_disabled") 
+		end
+		if !success
+			flash[:error] = "#{t("controllers.access_denied")}.   #{message}"
+			redirect_to root_path
+		end
+		return success
+	end
+  
+  # Defines what happens if the user enters an area that requires no login
+  def require_no_user
+    if current_user
+    #For fix of nested flash
+    #store_location
+    flash[:notice] = t("controllers.you_must_be_logged_out")
+    redirect_to root_url
+    return false
+    end
+  end
+
+  # Stores the last location that the user has visited in their own session
+  # variable.
+  def store_location
+    session[:return_to] = request.request_uri
+  end
+
+  # Either redirect the user back to the last page they visited, or to a
+  # defined location stated in the +default+ variable.
+  def redirect_back_or_default(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
+  end
+
+  def check_services email,user_id
+	  payments = Payment.find_last_by_email(email)
+	  if !payments.blank?
+	  company_services = CompanyService.find_all_by_payment_id_and_user_id(payments.id, user_id)
+	  services = Service.find(:all)
+	  
+	  services.each do |service|
+		session_name = "use_" + service.service_code
+		session[session_name] = false
+	  end
+	 
+	  company_services.each do |company_service|
+		  logger.info(company_service.service.name)
+		  services.each do |service|
+			if company_service.service.name == service.name
+				session_name = "use_" + service.service_code
+				logger.info(session_name)
+				if (company_service.paid == 0 && payments.transaction_type == "subscr_signup" ) || company_service.paid == 1
+					session[session_name] = true
+				else
+					session[session_name] = false
+				end
+				
+			end
+		  end
+	  end
+	  end
+  
+  logger.info(".......#{session["use_ippbx"]}")
+  end  
+
+
+  def check_company_services user_id
+   logger.info("owner service check...............")
+   user = User.find_by_id(user_id)
+   is_owner = user.owner_companies?
+   if !user.employees[0].blank? or is_owner
+    if is_owner
+      owner = user
+    else
+      company = Company.find_by_id(user.employees[0].company_id)
+      owner = User.find_by_id(company.user_id)
+    end
+    services = Service.find(:all)
+    services.each do |service|
+      company_session_name = "use_company_" + service.service_code
+      session_name = "use_" + service.service_code
+      session[session_name] = false
+      session[company_session_name] = false
+      company_service = CompanyService.find_by_user_id_and_service_id(owner.id,service.id)
+      if !company_service.blank?
+      grace_period = DateTime.parse("2012-05-05 01:09:05") + 7.days
+      if (company_service.paid == 0 && company_service.subscription_type == "subscr_signup" ) || company_service.paid == 1  || (company_service.subscription_type == "subscr_cancel" and graceperiod > Time.now)
+        session[session_name] = true
+        if is_owner
+          session[company_session_name] = true
+          logger.info("owner service paid..........")
+        end
+      end 
+      end
+    end
+  
+    end
+
+ end
+  
+  
+  
+  def help_system_url
+    @help_url = HelpUrl.find_help_url(params.merge(:url_params => request.query_string))
+  end
+
+  def addslash(str)
+    return str.to_s.gsub(/['"\\\x0]/,'\\\\\0')
+  end
+
+  def generate_password( len )
+    chars = ("a".."z").to_a + ("A".."Z").to_a + ("2".."9").to_a
+    pass = ""
+    1.upto(len) { |i| pass << chars[rand(chars.size-1)] }
+    return pass
+  end
+
+  def remove_space(fields)
+      strip_field = fields.inject({}) {|h, (k,v)| h.update({k=>v.strip()})}
+      return strip_field
+  end
+  
+  def titelize_all fields, keys
+    ret[] = ""
+    unless keys.blank?
+    stripped_fields = fields.inject({}) {|h, (k,v)| h.update({k=>v.strip()})}
+    except_fields = stripped_fields.except(*keys)
+    not_except_fields = stripped_fields.slice(*keys)
+    titlized_field = except_fields.inject({}) {|h, (k,v)| h.update({k=>v.titleize()})}
+    ret = not_except_fields.deep_merge(titlized_field)
+    end 
+    return ret
+  end
+end
+
+	def require_https 
+		#redirect_to :protocol => "https://" unless (request.ssl? or local_request?) 
+		redirect_to({:protocol => "https"}.merge(:params => request.query_parameters)) unless (request.ssl? or local_request?) 
+	end 
+
+	def require_http
+		redirect_to :protocol => "http://" if (request.ssl?) 
+	end

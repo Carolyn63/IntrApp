@@ -1,0 +1,64 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+
+ben_with_frai:
+  id: 1
+  user_id: 1
+  friend_id: 2
+  status: <%= Friendship::Status::ACTIVE %>
+  friendship_id: 0
+  published_at: <%= 1.hour.ago %>
+
+frai_with_ben:
+  id: 2
+  user_id: 2
+  friend_id: 1
+  status: <%= Friendship::Status::ACTIVE %>
+  friendship_id: 1
+  published_at: <%= 1.hour.ago %>
+
+ben_with_new_bens_friend:
+  id: 3
+  user_id: 1
+  friend_id: 5
+  status: <%= Friendship::Status::PENDING %>
+  friendship_id: 4
+
+new_bens_friend_with_ben:
+  id: 4
+  user_id: 5
+  friend_id: 1
+  status: <%= Friendship::Status::PENDING %>
+  friendship_id: 0
+
+frai_with_user_3:
+  id: 5
+  user_id: 2
+  friend_id: 3
+  status: <%= Friendship::Status::PENDING %>
+  friendship_id: 0
+
+user_3_with_frai:
+  id: 6
+  user_id: 3
+  friend_id: 2
+  status: <%= Friendship::Status::PENDING %>
+  friendship_id: 5
+
+frai_with_user_4:
+  id: 7
+  user_id: 2
+  friend_id: 4
+  status: <%= Friendship::Status::REJECTED %>
+  friendship_id: 0
+
+user_4_with_frai:
+  id: 8
+  user_id: 4
+  friend_id: 2
+  status: <%= Friendship::Status::REJECTED %>
+  friendship_id: 7

@@ -1,0 +1,58 @@
+<h1 style="margin-top: 10px">DigiData Rest API</h1>
+
+<h2 style="margin-bottom: 10px">Business Collection Operation </h2>
+<%= link_to "Create a business(Collection and Admin) for a sp collection", :controller => "digidata", :action=>"index", :to_do => "Create_Business" %>
+</br>
+<% if @to_do.eql?"Create_Business" and !@api_result.blank? %>
+<p>
+	<%= @api_result%>
+</p>
+<%end%>
+</br>
+
+<%= link_to "Assign Owner to Biz", :controller => "digidata", :action=>"index", :to_do => "Assign_Owner" %>
+</br>
+<% if @to_do.eql?"Assign_Owner" and !@api_result.blank? %>
+<p>
+	<%= @api_result%>
+</p>
+<%end%>
+</br>
+
+<%= link_to "Delete a business from a sp collection (not yet)", :controller => "digidata", :action=>"index", :to_do => "Delete_Business" %>
+</br>
+<% if @to_do.eql?"Delete_Business" and !@api_result.blank?%>
+<p>
+	<%= @api_result%>
+</p>
+<%end%> 
+</br>
+
+
+<h2 style="margin-bottom: 10px">User Operation </h2>
+<%= link_to "Create a user for a business collection", :controller => "digidata", :action=>"index", :to_do => "Create_User" %>
+</br>
+<% if @to_do.eql?"Create_User" and !@api_result.blank?%>
+<p>
+	<%= @api_result%>
+</p>
+<%end%> 
+</br>
+
+<%= link_to "Delete a user from a business collection", :controller => "digidata", :action=>"index", :to_do => "Delete_User" %>
+</br>
+<% if @to_do.eql?"Delete_User" and !@api_result.blank?%>
+<p>
+	<%= @api_result%>
+</p>
+<%end%> 
+</br>
+
+<%= link_to "Update a user for a business collection", :controller => "digidata", :action=>"index", :to_do => "Update_User" %>
+</br>
+<% if @to_do.eql?"Update_User" and !@api_result.blank?%>
+<p>
+	<%= @api_result%>
+</p>
+<%end%> 
+</br>

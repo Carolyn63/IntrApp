@@ -1,0 +1,16 @@
+<h4>Hi, <%= @user.name  %> </h4>
+
+
+<p>Thank you, you have successfully signed up to our <%=property(:sp_name)%> portal.</p> </br>
+	
+	
+ <p>Just simply click the link below to activate you account and enjoy our services.</p> </br>
+  	<% @url = @root_url+"confirm?token=" + @user.persistence_token%>
+  	<%=link_to @url , @url%> </br>
+
+<p>If the above link does not work, try copying it and pasting it into your browser.</p></br>
+
+
+<p>Thank you!</p>
+
+<p>-<%=property(:sp_name)%> Portal</p>

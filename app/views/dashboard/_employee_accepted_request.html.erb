@@ -1,0 +1,20 @@
+<li>
+  <div class="img-box">
+    <%= image_tag employee_accepted_request.user.avatar.url(:thumb), :class => "img-mini-box-logo" %>
+  </div>
+  <div class="right-box">
+    <div class="left">
+      <p class="first-row"><span class="title"><b><%= link_to employee_accepted_request.user.name, user_path(employee_accepted_request.user) %></b></span></p>
+      <%= render :partial => "shared/company_name_and_profile_link", :locals => {:company => employee_accepted_request.company} %>
+      <p>
+        <span class="float-left">
+          <%= join_fields_with_pipe(employee_accepted_request.department_name, employee_accepted_request.job_title ) %>
+        </span>
+      </p>
+    </div>
+    <div class="right">
+      <%= link_to link_name(t("views.go_see_profile")), user_path(employee_accepted_request.user), :class => "standart-button" %>
+    </div>
+    <div class="clear"></div>
+  </div>
+</li>

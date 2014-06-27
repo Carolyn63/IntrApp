@@ -1,0 +1,13 @@
+<%= hidden_field_tag request_forgery_protection_token.to_s, form_authenticity_token -%>
+<ul class="list-employees">
+  <% friendships.each do |friendship| -%>
+    <li>
+      <span class="name">
+        <%= check_box_tag "friendships[]", "#{friendship.id}" %>
+        <%= link_to friendship.user.name, user_path(friendship.user) %>
+      </span>
+      <a href="mailto:<%= friendship.user.email %>" class="email"><%= friendship.user.email %></a>
+      <div class="clear"></div>
+    </li>
+  <% end -%>
+</ul>

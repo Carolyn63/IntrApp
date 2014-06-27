@@ -1,0 +1,288 @@
+48c48
+<     go_see_profile: "Go see profile"
+---
+>     go_see_profile: "See profile"
+59c59
+<     click_here_to_lanch: Click Here to Launch
+---
+>     click_here_to_lanch: Click here to launch
+64c64
+<       city: "City / Province"
+---
+>       city: "City, State"
+77,78c77,78
+<       user_name: User name
+<       generate_company_profile: Generate Company Profile
+---
+>       user_name: Username
+>       generate_company_profile: Generate company profile
+109c109
+<       not_connect_with_company_in_appcentral: "You are not connect with AppCentral."
+---
+>       not_connect_with_company_in_appcentral: "You do not yet have an AppCentral account."
+111c111
+<       not_connect_with_sogo: "You are not connect with Sogo"
+---
+>       not_connect_with_sogo: "You do not yet have a Sogo account"
+113c113
+<       save_and_go: "&nbsp;Save & Go Generate Employees Accounts"
+---
+>       save_and_go: "&nbsp;Save & go generate employee accounts"
+115,118c115,118
+<       enter_description_your_company: "Enter here a description of your company"
+<       after_create_able_add_department: After creating the company you be able to add company departments here
+<       your_departments_changed: Your depatment(s) was changed
+<       setting_company_department_important: Setting your company departments is very important, this will help you to categorize your employees.
+---
+>       enter_description_your_company: "Enter a description of your company"
+>       after_create_able_add_department: After creating the company you will be able to add company departments here
+>       your_departments_changed: Your departments were changed
+>       setting_company_department_important: Create departments for your company to help categorize your employees.
+125c125
+<       no_application: "You don't have applications yet"
+---
+>       no_application: "No applications are available, because you are not an employee of a company." 
+133c133
+<       you_have_invite_from_company: "You have invite from this company."
+---
+>       you_have_invite_from_company: "You have an invitation from this company."
+136c136
+<       generate_employees_accounts: Generate Employees Accounts
+---
+>       generate_employees_accounts: Generate Employee Accounts
+138c138
+<       company_profile_is_only: your Company profile is only
+---
+>       company_profile_is_only: your Company profile is 
+141,143c141,143
+<       clicking_here: "Clicking here!"
+<       other_companies_profiles: Other Companies Profiles
+<       request_send: Request Send
+---
+>       clicking_here: "Clicking here."
+>       other_companies_profiles: Other Company Profiles
+>       request_send: Request Sent
+146,147c146,147
+<       connections_requests: My Connections Requests
+<       not_have_connections_requests: "You don't have Connections Requests"
+---
+>       connections_requests: My Connection Requests
+>       not_have_connections_requests: "You don't have any Connection Requests"
+149,150c149,150
+<       ebento_members_has_accepted_your_request: "eBento Members has accepted your connection request."
+<       new_companies_profiles: New Companies Profiles
+---
+>       ebento_members_has_accepted_your_request: "eBento member(s) accepted your connection request(s)."
+>       new_companies_profiles: New Company Profiles
+153c153
+<       my_companies_profiles: My Companies profiles
+---
+>       my_companies_profiles: My Company profiles
+158c158
+<       recruit_employee: "Recruit Employee"
+---
+>       recruit_employee: "Invite to be an Employee"
+160c160
+<       you_can_recruit_employee: "You can recruit employee accounts here"
+---
+>       you_can_recruit_employee: "Invite people to be employees of your company"
+175c175
+<       you_can_generate_employee_accounts_here: You can generate employee accounts here
+---
+>       you_can_generate_employee_accounts_here: Generate employee accounts here
+182c182
+<       you_can_accept_or_reject_employers_invitations_here: You can accept or reject employers invitations here
+---
+>       you_can_accept_or_reject_employers_invitations_here: Accept or reject employer invitations here
+186c186
+<       you_can_accept_or_reject_friendship_request_here: You can accept or reject friendship request here
+---
+>       you_can_accept_or_reject_friendship_request_here: Accept or reject friendship requests here
+189c189
+<       please_enter_new_password: "Please enter the new password below and then press 'Update Password'."
+---
+>       please_enter_new_password: "Enter the new password below and then click 'Update Password'."
+193,194c193,194
+<       please_enter_your_email: "Please enter your email or user name below and then press 'Reset Password'."
+<       return_to_sign_in: "Return to sign in page"
+---
+>       please_enter_your_email: "Enter your email or user name below and then click 'Reset Password'."
+>       return_to_sign_in: "Return to sign-in page"
+203c203
+<         forget: Forget your password
+---
+>         forget: Forgot your password
+231c231
+<       username: User Name
+---
+>       username: Username
+233,235c233,235
+<       login_example: "Ex: Eric"
+<       email_example: "Ex: eric@yoursite.com"
+<       city_example: "Ex: South Park"
+---
+>       login_example: "Ex: Mary"
+>       email_example: "Ex: mary@company.com"
+>       city_example: "Ex: New York"
+246c246
+<       create_username: Creat your user name
+---
+>       create_username: Create your username
+252,253c252,253
+<       email_or_username: Email or User name
+<       enter_your_user_name: Enter here your user name
+---
+>       email_or_username: Email or Username
+>       enter_your_user_name: Enter your username
+268c268
+<       description: "Small description of your self"
+---
+>       description: "Description of yourself"
+279c279
+<       your_user_profile_is_only: your User profile is only
+---
+>       your_user_profile_is_only: your User profile is
+282c282
+<       clicking_here: "Clicking here!"
+---
+>       clicking_here: "Clicking here."
+286c286
+<       list_of_companies_so_far: "This is the List of Companies you have created on eBento so far."
+---
+>       list_of_companies_so_far: "This is the list of companies you have created on eBento."
+289,290c289,290
+<       employee_profile_of_companies: "Employees profile of my companies"
+<       recommended_members_to_you: Recommended members to you
+---
+>       employee_profile_of_companies: "Employee profile of my companies"
+>       recommended_members_to_you: Recommended members 
+310c310
+<       account_name_must_be_unique: "An account name must be unique within our system. May we suggest you use your email address as your account name?"
+---
+>       account_name_must_be_unique: "A username must be unique within our system."
+313c313
+<       account_name_must: "An account name must already be register with MobileTribe."
+---
+>       account_name_must: "An account name must already be registered with MobileTribe."
+319c319
+<       enter_small_description: "Enter small description of your self"
+---
+>       enter_small_description: "Enter a description of yourself"
+346c346
+<       generate_employees_accounts: Generate Employees Accounts
+---
+>       generate_employees_accounts: Generate Employee Accounts
+351,353c351,353
+<       income_requests: Income requests
+<       outcome_requests: Outcome requests
+<       rejected_outcome_request: Rejected outcome request
+---
+>       income_requests: Requests received
+>       outcome_requests: Requests sent
+>       rejected_outcome_request: Requests sent and rejected
+361c361
+<     bad_data: "You have passed bad data to system!"
+---
+>     bad_data: "Error.  You probably attempted to use a URL for a user other than the one currently logged-in."
+372c372
+<     not_any_company: "You don't have any company"
+---
+>     not_any_company: "You aren't an employee of any companies"
+377,383c377,383
+<     employee_recruited: "Employee recruited"
+<     employee_recruit_failed: "Employee recruit failed"
+<     employees_successful_delete: "Employees successful delete"
+<     employees_delete_failed: "Failed delete employees"
+<     employee_successful_delete: "Employee successful delete"
+<     employee_delete_failed: "Failed delete employee"
+<     your_account_blocked: "Login failed! You account blocked"
+---
+>     employee_recruited: "Employee invitation sent"
+>     employee_recruit_failed: "Employee invitation failed"
+>     employees_successful_delete: "Employees successfully deleted"
+>     employees_delete_failed: "Employee delete failed"
+>     employee_successful_delete: "Employee successfully deleted"
+>     employee_delete_failed: "Delete employee failed"
+>     your_account_blocked: "Login failed. You account is blocked."
+385,393c385,393
+<     you_must_be_logged: "You must be logged in to access this page"
+<     you_must_be_logged_out: "You must be logged out to access this page"
+<     problem_with_sogo_account: "<br/>You have some problem with Sogo account, you may connect to Sogo later on Manage Invitage page. <br/>"
+<     successful_connect_to_sogo: "You successful connect to Sogo"
+<     error_connect_to_sogo: "Error connect to Sogo."
+<     not_connect_to_sogo: "Your company not connect with Sogo."
+<     sogo_not_use: "Sogo doesn't use now"
+<     company_successful_created: "Company successful created."
+<     company_create_failed: "Company create failed"
+---
+>     you_must_be_logged: "You must be logged-in to access this page"
+>     you_must_be_logged_out: "You must be logged-out to access this page"
+>     problem_with_sogo_account: "<br/>Error creating the Sogo account.  Try creating a Sogo account on the Manage Invitations page. <br/>"
+>     successful_connect_to_sogo: "Sogo account successfully created"
+>     error_connect_to_sogo: "Error creating Sogo account."
+>     not_connect_to_sogo: "Your company has not yet created an account on Sogo."
+>     sogo_not_use: "Sogo is not available now"
+>     company_successful_created: "Company successfully created."
+>     company_create_failed: "Creation of company failed"
+396,398c396,398
+<     company_successful_deleted: "Company successful deleted"
+<     failed_delete_company: "Failed delete company."
+<     appcentral_company_created: "AppCentral company successful created"
+---
+>     company_successful_deleted: "Company successfully deleted"
+>     failed_delete_company: "Failed to delete company."
+>     appcentral_company_created: "AppCentral company account successfully created"
+400,405c400,405
+<     integrate_with_appcentral_failed: "Sorry, integrate with AppCentral failed:"
+<     appcentral_employee_created: "You are success connect with AppCentral"
+<     company_not_connect_with_appcentral: "Your company not connect with AppCentral. Please, report about this company admin"
+<     appcentral_not_use: "AppCentral doesn't use now"
+<     success_accept_invite: "You successful accept invite"
+<     error_accept_invite: "Error accept invite."
+---
+>     integrate_with_appcentral_failed: "Failed to create either an employee account or company account in AppCentral:"
+>     appcentral_employee_created: "AppCentral employee account successfully created"
+>     company_not_connect_with_appcentral: "Your company does not have an AppCentral account. Ask the Main Contact for your company to create an AppCentral account for your company."
+>     appcentral_not_use: "AppCentral is not available"
+>     success_accept_invite: "You successful accepted the invitation"
+>     error_accept_invite: "Error accepting invitation."
+412c412
+<     no_user_was_found_for_this_login: "No user was found with this {{email}} login or email"
+---
+>     no_user_was_found_for_this_login: "No user was found with [ {{email}} ] username or email"
+416,420c416,420
+<     your_question_sent: "Your question sent"
+<     login_successful: "Login successful!"
+<     login_failed: "Login failed!"
+<     logout_successful: "Logout successful!"
+<     account_updated: "Account updated!"
+---
+>     your_question_sent: "Your question was successfully sent"
+>     login_successful: "Login successful."
+>     login_failed: "Login failed."
+>     logout_successful: "Logout successful."
+>     account_updated: "Account updated."
+422,426c422,426
+<     error_send_friendship_reqeust: "Error send friendship reqeust."
+<     friendship_successful_remove: "Friendship successful remove."
+<     error_remove_friendship: "Error remove friendship."
+<     association_removed: "Association removed!"
+<     cant_find_user: "Can't find user with an id"
+---
+>     error_send_friendship_reqeust: "Error sending friendship request."
+>     friendship_successful_remove: "Friendship successfully removed."
+>     error_remove_friendship: "Error removing friendship."
+>     association_removed: "Association removed."
+>     cant_find_user: "Can't find user with that id"
+439c439
+<       employee_delete_error: "Employee delete error. Please, contact with admin"
+---
+>       employee_delete_error: "Error deleting employee"
+447c447
+<       should_look_like_email: "should look like an email name."
+---
+>       should_look_like_email: "should look like an email address (e.g., someone@company.com)."
+460c460
+<       no_need: "I may connect later"
+---
+>       no_need: "I will connect later"

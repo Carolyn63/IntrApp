@@ -1,0 +1,158 @@
+errors:
+  #Employee errors messages
+  employee:
+    #200
+    email_is_too_short: "Email is too short (minimum is 6 characters)"
+    #201
+    email_should_look_like_email: "Email should look like an email address."
+    #202
+    login_is_too_short: "Login is too short (minimum is 3 characters)"
+    #203
+    login_should_use_only_letters: "Login should use only letters, numbers, spaces, and .-_@ please."
+    #204
+    employees_is_invalid: Employees is invalid
+    #205
+    firstname_cant_be_blank: "Firstname can't be blank"
+    #206
+    firstname_is_too_short: "Firstname is too short (minimum is 1 characters)"
+    #207
+    lastname_cant_be_blank: "Lastname can't be blank"
+    #208
+    lastname_is_too_short: "Lastname is too short (minimum is 1 characters)"
+    #209
+    ondeego_email_cant_be_blank: "Ondeego email can't be blank"
+    #210
+    ondeego_email_is_too_short: "Ondeego email is too short (minimum is 6 characters)"
+    #211
+    ondeego_email_should_like_email: "Ondeego email should look like an email name."
+    #212
+    ondeego_phone_cant_blank: "Ondeego phone can't be blank"
+    #213
+    ondeego_phone_short: "Ondeego phone is too short (minimum is 7 characters)"
+    #214
+    job_title_cant_blank: "Job title can't be blank"
+    #215
+    job_title_is_short: "Job title is too short (minimum is 1 characters)"
+    #216
+    email_password_cant_blank: "Email password can't be blank"
+    #217
+    email_password_is_short: "Email password is too short (minimum is 6 characters)"
+    #218
+    email_password_confirmation_cant_blank: "Email password confirmation can't be blank"
+    #219
+    email_password_confirmation_short: "Email password confirmation is too short (minimum is 6 characters)"
+    #220
+    company_email_name_short: "Company email name is too short (minimum is 1 characters)"
+    #221
+    company_email_name_should_look_like_email_name: "Company email name should look like an email name."
+    
+  #User errors messages
+  user:
+    email_is_too_short: "Email is too short (minimum is 6 characters)"
+    email_should_look_like_email: "Email should look like an email address."
+    login_is_too_short: "Login is too short (minimum is 3 characters)"
+    login_should_use_only_letters: "Login should use only letters, numbers, spaces, and .-_@ please."
+    #222
+    password_is_too_short: "Password is too short (minimum is 6 characters)"
+    #223
+    password_doesnt_match: "Password doesn't match confirmation"
+    #224
+    password_confirmation_is_too_short: "Password confirmation is too short (minimum is 6 characters)"
+    firstname_cant_be_blank: "Firstname can't be blank"
+    firstname_is_too_short: "Firstname is too short (minimum is 1 characters)"
+    lastname_cant_be_blank: "Lastname can't be blank"
+    lastname_is_too_short: "Lastname is too short (minimum is 1 characters)"
+    #225
+    terms_and_conditions_must_be_accepted: "Terms and conditions must be accepted"
+
+   #Company errors messages
+  company:
+    employees_is_invalid: Employees is invalid
+    #226
+    name_cant_blank: "Name can't be blank"
+    #227
+    name_is_too_short: "Name is too short (minimum is 1 characters)"
+    ondeego_email_cant_be_blank: "Ondeego email can't be blank"
+    ondeego_email_is_too_short: "Ondeego email is too short (minimum is 6 characters)"
+    ondeego_email_should_like_email: "Ondeego email should look like an email name."
+    ondeego_phone_cant_blank: "Ondeego phone can't be blank"
+    ondeego_phone_short: "Ondeego phone is too short (minimum is 7 characters)"
+    job_title_cant_blank: "Job title can't be blank"
+    job_title_is_short: "Job title is too short (minimum is 1 characters)"
+    email_password_cant_blank: "Email password can't be blank"
+    email_password_is_short: "Email password is too short (minimum is 6 characters)"
+    email_password_confirmation_cant_blank: "Email password confirmation can't be blank"
+    email_password_confirmation_short: "Email password confirmation is too short (minimum is 6 characters)"
+    company_email_name_short: "Company email name is too short (minimum is 1 characters)"
+    company_email_name_should_look_like_email_name: "Company email name should look like an email name."
+
+  #Flash errors messages
+  controllers:
+    #101
+    bad_data: "You have passed bad data to system!"
+    #102
+    failed_user_block: Block user failed
+    #103
+    failed_user_unblock: Unblock user failed
+    #104
+    failed_user_delete: Delete user failed
+    #105
+    failed_user_approve: Approve user failed
+    #106
+    problem_with_ondeego_request: "Problem with request to AppCentral."
+    #107
+    not_any_company: "You don't have any company"
+    #108
+    employee_update_failed: "Employee update failed"
+    #109
+    employee_create_failed: "Employee create failed"
+    #110
+    employee_recruit_failed: "Employee recruit failed"
+    #111
+    employees_delete_failed: "Failed delete employees"
+    #112
+    employee_delete_failed: "Failed delete employee"
+    #113
+    your_account_blocked: "Login failed! You account blocked"
+    #114
+    access_denied: "Access denied"
+    #115
+    you_must_be_logged: "You must be logged in to access this page"
+    #116
+    you_must_be_logged_out: "You must be logged out to access this page"
+    #117
+    error_connect_to_sogo: "Error connect to Sogo."
+    #118
+    not_connect_to_sogo: "Your company not connect with Sogo."
+    #119
+    company_create_failed: "Company create failed"
+    #120
+    company_update_failed: "Company update failed"
+    #121
+    failed_delete_company: "Failed delete company."
+    #122
+    appcentral_login_failed: "AppCentral login failed"
+    #123
+    integrate_with_appcentral_failed: "Sorry, integrate with AppCentral failed:"
+    #124
+    company_not_connect_with_appcentral: "Your company not connect with AppCentral. Please, report about this company admin"
+    #125
+    appcentral_not_use: "AppCentral doesn't use now"
+    #126
+    error_accept_invite: "Error accept invite."
+    #127
+    sogo_error: "Sogo error: "
+    #128
+    login_failed: "Login failed!"
+    #129
+    error_send_friendship_reqeust: "Error send friendship reqeust."
+    #130
+    error_remove_friendship: "Error remove friendship."
+    #131
+    cant_find_user: "Can't find user with an id"
+    #132
+    problem_with_sogo_account: "<br/>You have some problem with Sogo account, you may connect to Sogo later on Manage Invitage page. <br/>"
+    #133
+    sogo_not_use: "Sogo doesn't use now"
+
+

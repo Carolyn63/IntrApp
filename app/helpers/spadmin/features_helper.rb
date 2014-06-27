@@ -1,0 +1,2 @@
+module Spadmin::FeaturesHelper
+end

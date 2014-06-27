@@ -1,0 +1,2 @@
+module Sysadmin::AdminprofilesHelper
+end

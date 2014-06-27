@@ -1,0 +1,36 @@
+development: &defaults
+  app_site: http://ebento.gera-it-dev.com
+  host: ebento.gera-it-dev.com
+  my_ebento_link: http://mtproxy8.ebento.net
+  email_from: noreply@apps.ebento.net
+  ondeego_smb_login: "PelesendSMB"
+  ondeego_smb_password: "peleSMB123"
+  use_ondeego: false
+  use_mobile_tribe: false
+  use_sogo: false
+  on_deego_api: https://mtproxy8.ebento.net:8443/appcentral
+  mobile_tribe_api: http://mtproxy8.mobiletribe.net/ws
+  ondeego_consumer_key: "Ag=="
+  ondeego_consumer_secret: "d+cYHMqMyik3x7lieltd37yMqih9ECvLFHQCju0+gGc="
+  wrapper_login: "myapp"
+  wrapper_password: "beta"
+  wrapper_api: "http://sogo.ebento.net"
+  sogo_url: "https://sogo.ebento.net/SOGo" 
+  cas_url: "https://cas.ebento.net"
+  sogo_email_domaim: ebento.net
+  #Don't forget change key in rubycas-server config, if aes_key changed
+  aes_key: "zjwfV8rQt6KsAnXcdtRTtw=="
+  session_key: '_test_eBento_session'
+  cookies_domain: ''
+  multi_company: false
+  help_system_link: http://docs.futurewei.ebento.net/display/eBento
+  version: "2.56"
+  
+test:
+  <<: *defaults
+    
+production:
+  <<: *defaults
+  use_ondeego: true
+  use_mobile_tribe: true
+  use_sogo: true

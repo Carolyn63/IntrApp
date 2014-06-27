@@ -1,0 +1,43 @@
+<% employee = employer.employee(current_user) %>
+<li>
+  <div class="img-box">
+    <%= image_tag employer.logo.url(:medium) %>
+  </div>
+  <div class="right-box">
+    <p class="name"><b><%= employer.name %></b></p>
+    <%# unless employee.company_email.blank? %>
+      <p class="area">
+        <i><%= employee.company_email %></i>&nbsp;&nbsp;&nbsp;
+        <% if employee.active? %>
+          <%= link_to(t("views.companies.edit_profile"),  edit_by_employee_company_employee_path(employer, employee, :width => "600", :height=>"450" ), :class=>"thickbox") %>
+        <%end%>
+      </p>
+    <%#end%>
+    <!--p class="area"><i><%= employer.industry %></i></p>
+    <p class="placement"><%= employer.address %></p>
+    <p class="description"><%= employer.description %></p-->
+    <p class="area"><i><%= employee.phone %></i></p>
+    <p class="placement"><%= employee.job_title %></p>
+    <p class="placement"><%= employee.department_name %>&nbsp;</p>
+    <%= link_to link_name(t("views.employees.see_company_profile")), company_path(employer), :class=>"standart-button" %>
+    <br/>
+    <br/>
+    <% unless employee.blank? %>
+      <% if employer.owner?(current_user) %>
+        <% if employee.active? && !employee.sogo_connect? && !employee.company_email.blank? %>
+          <%= link_to link_name(t("views.companies.create_sogo_account")), sogo_connect_company_employee_path(employer, employee), :class=>"standart-button" %>
+          <br/>
+          <br/>
+        <%end%>
+        <p class="name"><b><%= t("views.employees.your_company") %></b></p><br/>
+      <% else %>
+        <% if employee.active? && !employer.employee(current_user).ondeego_connect? && employer.ondeego_connect? %>
+          <%= link_to(link_name(t("views.companies.create_appcentral_employee")), employee_create_user_ondeego_path(current_user, :company_id => employer.id), :class=>"standart-button", :target => "_blank")  %><br/><br/>
+        <%end%>
+      <% end %>
+      <% if employee.rejected? || employee.pending? %>
+        <%= link_to link_name(t("views.accept")), accept_user_employer_path(current_user, employer) %> <br/><br/>
+      <% end %>
+    <% end %>
+  </div>
+</li>

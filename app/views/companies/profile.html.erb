@@ -1,0 +1,21 @@
+<div class="content right-column">
+  <div class="left-side">
+    <span style="float:right;width:160px;"><%= link_to %Q!<i>#{t("views.companies.go_back_profile")}</i>!,  company_path(@company), :class=>"link-list" %></span>
+    <h1><%= t("views.companies.company_employees", :name => @company.name) %><%= help_icon %></h1>
+    <ul class="list members-list profiles-list">
+      <%= render :partial => "users/user", :collection => @active_employees %>
+    </ul>
+    <div class="clear"></div>
+  </div>
+ <div class="right-side right-back">
+    <div class="inner-right-side">
+      <h2><%= t("views.companies.other_companies_profiles") %></h2>
+      <ul class="list right-list w255">
+        <%= render :partial => "recently_company", :collection => @recently_companies %>
+        <li class="last">&nbsp;</li>
+      </ul>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>

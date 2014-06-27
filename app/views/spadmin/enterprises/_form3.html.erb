@@ -1,0 +1,80 @@
+<h4 class="title"><%= t("views.titles.sp_ent_form_step_3")%></h4>
+<table id="sortableTable" class="tablesorter">
+	<thead>
+		<th><%= t("views.titles.featureName")%></th>
+		<th><%= t("views.titles.description")%></th>
+		<td style="width:100px;"><a href="javascript:void(0);" class="check" id="check"><%= t("views.labels.feature_uncheck_all")%></a></td>
+	</thead>
+	<% row = 0%>
+	<tbody>
+		<% @features.each do |feature| -%>
+		<tr class="<%= cycle("odd", "even") %>">
+			<td align="left"> <%= f.label :label_name,  feature["name"]%>
+			<%= hidden_field("featureCode", row, :value=>feature["featureCode"])%> </td>
+			<td align="left" class="right-column"> <%= f.label :label_description, feature["description"]%>
+			<%= hidden_field("description", row, :value=>feature["description"])%> </td>
+			<td><%= check_box ("assign", row, {:checked => true, :id => "assign"}, true, false)%></td>
+		</tr>
+		<% row += 1%>
+		<% end %>
+	</tbody>
+</table>
+<%= hidden_field("row", "count", :value=>row)%>
+<div class="group navform wat-cf">
+	<!-- 	<button>
+	<%= image_submit_tag 'web-app-theme/next.png', :name => 'commit', :value => 'next' %>
+	</button>
+	<button>
+	<%= image_submit_tag 'web-app-theme/finish.png',  :name => 'commit', :value => 'finish' %>
+	</button>
+	<button>
+	<%= image_submit_tag 'web-app-theme/cancel.png', :name => 'commit', :value => 'cancel' %>
+	</button> -->
+	<%= submit_tag t("views.buttons.next"), :class => "submit_next" %>
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<style>
+	.submit_next {
+		background-image: url('/images/web-app-theme/next.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16em;
+	}
+	.submit_finish {
+		background-image: url('/images/web-app-theme/tick.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>
+<script>
+	$(function () {
+$('a.check').toggle(
+function() {
+$('input#assign').attr('checked', '');
+$(this).html('<%= t("views.labels.feature_check_all")%>') ;
+},
+function() {
+$('input#assign').attr('checked', 'checked');
+$(this).html('<%= t("views.labels.feature_uncheck_all")%>') ;
+}
+
+	);
+	});
+</script>

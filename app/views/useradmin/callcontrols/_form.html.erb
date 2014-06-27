@@ -1,0 +1,56 @@
+<table class="table">
+	<% row = 0%>
+	<% @features.each do |feature| -%>
+	<%if !"CB CFB CFNA CFU FMFM MOBP SIMR".include? feature["featureCode"]%>
+	<tr>
+		<td><%= check_box ("assign", row, {:checked => feature["active"]}, true, false)%></td>
+		<td> <%= f.label :featureName,  feature["name"]%></td>
+		<td><%= hidden_field("featureCode", row, :value=>feature["featureCode"])%></td>
+	</tr>
+	<% row += 1%>
+	<% end %>
+	<% end %>
+</table>
+<div class="group navform wat-cf">
+	<!-- 	<button>
+	<%= image_submit_tag 'web-app-theme/next.png', :name => 'commit', :value => 'next' %>
+	</button>
+	<button>
+	<%= image_submit_tag 'web-app-theme/finish.png',  :name => 'commit', :value => 'finish' %>
+	</button>
+	<button>
+	<%= image_submit_tag 'web-app-theme/cancel.png', :name => 'commit', :value => 'cancel' %>
+	</button> -->
+	<%= submit_tag t("views.buttons.finish"), :class => "submit_finish" %>
+	<%= submit_tag t("views.buttons.cancel"), :class => "submit_cancel" %>
+</div>
+<style>
+	.submit_next {
+		background-image: url('/images/web-app-theme/next.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16em;
+	}
+	.submit_finish {
+		background-image: url('/images/web-app-theme/tick.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	.submit_cancel {
+		background-image: url('/images/web-app-theme/cross.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		width: 100px;
+		height: 27px;
+		font-weight: bold;
+		font-size: 16px;
+	}
+</style>
+<%= hidden_field("row", "count", :value=>row)%>

@@ -1,0 +1,62 @@
+<div class="content left-column">
+  <div class="clear"></div>
+<%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container">
+
+
+<%
+if !@orders.blank?
+%>
+
+ <div class="head">
+    <h1><%= t("views.orders.your_cart") %></h1>
+ </div>
+
+<table class="table" width="100%" cellspacing = "10">
+<tr>
+	      <th class = "first" align="left"> <%=t("views.orders.item_name")%></th>
+	      <th align="left"> <%=t("views.orders.quantity")%></th>
+	      <th align="left"> <%=t("views.orders.price")%></th>
+	      <th align="left"> <%=t("views.orders.total_price")%></th>
+	      <th align="left"> <%=t("views.orders.status")%></th>
+	       
+	       <th align="left">&nbsp;</th>
+</tr>
+<%order_ids ||= Array.new 
+%>
+<%@orders.each do |order|%>
+<%
+if !order.plan_id.blank?
+
+
+%>
+
+
+<tr class="<%= cycle("odd", "even") %>">
+	<td> <span><%=order.application_plan.code%></span> </td>
+            
+	<td> <%=order.quantity%></td>
+    <td> <%=format("%.2f",(order.amount))%> <%=property(:default_currency)%></td>
+	<td> <%=format("%.2f",(order.amount * order.quantity))%> <%=property(:default_currency)%></td>
+    <td> <%=order.status%></td>
+    <td><%=link_to t("views.links.delete"), user_order_path(current_user.id, order.id), :method => :delete%></td>
+</tr>
+<%order_ids << order.plan_id%>
+
+
+<%end%>
+<%end%>
+
+
+</table>
+
+<div style="margin-top: 10px;margin-left:10px;">
+
+<span style="" > <%= link_to wide_button(t("views.links.checkout")), payments_user_path(current_user.id, :order_ids => order_ids),:protocol => 'https', :method => :get , :class=>"standart-button"%></span>
+</div>
+
+<%end%>
+
+		</div>
+	<div class="clear"></div>
+</div>

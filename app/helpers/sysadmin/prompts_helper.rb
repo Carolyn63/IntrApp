@@ -1,0 +1,2 @@
+module Sysadmin::PromptsHelper
+end

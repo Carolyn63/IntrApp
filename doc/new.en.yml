@@ -1,0 +1,678 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  hello: "Hello world"
+  views:
+    ebento: eBento
+    update: Update
+    save: Save
+    upload: Upload
+    edit: Edit
+    delete: Delete
+    close: Close
+    or: or
+    cancel: Cancel
+    filter: Filter
+    employees_title: Employees
+    accept: Accept
+    reject: Reject
+    profile: Profile
+    my_contacts: My Contacts
+    coworkers: "My Coworkers"
+    my_friends: My Friends
+    find_people: Find People
+    pagination_prev: "Previous"
+    pagination_next: "Next"
+    dashboard: "Home"
+    people: "People"
+    forum: "Forum&nbsp;&&nbsp;Groups"
+    applications: "Applications"
+    manage: Manage
+    no_information: No information
+    company: Company
+    role: Role
+    status: Status
+    privacy: Privacy
+    mt_associated: MT associated
+    save_profile: "Save Profile"
+    send_invitations: "Send Email Invitations"
+    search: Search
+    owner: "Owner"
+    employee: "Employee"
+    see_full_profile: See full profile
+    add_to_friend: +Add to Friend
+    connecting_to_appcentral: "Connecting to AppCentral..."
+    advance_search: Advance Search
+    see_employees_list: See employees list
+    go_see_profile: "See profile"
+    accept_request: "Accept Request"
+    reject_request: "Reject Request"
+    coworkers: Coworkers
+    add_to_friends: Add to Friends
+    delete_from_friends: "Delete from Friends"
+    delete_invitation: "Delete invitation"
+    resend: Resend
+    remove: Remove
+    self_service_provisioning: Corporate Directory Portal
+    your_mobiletribe: Mobile Client
+    click_here_to_lanch: Click here to launch
+    companies:
+      name: Company Name
+      id: Id
+      address: Address
+      city: "City, State"
+      phone: "Phone Number"
+      privacy: "Privacy"
+      company_type: "Company Type"
+      industry: "Industry &amp; Focus"
+      size: "Size &amp; Revenue"
+      description: "Description"
+      team: "Team / Leaders"
+      privacy: Privacy
+      created_at: "Created date"
+      status: Status
+      profile: "Profile of %{company}"
+      company_name: Company name
+      user_name: Username
+      generate_company_profile: Generate company profile
+      contact_information: Contact Information
+      main_contact: Main Contact
+      full_name: Full Name
+      job: Job Title Position
+      ondeego_login: AppCentral login
+      ondeego_password: AppCentral password
+      ondeego_login: AppCentral login
+      device_type: Device type
+      device_os: Device OS
+      company_information: Company Information
+      logo: Company Logo
+      country_phone_code: Country code
+      ondeego_email: AppCentral email
+      device_nickname: Device nickname
+      ondeego_country_code: Country code
+      ondeego_phone: Phone number
+      job_title: Job title
+      company_email: Company email
+      company_email_password: Company email password
+      company_email_password_confirmation: "Company email password confirmation"
+      website: Website
+      facebook: Facebook
+      twitter: Twitter
+      department: "Department"
+      phone_format: "from 7 to 25 symbols in xxxxxxx format"
+      appcentral: "AppCentral"
+      access_appcentral: "Access AppCentral"
+      create_appcentral_company: "Create AppCentral company"
+      owner: "(Owner)"
+      create_appcentral_employee: "Create AppCentral employee"
+      not_connect_with_company_in_appcentral: "You do not yet have an AppCentral account."
+      access_sogo: "Access Sogo"
+      not_connect_with_sogo: "You do not yet have a Sogo account"
+      create_sogo_account: "Create Sogo account"
+      save_and_go: "&nbsp;Save & go generate employee accounts"
+      company_description: Company Description
+      enter_description_your_company: "Enter a description of your company"
+      after_create_able_add_department: After creating the company you will be able to add company departments here
+      your_departments_changed: Your departments were changed
+      setting_company_department_important: Create departments for your company to help categorize your employees.
+      add_department: '+&nbsp;Add Department'
+      save_setting: Save Setting
+      user_status: User status
+      user_role: "User role"
+      no_companies: "No companies"
+      company_main_contact: "Company Main Contact:"
+      no_application: "No applications are available, because you are not an employee of a company." 
+      edit_profile: Edit Profile
+      your_applications: Your Applications
+      recent_companies: Recent Companies
+      sort_your_companies: Sort your Companies by
+      find_companies: Find Companies
+      company_employees: "Company {{name}} employees"
+      go_back_profile: Go back to company profile
+      you_have_invite_from_company: "You have an invitation from this company."
+      company_description: Company description
+      edit_company_profile: Edit My Company Profile
+      generate_employees_accounts: Generate Employee Accounts
+      create_appcentral_company: Create AppCentral company
+      company_profile_is_only: your Company profile is 
+      completed: completed
+      add_more_info_now: "Add more info now, and let people know more about you,"
+      clicking_here: "Clicking here."
+      other_companies_profiles: Other Company Profiles
+      request_send: Request Sent
+      coworking_request: Coworking Request
+      welcome_to_ebento: Welcome to eBento
+      connections_requests: My Connection Requests
+      not_have_connections_requests: "You don't have any Connection Requests"
+      ebento_members_sent_you_requests_to_your_contacts: "eBento Members sent you requests to be part of your Contacts"
+      ebento_members_has_accepted_your_request: "eBento member(s) accepted your connection request(s)."
+      new_companies_profiles: New Company Profiles
+      new_people_profile: New People Profiles
+      my_profile: My profile
+      my_companies_profiles: My Company profiles
+      my_company_profile: My Company profile
+      your_companies: "Your Companies"
+      your_company: "Your Company"
+    employees:
+      recruit_employee: "Invite to be an Employee"
+      generate_employee_accounts: "Generate Employee Accounts"
+      you_can_recruit_employee: "Invite people to be employees of your company"
+      select_company: "Select company"
+      employees_by: "Employees by"
+      already_added_employees: "Already Added Employees"
+      delete_selected_ones: "Delete Selected Ones"
+      edit_selected: "Edit Selected Ones"
+      pending_employees: "Pending Employees"
+      pending: "(Pending)"
+      see_company_profile: "See company profile"
+      see_employee_list: See Company Employee List
+      edit_password: "Edit password"
+      your_company: "Your company"
+      edit_company_email_password: "Edit Company email password of user"
+      company_email_confirmation: "Company email confirmation"
+      manage_employee_accounts: "Manage Employee Accounts for Company '{{name}}'"
+      you_can_generate_employee_accounts_here: Generate employee accounts here
+      create_employee: "Create Employee"
+      edit_employee: "Edit Employee {{name}}"
+      new_employee: New Employee
+      user: User
+      people: People
+      your_employers: Your Employers
+      you_can_accept_or_reject_employers_invitations_here: Accept or reject employer invitations here
+      send_invitations: "Send Email Invitations"
+    friendships:
+      your_friendship_request: Your Friendship request
+      you_can_accept_or_reject_friendship_request_here: Accept or reject friendship requests here
+    password_resets:
+      update_your_password: Update your password
+      please_enter_new_password: "Enter the new password below and then click 'Update Password'."
+      new_password: "New password"
+      update_password: Update Password
+      reset_password: Reset Password
+      please_enter_your_email: "Enter your email or user name below and then click 'Reset Password'."
+      return_to_sign_in: "Return to sign-in page"
+    sessions:
+      new:
+        login_box: Login Box
+        login: Login
+        email: Email
+        password: Password
+        remember: Remember me on this computer
+        login_button: Login
+        forget: Forgot your password
+        login_to_ebento: Login to eBento
+        not_registered: "Not registered?"
+        join_now: "Join Now"
+        forgot_your_password: "Forgot your password?"
+    shared:
+      login_menu:
+        login: Login
+        signup: Signup
+        logout: Logout %{login}
+        support: Support
+        about: About
+        forgot_password: Forgot password
+        account_setting: Account & Settings
+        help: Help
+        signout: Sign Out
+        login_as: "Logged in as&nbsp;%{user}&nbsp;"
+    users:
+      id: Id
+      signup: Sign up
+      login: Login
+      email: Email
+      company: Company
+      city: City
+      country: Country
+      confirm: Confirm password
+      first_name: First Name
+      last_name: Last Name
+      username: Username
+      password: Password
+      login_example: "Ex: Mary"
+      email_example: "Ex: mary@company.com"
+      city_example: "Ex: New York"
+      counrty_example: "Ex: USA"
+      agree_terms: "Do you agree?"
+      privacy: Privacy
+      name: "Name"
+      username: "Account name"
+      status: "Status"
+      agree: "I have read and agree to the"
+      term: Terms of Service
+      enter_first_name: Enter here your first name
+      enter_last_name: Enter here your last name
+      create_username: Create your username
+      alt_email: Email
+      enter_alt_email: Enter here your alternative email
+      enter_password: Enter your password
+      enter_confirmation_password: Enter your confirmation password
+      read_agree: "I have read and agree to the&nbsp;"
+      email_or_username: Email or Username
+      enter_your_user_name: Enter your username
+      receive_notification_friendship: Receive email notification on Friendship requests
+      mt_login: MobileTribe login
+      mt_password: MobileTribe password
+      enter_mt_login: Enter MobileTribe login
+      enter_mt_password: Enter MobileTribe password
+      mt_login_and_password: MobileTribe login and password
+      address: Address
+      phone: "Phone"
+      cellphone: "CellPhone"
+      position: "Position"
+      age: "Age"
+      sex: "Sex"
+      site: "Site"
+      qualification: "Qualification"
+      description: "Description of yourself"
+      role: Role
+      status: Status
+      created: Created
+      city: City
+      country: Country
+      state: State
+      job_title: Job Title
+      contacts: "Contacts"
+      no_contacts: "No contacts"
+      edit_profile: Edit Profile
+      your_user_profile_is_only: your User profile is
+      completed: completed
+      add_more_info: Add more info now, and let people know more about you,
+      clicking_here: "Clicking here."
+      basic_information: Basic Information
+      contact_information: Contact Information
+      my_companies: My Companies
+      list_of_companies_so_far: "This is the list of companies you have created on eBento."
+      user_companies: "User's Companies"
+      create_new_company: "&nbsp;Create&nbsp;a&nbsp;New&nbsp;Company"
+      employee_profile_of_companies: "Employee profile of my companies"
+      recommended_members_to_you: Recommended members 
+      ebento_profile: "{{name}} eBento Profile"
+      enter_your_phone: "Enter your phone"
+      enter_your_cellphone: "Enter your cellphone"
+      enter_your_address: "Enter your address"
+      enter_your_city: "Enter your city"
+      enter_your_state: "Enter your state"
+      enter_your_job_title: "Enter your job title"
+      enter_your_position: "Enter your position"
+      enter_your_qualification: "Enter your qualification"
+      enter_your_age: "Enter your age"
+      male: "Male:"
+      female: "Female:"
+      enter_your_site: "Enter your site"
+      mobile_tribe_all_social_networking: "MobileTribe connects to all your social networking accounts allowing you to access your personal contacts, email, pictures and more."
+      connect_to_mobile_tribe: "Connect to MobileTribe"
+      you_can_later_associate_mt: "You can later any time associate/create MT account on your Account Settings page."
+      your_ebento_account_is_associated: "Your eBento account is associated with MT account"
+      are_you_sure: "Are you sure?"
+      remove_association_with_mt: "Remove association with MT"
+      account_name_must_be_unique: "A username must be unique within our system."
+      valid_email_is_used: "A valid email is used to send a confirmation message to verify your new account"
+      password_must_be: "A password must be 6 or more characters, and should include letters, numbers, and symbols"
+      account_name_must: "An account name must already be registered with MobileTribe."
+      filter_by_company: "Filter by company:"
+      create_your_ebento_profile: "Create your eBento Profile"
+      personal_information: Personal Information
+      save_profile: "&nbsp;Save&nbsp;Profile"
+      your_profile_photo: "Your profile photo"
+      enter_small_description: "Enter a description of yourself"
+      sort_your_people: "Sort your People by:"
+      recent_members: Recent Members
+      want_to_be_part: Want to be part of eBento?
+      already_member: "Already a member?"
+      regirter: REGISTER
+  helpers:
+    application:
+      login: login
+      logout: logout
+      home: home
+      about: about
+      contact: contact
+      faq: faq
+      users: Users
+      companies: Find Companies
+      employees: Employees
+      application: Application
+      employers: Employers
+      people: Find People
+      dashboard: "Home"
+      forum: "Forum&nbsp;&&nbsp;Groups"
+      applications: "Applications"
+      manage: Manage
+      personal_profile: Personal Profile
+      company_profile: Company Profile
+      reg_domain: Register My Existing Domain
+      generate_employees_accounts: Generate Employee Accounts
+      manage_invitation: Manage Invitations
+      get_application: Get Application
+      my_contacts: My Contacts
+      friendship_request: Friendship Requests
+      income_requests: Requests received
+      outcome_requests: Requests sent
+      rejected_outcome_request: Requests sent and rejected
+      friends: Friends
+      search: Search
+      create_company: "Create Company"
+      companies: "Companies"
+      people: "People"
+      alphabetical_index: Alphabetical Index
+  controllers:
+    bad_data: "Error.  You probably attempted to use a URL for a user other than the one currently logged-in."
+    user_success_blocked: User block
+    user_success_unblocked: User unblock
+    user_success_deleted: User delete
+    user_success_approve: User approve
+    failed_user_block: Block user failed
+    failed_user_unblock: Unblock user failed
+    failed_user_delete: Delete user failed
+    failed_user_approve: Approve user failed
+    invitation_sent: "Invitation sent"
+    problem_with_ondeego_request: "Problem with request to AppCentral."
+    not_any_company: "You aren't an employee of any companies"
+    employee_update_failed: "Employee update failed"
+    employee_updated: "Employee updated"
+    employee_created: "Employee created"
+    employee_create_failed: "Employee create failed"
+    employee_recruited: "Employee invitation sent"
+    employee_recruit_failed: "Employee invitation failed"
+    employees_successful_delete: "Employees successfully deleted"
+    employees_delete_failed: "Employee delete failed"
+    employee_successful_delete: "Employee successfully deleted"
+    employee_delete_failed: "Delete employee failed"
+    your_account_blocked: "Login failed. You account is blocked."
+    access_denied: "Access denied"
+    you_must_be_logged: "You must be logged-in to access this page"
+    you_must_be_logged_out: "You must be logged-out to access this page"
+    problem_with_sogo_account: "<br/>Error creating the Sogo account.  Try creating a Sogo account on the Manage Invitations page. <br/>"
+    successful_connect_to_sogo: "Sogo account successfully created"
+    error_connect_to_sogo: "Error creating Sogo account."
+    not_connect_to_sogo: "Your company has not yet created an account on Sogo."
+    sogo_not_use: "Sogo is not available now"
+    company_successful_created: "Company successfully created."
+    company_create_failed: "Creation of company failed"
+    company_updated: "Company updated"
+    company_update_failed: "Company update failed"
+    company_successful_deleted: "Company successfully deleted"
+    failed_delete_company: "Failed to delete company."
+    appcentral_company_created: "AppCentral company account successfully created"
+    appcentral_login_failed: "AppCentral login failed"
+    integrate_with_appcentral_failed: "Failed to create either an employee account or company account in AppCentral:"
+    appcentral_employee_created: "AppCentral employee account successfully created"
+    company_not_connect_with_appcentral: "Your company does not have an AppCentral account. Ask the Main Contact for your company to create an AppCentral account for your company."
+    appcentral_not_use: "AppCentral is not available"
+    success_accept_invite: "You successful accepted the invitation"
+    error_accept_invite: "Error accepting invitation."
+    friendship_accepted: "Friendship accepted"
+    friendship_rejected: "Friendship rejected"
+    friendship_resend: "Friendship resend"
+    friendship_deleted: "Friendship deleted"
+    sogo_error: "Sogo error: "
+    instruction_reset_your_password_sent: "Instructions to reset your password have been emailed to you"
+    no_user_was_found_for_this_login: "No user was found with [ {{email}} ] username or email"
+    your_password_updated: "Your password was successfully updated"
+    reset_your_password_expired: "This link for resetting your password has expired.  If you would like to reset your password, issue another request to reset your password from the \"Forgot your password\" link on the login page."
+    all_fields_required: "All fields required"
+    your_question_sent: "Your question was successfully sent"
+    login_successful: "Login successful."
+    login_failed: "Login failed."
+    logout_successful: "Logout successful."
+    account_updated: "Account updated."
+    friendship_request_sent: "Friendship request sent."
+    error_send_friendship_reqeust: "Error sending friendship request."
+    friendship_successful_remove: "Friendship successfully removed."
+    error_remove_friendship: "Error removing friendship."
+    association_removed: "Association removed."
+    cant_find_user: "Can't find user with that id"
+  models:
+    company:
+      public: "Public"
+      private: "Private"
+      all: "All"
+      name: "Name"
+      address: "Address"
+      phone: "Phone"
+      company_type: "Company type"
+      description: "Description"
+      industry_focus: "Industry&Focus"
+      should_be_format: "should be in xxxxxxx format"
+      employee_delete_error: "Error deleting employee"
+      appcentrall_error: "AppCentral error:"
+      sogo_error: "Sogo error:"
+      mobile_tribe_error: "MobileTribe error:"
+    employee:
+      active_employees: "Active Employees"
+      pending_employees: "Pending Employees"
+      rejected_employees: "Rejected Employees"
+      should_look_like_email: "should look like an email address (e.g., someone@company.com)."
+    friendship:
+      active_employees: "Active Employees"
+      pending_employees: "Pending Employees"
+      rejected_employees: "Rejected Employees"
+    user:
+      active: Active
+      blocked: Blocked
+      deleted: Deleted
+      public: "Public"
+      private: "Private"
+      not_exist: "Register a new MobileTribe account"
+      already_exist: "Connect to my existing account"
+      no_need: "I will connect later"
+      all: "All"
+      first_name: "First Name"
+      last_name: "Last Name"
+      user_name: "User Name"
+      email: "Email"
+      phone: "Phone"
+      address: "Address"
+      job_title: "Job Title"
+      position: "Position"
+      qualification: "Qualification"
+      description: "Description"
+
+  activerecord:
+    errors:
+      # The values :model, :attribute and :value are always available for interpolation
+      # The value :count is available when applicable. Can be used for pluralization.
+      messages:
+        inclusion: "is not included in the list"
+        exclusion: "is reserved"
+        invalid: "is invalid"
+        confirmation: "doesn't match confirmation"
+        accepted: "must be accepted"
+        empty: "can't be empty"
+        blank: "can't be blank"
+        too_long: "is too long (maximum is {{count}} characters)"
+        too_short: "is too short (minimum is {{count}} characters)"
+        wrong_length: "is the wrong length (should be {{count}} characters)"
+        taken: "has already been taken"
+        not_a_number: "is not a number"
+        greater_than: "must be greater than {{count}}"
+        greater_than_or_equal_to: "must be greater than or equal to {{count}}"
+        equal_to: "must be equal to {{count}}"
+        less_than: "must be less than {{count}}"
+        less_than_or_equal_to: "must be less than or equal to {{count}}"
+        odd: "must be odd"
+        even: "must be even"
+        record_invalid: "Validation failed: {{errors}}"
+        # Append your own errors here or at the model/attributes scope.
+
+      full_messages:
+        format: "{{attribute}} {{message}}"
+
+      # You can define own errors for models or model attributes.
+      # The values :model, :attribute and :value are always available for interpolation.
+      #
+      # For example,
+      #   models:
+      #     user:
+      #       blank: "This is a custom blank message for {{model}}: {{attribute}}"
+      #       attributes:
+      #         login:
+      #           blank: "This is a custom blank message for User login"
+      # Will define custom blank validation message for User model and
+      # custom blank validation message for login attribute of User model.
+      #models:
+
+    # Translate model names. Used in Model.human_name().
+    #models:
+      # For example,
+      #   user: "Dude"
+      # will translate User model name to "Dude"
+
+    # Translate model attribute names. Used in Model.human_attribute_name(attribute).
+    #attributes:
+      # For example,
+      #   user:
+      #     login: "Handle"
+      # will translate User attribute "login" as "Handle"
+
+  date:
+    formats:
+      # Use the strftime parameters for formats.
+      # When no format has been given, it uses default.
+      # You can provide other formats here if you like!
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    # Used in date_select and datime_select.
+    order: [ :year, :month, :day ]
+
+  time:
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      short: "%d %b %H:%M"
+      long: "%B %d, %Y %H:%M"
+    am: "am"
+    pm: "pm"
+
+# Used in array.to_sentence.
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " and "
+      last_word_connector: ", and "
+
+  number:
+    # Used in number_with_delimiter()
+    # These are also the defaults for 'currency', 'percentage', 'precision', and 'human'
+    format:
+      # Sets the separator between the units, for more precision (e.g. 1.0 / 2.0 == 0.5)
+      separator: "."
+      # Delimets thousands (e.g. 1,000,000 is a million) (always in groups of three)
+      delimiter: ","
+      # Number of decimals, behind the separator (the number 1 with a precision of 2 gives: 1.00)
+      precision: 3
+
+    # Used in number_to_currency()
+    currency:
+      format:
+        # Where is the currency sign? %u is the currency unit, %n the number (default: $5.00)
+        format: "%u%n"
+        unit: "$"
+        # These three are to override number.format and are optional
+        separator: "."
+        delimiter: ","
+        precision: 2
+
+    # Used in number_to_percentage()
+    percentage:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: ""
+        # precision:
+
+    # Used in number_to_precision()
+    precision:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: ""
+        # precision:
+
+    # Used in number_to_human_size()
+    human:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: ""
+        precision: 1
+      storage_units:
+        # Storage units output formatting.
+        # %u is the storage unit, %n is the number (default: 2 MB)
+        format: "%n %u"
+        units:
+          byte:
+            one:   "Byte"
+            other: "Bytes"
+          kb: "KB"
+          mb: "MB"
+          gb: "GB"
+          tb: "TB"
+
+  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
+  datetime:
+    distance_in_words:
+      half_a_minute: "half a minute"
+      less_than_x_seconds:
+        one:   "less than 1 second"
+        other: "less than {{count}} seconds"
+      x_seconds:
+        one:   "1 second"
+        other: "{{count}} seconds"
+      less_than_x_minutes:
+        one:   "less than a minute"
+        other: "less than {{count}} minutes"
+      x_minutes:
+        one:   "1 minute"
+        other: "{{count}} minutes"
+      about_x_hours:
+        one:   "about 1 hour"
+        other: "about {{count}} hours"
+      x_days:
+        one:   "1 day"
+        other: "{{count}} days"
+      about_x_months:
+        one:   "about 1 month"
+        other: "about {{count}} months"
+      x_months:
+        one:   "1 month"
+        other: "{{count}} months"
+      about_x_years:
+        one:   "about 1 year"
+        other: "about {{count}} years"
+      over_x_years:
+        one:   "over 1 year"
+        other: "over {{count}} years"
+      almost_x_years:
+        one:   "almost 1 year"
+        other: "almost {{count}} years"
+    prompts:
+      year:   "Year"
+      month:  "Month"
+      day:    "Day"
+      hour:   "Hour"
+      minute: "Minute"
+      second: "Seconds"
+
+  activerecord:
+    errors:
+      template:
+        header:
+          one:    "1 error prohibited this {{model}} from being saved"
+          other:  "{{count}} errors prohibited this {{model}} from being saved"
+        # The variable :count is also available
+        body: "There were problems with the following fields:"
+
+  support:
+    select:
+      # default value for :prompt => true in FormOptionsHelper
+      prompt: "Please select"

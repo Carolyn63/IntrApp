@@ -1,0 +1,45 @@
+<% form_for :mobile_profile, :url => update_mobile_profile_useradmin_callcontrols_path, :html => {:multipart => true,  :class => :form } do |f| -%>
+<input type="hidden" name="_method" value="put" />
+<table align="left" cellspacing="10" cellpadding="5" border="0" style="font-size:12px;width:350px;" >
+	<tr>
+		<td style="padding: 10px 0; width:150px;"> <%= f.label :label_callfwdbusyno, t("views.labels.mobileprofile"), :class => :label %></td>
+		<td> <%= f.text_field :number, :value => @number, :size=>"17px;", :class => "text_border"%><div id="phone_error_mp" style="display:none;color:red;"></div></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="left">
+		<input type="submit" class="submit_apply_mp" value=<%=t("views.buttons.apply")%> />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="cancel_mobile_profile" name="cancel_mobile_profile" value=<%=t("views.buttons.cancel")%> />
+		</td>
+		</td>
+	</tr>
+</table>
+<% end -%>
+
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('input#cancel_mobile_profile').click(function() {
+			$('span#arrow_mobile_profile').html('<img src="/images/arrow_down.jpg" align="absmiddle" width="16" height="16"">');
+			$('div#mobile_profile_div').hide();
+		});
+	});
+	
+	
+	$('input.submit_apply_mp').click(function() {		
+	$('div#phone_error_mp').hide();	
+	var flag = true;
+	if($('input#mobile_profile_number').val() == "") {
+		$('div#phone_error_mp').html('Please enter a phone number').show();
+		flag = false;
+	}
+	else{
+		if(!/^\+*$/.test($('input#mobile_profile_number').val().substring(0,1))) {
+			$('div#phone_error_mp').html('Phone number starts with \'+\'').show();
+			flag = false;
+		}	
+		else if(!/^[0-9]+$/.test($('input#mobile_profile_number').val().substring(1))) {
+			$('div#phone_error_mp').html('Phone number is not valid').show();
+			flag = false;
+		}
+		}
+		return flag;
+	});
+</script> 

@@ -1,0 +1,36 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <div class="left-short-side left-back">
+    <div class="head">
+      <h1><%= t("views.employees.generate_employee_accounts") %><%= help_icon %></h1>
+      <p><i><%= t("views.employees.you_can_recruit_employee") %></i></p>
+    </div>
+    <ul class="left-menu">
+      <li class="selected"><%= link_to t("views.employees.recruit_employee"), new_recruit_employees_path(:user_id => @user.id) %></li>
+    </ul>
+    <a href="#" class="help-box"></a>
+  </div><!-- .left-short-side -->
+  <div class="right-wide-side employees-container">
+    <%= error_messages_for :employee %>
+    <% form_for :employee, :url => recruit_employees_path(:user_id => @user.id), :html => { :id => "new_employee" } do |f| -%>
+      <div class="employees-box">
+        <% if @companies.size > 1 && property(:multi_company) %>
+          <h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("views.companies.your_companies") %></h3>
+          <div class="input-row">
+            <label><span><%= t("views.employees.select_company") %><b class="green-color fz14">&nbsp;*</b></span></label>
+            <%= select_tag "company_id", options_for_select(@companies, params[:company_id].to_i),  :class => 'text_field' %>
+          </div>
+        <%else%>
+          <%= hidden_field_tag("company_id", @company.id) %>
+        <%end%>
+        <h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("views.companies.user_intvitation") %></h3>
+        <%= render :partial => "employee_form", :locals => {:f => f, :company => @company, :email_uniq_description => t("views.companies.by_inviting_member_company_get_uniq_email", :firstname => h(@user.firstname), :lastname => h(@user.lastname)), :name_for_company_email => h(@user.login) } %>
+      </div>
+      <div class="bottom-gradient-box tac">
+        <%= link_to_function link_name(t("views.save_profile")), "$('#new_employee').submit()", :class=>"standart-button" %>
+      </div>
+    <% end -%>
+  </div>
+  <div class="clear"></div>
+</div><!-- .content -->
+

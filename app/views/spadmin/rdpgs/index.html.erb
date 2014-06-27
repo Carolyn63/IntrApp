@@ -1,0 +1,43 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", spadmin_rdpgs_path  %>
+			</li>
+			<li >
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.add"))}", new_spadmin_rdpg_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content"  stye="widt:500px;">
+		<br>
+		<div class="admin-filter">
+			<% form_tag "", {:method => :get} do %> <span><%= t("views.titles.name")%>:</span>
+			<%= text_field_tag("search", params[:search], :id => "spadmin_rdpgs_search", :class => "text_border") %> <span><%= submit_tag t("views.buttons.search") %></span>
+			<% end %>
+		</div>
+		<div class="inner" style="width:50%">
+			<table id="sortableTable" class="tablesorter">
+				<thead>
+					<tr>
+						<th><%= t("views.titles.name")%></th>
+						<th><%= t("views.titles.description")%></th>
+						<th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @rdpgs.each do |rdpg| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first" align="left"><%= rdpg["name"]%></td>
+						<td ><%= rdpg["description"]%></td>
+						<td > <%= link_to "#{t("web-app-theme.show", :default => t("views.links.edit"))}",  edit_spadmin_rdpg_path(rdpg["uid"])%> |
+						<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  spadmin_rdpg_path(rdpg["uid"]) , :method => "delete", :confirm => t("views.notices.ippbx_delete_rdpg")%> </td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,23 @@
+<li>
+  <div class="img-box img-square-box-logo company_profile">
+    <%= image_tag recently_company.logo.url(:thumb), :class => "img-mini-box-logo"  %>
+  </div>
+  <div class="right-box">
+    <div class="left">
+      <p class="first-row"><%= link_to "<b>#{recently_company.name}</b>", company_path(recently_company), :class => 'grey-color green-link' %></p>
+      <p><span class="fz10 grey-color"><i><%= recently_company.industry %></i></span></p>
+      <% if recently_company.owner?(current_user) && @user == current_user %>
+        <p><b class="green-color fz11"><%= link_to "#{recently_company.active_employees.size}&nbsp;#{t("views.employees_title")}", company_employees_path(recently_company) ,:class => 'green-color' %></b></p>
+      <%else%>
+        <p><b class="green-color fz11"><%= link_to "#{recently_company.active_employees.size}&nbsp;#{t("views.employees_title")}", profile_company_path(recently_company) ,:class => 'green-color' %></b></p>
+      <%end%>
+    </div>
+    <% if recently_company.owner?(current_user) && @user == current_user %>
+      <div class="right">
+        <p><%= link_to image_tag('/images/green_pencil.png'), edit_company_path(recently_company.id)%>&nbsp;&nbsp;<b><%= link_to t("views.edit"), edit_company_path(recently_company.id), :class => 'green-color fz11' %></b></p>
+        <!--p><%#= link_to image_tag('/images/orange_remove.png'), user_company_path(current_user, recently_company.id), :method => :delete, :confirm => t("views.users.are_you_sure")%>&nbsp;&nbsp;<b><%= link_to t("views.remove"), user_company_path(current_user, recently_company.id), :method => :delete, :confirm => t("views.users.are_you_sure"), :class => 'orange-color fz11' %></b></p-->
+      </div>
+    <%end%>
+  </div>
+  <div class="clear"></div>
+</li>

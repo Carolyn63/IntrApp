@@ -1,0 +1,5 @@
+<% form_for :company, :url => user_companies_path(current_user), :html => {:id => "new_company", :multipart => true} do |f| -%>
+  <%= hidden_field_tag request_forgery_protection_token.to_s, form_authenticity_token -%>
+  <%=  hidden_field_tag :redirect_to %>
+  <%= render :partial => "form", :locals => {:f => f} %>
+<% end -%>

@@ -1,0 +1,20 @@
+<h3>Hi, <%= @login %> </h3>
+
+<p>Your have successfully purchased Application <b><%=@plan.code%> </b>. </p> </br>
+
+<p>You can Download/Access the Application  in <%=link_to @application_url, @application_url%><p></br>
+	
+	<%application = Application.find_by_id(@plan.application_id)%>
+<% if application.external_url.present? %>
+<p>Application Main Page  <%=link_to  application.external_url, application.external_url%></p> </br>
+	<% if application.name.delete(' ').downcase.include?("cloud")%>
+<p>Login detail will be sent to you as soon as cloud storage provisioning for your company and you is done.</p> </br>
+	<% end %>
+<% end %>	
+	
+ <p>You can Cancel or get Refund for your this payment in paypal/amazon website or in following url.</p> </br>
+  
+  <%=link_to @manage_payment_url, @manage_payment_url %> </br>
+
+<p>If the above link does not work, try copying it and pasting it into your browser.</p>
+

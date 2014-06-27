@@ -1,0 +1,34 @@
+<div class="left-short-side left-back">
+	<div class="head">
+		<h1>Company Stats</h1>
+	</div>
+	<ul class="left-menu">
+		<li class="<%= (params[:action] == "cost_trend_app" or request.request_uri.include?('cost_trend_app')) ?'selected' : '' %>">
+			<%= link_to "Cost Trend Report by App", cost_trend_app_company_stat_path(current_own_company.id)%>
+		</li>
+<!--
+		<li class="<%= (params[:action] == "cost_trend_department" or request.request_uri.include?('cost_trend_department')) ?'selected' : '' %>">
+			<%= link_to "Cost Trend Report by Department", cost_trend_department_company_stat_path(current_own_company.id)%>
+		</li>
+-->
+			<li class="<%= (params[:action] == "top_apps_cost" or request.request_uri.include?('top_apps_cost')) ?'selected' : '' %>">
+			<%= link_to "Top Apps by Cost", top_apps_cost_company_stat_path(current_own_company.id)%>
+		</li>
+<!--
+		<li class="<%= (params[:action] == "top_department_cost" or request.request_uri.include?('top_department_cost')) ?'selected' : '' %>">
+			<%= link_to "Top Departments by Cost", top_department_cost_company_stat_path(current_own_company.id)%>
+		</li>
+-->
+		<li class="<%= (params[:action] == "top_employee_cost" or request.request_uri.include?('top_employee_cost')) ?'selected' : '' %>">
+			<%= link_to "Top Employees by Cost", top_employee_cost_company_stat_path(current_own_company.id)%>
+		</li>
+<!--
+		<li class="<%= (params[:action] == "app_seats_report" or request.request_uri.include?('app_seats_report')) ?'selected' : '' %>">
+			<%= link_to "App Seats Report", app_seats_report_company_stat_path(current_own_company.id)%>
+		</li>
+		<li class="<%= (params[:action] == "cost_apps_user" or request.request_uri.include?('cost_apps_user')) ?'selected' : '' %>">
+			<%= link_to "Cost of Apps Per User", cost_apps_user_company_stat_path(current_own_company.id)%>
+		</li>
+-->
+	</ul>
+</div><!-- .left-short-side -->

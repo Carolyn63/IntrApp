@@ -1,0 +1,134 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+ben:
+  id: 1
+  email: bjohnson@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "Ben"
+  lastname: "bender"
+  login: "ben"
+  mobile_tribe_login: "test"
+  mobile_tribe_password: "test"
+  mobile_tribe_user_state: 1
+  address: "New Your"
+  phone: "123-133-1234"
+  cellphone: "123-133-1234"
+  age: "40"
+  sex: "40"
+  site: "http://google.com"
+  description: "blablablba"
+  role: <%= User::Role::ADMIN %>
+  job_title: "Manager"
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>
+
+frai:
+  id: 2
+  email: bjohnson1@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "Frai"
+  lastname: "frai"
+  login: "befrai"
+  job_title: "Manager"
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>
+
+user_3:
+  id: 3
+  email: bjohnson13@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "Frai"
+  lastname: "frai"
+  login: "befrai2"
+  job_title: "Manager"
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>
+
+user_4:
+  id: 4
+  email: bjohnson14@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "Frai"
+  lastname: "frai"
+  login: "befrai3"
+  privacy: <%= User::Privacy::PRIVATE %>
+  job_title: "Manager"
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>
+  mobile_tribe_login: "test"
+  mobile_tribe_password: "test"
+  mobile_tribe_user_state: 1
+
+new_bens_friend:
+  id: 5
+  email: bens_friend@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "Tom"
+  lastname: "Cruis"
+  login: "new_bens_friend"
+  privacy: <%= User::Privacy::PRIVATE %>
+  job_title: "Manager"
+  login_count: 0
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>
+
+user_without_password:
+  id: 6
+  email: without_password@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "without_password"
+  lastname: "without_password"
+  login: "without_password"
+  privacy: <%= User::Privacy::PRIVATE %>
+  job_title: "Manager"
+  active: false
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>
+
+destroy_user:
+  id: 7
+  email: destroy@test.com
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt) %>
+  persistence_token: 6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317
+  single_access_token: <%= Authlogic::Random.friendly_token %>
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  firstname: "Ben"
+  lastname: "bender"
+  login: "destroy"
+  mobile_tribe_login: "destroy"
+  mobile_tribe_password: "destroy"
+  mobile_tribe_user_state: 1
+  address: "New Your"
+  phone: "123-133-1234"
+  cellphone: "123-133-1234"
+  age: "40"
+  sex: "40"
+  site: "http://google.com"
+  description: "blablablba"
+  role: <%= User::Role::ADMIN %>
+  privacy: <%= User::Privacy::PRIVATE %>
+  job_title: "Manager"
+  user_password: <%= Tools::AESCrypt.new.encrypt("benrock") %>

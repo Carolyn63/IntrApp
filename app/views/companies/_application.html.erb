@@ -1,0 +1,124 @@
+<li>
+  <% if count > 1 %>
+    <h2><b><%= application.name %></b></h2>
+  <%end%>
+  <div class="right-box">
+    <% appcentral_url = "" %>
+    <% if application.employee(current_user).ondeego_connect? %>
+      <% appcentral_url = login_user_ondeego_path(current_user, :company_id => application.id) %>
+    <%else%>
+      <% if application.owner?(current_user) %>
+        <%  appcentral_url = company_create_user_ondeego_path(current_user, :company_id => application.id) %>
+      <% else %>
+        <% if application.ondeego_connect? %>
+          <% appcentral_url = employee_create_user_ondeego_path(current_user, :company_id => application.id) %>
+        <%else%>
+        <%end%>
+      <%end%>
+    <%end%>
+    <% sogo_url = "" %>
+    <%  if application.employee(current_user).sogo_connect? %>
+      <% sogo_url = login_user_sogo_path(current_user, :company_id => application.id) %>
+    <% else %>
+      <% sogo_url = sogo_connect_company_employee_path(application, application.employee(current_user)) unless application.employee(current_user).company_email.blank? %>
+    <% end %>
+    <ul class="list applications-icons">
+      <li>
+        <div class="icon">
+          <%# link_to(image_tag("Groupware Logo3.png"), sogo_url, :target => "_blank")  %>
+          <%= link_to(image_tag("Groupware Logo3.png"), sogo_url)  %>
+          <%= application_help_icon(:description_id => "corporate_email_calendar_description") %>
+        </div>
+        <div class="title">
+          <%if sogo_url.blank? %>
+            <%= t("views.companies.not_connect_with_sogo") %>
+          <%else%>
+            <%# link_to(t("views.companies.corporate_email_calendar"), sogo_url, :target => "_blank") %>
+            <%= link_to(t("views.companies.corporate_email_calendar"), sogo_url) %>
+          <%end%>
+        </div>
+        <div id="corporate_email_calendar_description" style="display:none">
+          <h2><%= t("views.companies.corporate_email_calendar_title") %></h2>
+          <p><b><%= t("views.companies.corporate_email_calendar_header") %></b></p>
+          <p><%= t("views.companies.corporate_email_calendar_description", :sp_name => property(:sp_name)) %></p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <%= link_to(image_tag("AppCentral Logo.png"), appcentral_url, :target => "_blank")  %>
+          <%= application_help_icon(:description_id => "appcentral_description") %>
+        </div>
+        <div class="title">
+          <%if appcentral_url.blank? %>
+            <%= t("views.companies.not_connect_with_company_in_appcentral") %>
+          <%else%>
+            <%= link_to(t("views.companies.mobile_app_store"), appcentral_url, :target => "_blank") %>
+          <%end%>
+        </div>
+        <div id="appcentral_description" style="display:none">
+          <h2><%= t("views.companies.appcentral_title") %></h2>
+          <p><b><%= t("views.companies.appcentral_header") %></b></p>
+          <p><%= t("views.companies.appcentral_description") %></p>
+        </div>
+      </li>
+
+			<li>
+        <div class="icon">
+          <%= link_to(image_tag("benetrac_image_mini.png"), "https://www.eenroller.net/btrac/broker.asp?", :target => "_blank")  %>
+          <%= application_help_icon(:description_id => "benetrac_description") %>
+        </div>
+        <div class="title">
+          <%= link_to(t("views.companies.benetrac"), "https://www.eenroller.net/btrac/broker.asp?", :target => "_blank")  %>
+        </div>
+        <div id="benetrac_description" style="display:none">
+          <h2><%= t("views.companies.benetrac_title") %></h2>
+          <p><b><%= t("views.companies.benetrac_header") %></b></p>
+          <p><%= t("views.companies.benetrac_description") %></p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <%= link_to(image_tag("conexis_image_mini.png"), "https://mybenefits.conexis.com/", :target => "_blank")  %>
+          <%= application_help_icon(:description_id => "conexis_description") %>
+        </div>
+        <div class="title">
+          <%= link_to(t("views.companies.conexis"), "https://mybenefits.conexis.com/", :target => "_blank")  %>
+        </div>
+        <div id="conexis_description" style="display:none">
+          <h2><%= t("views.companies.conexis_title") %></h2>
+          <p><b><%= t("views.companies.conexis_header") %></b></p>
+          <p><%= t("views.companies.conexis_description") %></p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <%= link_to(image_tag("egencia_image_mini.png"), "http://www.egencia.com/en/", :target => "_blank")  %>
+          <%= application_help_icon(:description_id => "egencia_description") %>
+        </div>
+        <div class="title">
+          <%= link_to(t("views.companies.egencia"), "http://www.egencia.com/en/", :target => "_blank")  %>
+        </div>
+        <div id="egencia_description" style="display:none">
+          <h2><%= t("views.companies.egencia_title") %></h2>
+          <p><b><%= t("views.companies.egencia_header") %></b></p>
+          <p><%= t("views.companies.egencia_description") %></p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">
+          <%= link_to(image_tag("paycom_image_mini.png"), "https://www.paycomonline.net/v4/ee/ee-login.php", :target => "_blank")  %>
+          <%= application_help_icon(:description_id => "paycom_description") %>
+        </div>
+        <div class="title">
+          <%= link_to(t("views.companies.paycom"), "https://www.paycomonline.net/v4/ee/ee-login.php", :target => "_blank")  %>
+        </div>
+        <div id="paycom_description" style="display:none">
+          <h2><%= t("views.companies.paycom_title") %></h2>
+          <p><b><%= t("views.companies.paycom_header") %></b></p>
+          <p><%= t("views.companies.paycom_description") %></p>
+        </div>
+      </li>
+    </ul>
+    <div class="clear"></div>
+  </div>
+</li>

@@ -1,0 +1,12 @@
+<li>
+  <div class="img-box ">
+    <%= image_tag recently_profile_user.avatar.url(:thumb), :class => "img-mini-box-logo" %>
+  </div>
+  <div class="right-box">
+    <div class="left">
+      <p class="first-row"><%= link_to "<b>#{recently_profile_user.name}</b>",user_path(recently_profile_user.id), :class => 'grey-color green-link' %></p>
+      <p><span class="fz10 grey-color"><i><%= recently_profile_user.job_title.blank? ? "&nbsp;" : recently_profile_user.job_title%></i></span></p>
+    </div>
+  </div>
+  <div class="clear"></div>
+</li>

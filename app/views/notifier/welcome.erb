@@ -1,0 +1,19 @@
+<h4>Hi, <%= @user.name  %> </h4>
+
+
+<p>Welcome to <%=property(:sp_name)%>! Your account has been activated.</p> </br>
+ 
+<p>Here are your login details. </p>
+<p>Portal URL: <%=link_to @root_url , @root_url%></p>
+<p>Username: <%= @user.name %></p>
+<p>Login: <%= @user.login %></p>
+<p>Password:  <%=Tools::AESCrypt.new.decrypt(@user.user_password)%> </p></br>
+
+<p> You can change your password here <%=link_to "Change Password", edit_user_path(@user.id) %><p>
+
+<p>If the above link does not work, try copying it and pasting it into your browser.</p></br>
+
+<p>For you account security, please keep this email safe.</p></br></br>
+
+<p>Best Regards,</p>
+<p>-<%=property(:sp_name)%> Portal</p>

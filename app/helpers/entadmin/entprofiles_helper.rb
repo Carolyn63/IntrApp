@@ -1,0 +1,2 @@
+module Entadmin::EntprofilesHelper
+end

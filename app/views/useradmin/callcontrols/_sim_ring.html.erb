@@ -1,0 +1,75 @@
+<% form_for :sim_ring, :url => update_sim_ring_useradmin_callcontrols_path, :html => {:multipart => true,  :class => :form } do |f| -%>
+<input type="hidden" name="_method" value="put" />
+<table align="left" cellspacing="10" cellpadding="5" border="0" style="font-size:12px;width:350px;">
+	<tr valign="top" >
+		<td align="left" style="width:75px;"><%=t("views.labels.phone_number")%></td>
+		<td align="left" style="width:160px;">
+		<input type="text" id="phone_number" name="phone_number" value="" style="width:150px;" class="text_border" /><div id="phone_error_block" style="display:none;color:red;"></div>
+		</td>
+		<td align="left"><a href="#" class="add_phone">&nbsp;&nbsp;<img src="/images/plus.png" width="16" height="16" align="absmiddle"></a>&nbsp;&nbsp;&nbsp;<a href="#" class="remove_phone"><img src="/images/minus.png" width="16" height="16" align="absmiddle"></a></td>
+	</tr>
+	<tr valign="top">
+		<td colspan="3" align="left" style="padding-top:10px;"> <%= f.select :list,  @features.collect{|feature| [feature["number"], feature["number"]]}, {},:name=>"sim_ring_list[]", :onclick=>"javascript:document.getElementById('phone_number').value=this.value;return false;",:size=>"10" , :multiple => true%>
+	</tr>
+	<tr valign="top">
+		<td colspan="3" align="left">
+		<input type="submit" class="submit_apply" id="apply_sim_ring" name="apply_sim_ring" value= <%=t("views.buttons.apply")%> />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="cancel_sim_ring" name="cancel_sim_ring" value=<%=t("views.buttons.cancel")%>  />
+		</td>
+	</tr>
+</table>
+<% end -%>
+
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+$('a.add_phone').click(function() {
+var phone_number=document.getElementById('phone_number').value;
+$('#sim_ring_list').append($(document.createElement("option")).attr("value",phone_number).text(phone_number));
+});
+$('a.remove_phone').click(function() {
+$("#sim_ring_list option:selected").remove();
+});
+$("#apply_sim_ring").click(function() {
+$("#sim_ring_list").each(function() {
+$("#sim_ring_list option").attr("selected","selected");
+});
+$("#change_password_form").submit
+});
+$('input#cancel_sim_ring').click(function() {
+$('span#arrow_sim_ring').html('<img src="/images/arrow_down.jpg" align="absmiddle" width="16" height="16"">');
+$('div#sim_ring_div').hide();
+});
+});
+
+
+	$('input.submit_apply').click(function() {		
+	$('div#phone_error_block').hide();	
+	var flag = true;
+	if($('input#phone_number').val() == "") {
+		$('div#phone_error_block').html('Please enter a phone number').show();
+		flag = false;
+	}
+	else{
+		if(!/^\+*$/.test($('input#phone_number').val().substring(0,1))) {
+			$('div#phone_error_block').html('Phone number starts with \'+\'').show();
+			flag = false;
+		}	
+		else if(!/^[0-9]+$/.test($('input#phone_number').val().substring(1))) {
+			$('div#phone_error_block').html('Phone number is not valid').show();
+			flag = false;
+		}
+		else if($('input#phone_number').val().substring(1).length < 11) {
+		$('div#phone_error_block').html('Phone number too short').show();
+		flag = false;
+		}
+		else if($('input#phone_number').val().substring(1).length > 11) {
+		$('div#phone_error_block').html('Phone number too long').show();
+		flag = false;
+		}								
+		}
+		return flag;
+	});
+
+</script>

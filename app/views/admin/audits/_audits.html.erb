@@ -1,0 +1,44 @@
+<style type="text/css">
+  .table td{padding:3px}
+</style>
+<%# form_tag admin_send_emails_path do -%>
+  <table class="table" style="table-layout:auto">
+    <tr>
+      <%= sortable_table_header :name => t("views.audits.id"),  :sort => "id", :class => "first" %>
+      <%= sortable_table_header :name => t("views.audits.type"),  :sort => "auditable_type" %>
+      <%= sortable_table_header :name => t("views.audits.deleted_object_id"),  :sort => "auditable_id" %>
+      <%= sortable_table_header :name => t("views.audits.name"),  :sort => "name" %>
+      <%= sortable_table_header :name => t("views.audits.status"),  :sort => "status" %>
+      <%= sortable_table_header :name => t("views.audits.parent"),  :sort => "parent_id" %>
+      <%= sortable_table_header :name => t("views.audits.created_at"),  :sort => "created_at" %>
+      <!--th ><%=t("views.audits.description")%></th>
+      <th ><%=t("views.audits.comment")%></th-->
+      <th class="last">&nbsp;</th>
+    </tr>
+    <% audits.each do |audit| -%>
+      <tr class="<%= audit.success? ? "audit-success" : "audit-failed" %>">
+        <td style="width:5%; text-align: center"><%= link_to(audit.id, admin_audit_path(audit)) %></td>
+        <td style="width:10%"><%= audit.auditable_type %></td>
+        <td style="width:5%"><%= audit.auditable_id %></td>
+        <td style="width:15%"><%= audit.name %></td>
+        <td style="width:10%"><%= Audit::Statuses::TO_LIST[audit.status] %></td>
+        <td style="width:5%"><%= audit.parent_id.blank? ? "&nbsp;" : link_to(audit.parent_id, admin_audit_path(audit.parent_id)) %></td>
+        <td style="width:10%"><%= audit.created_at.to_s(:db) %></td>
+        <!--td style="width:20%"><%#= string_description(audit.description)[0..100] %></td>
+        <td style="width:15%"><%#= audit.comment %></td-->
+        <td class="last" style="width:30%">
+          <%# unless audit.parent_audit.blank? %>
+            <%#= link_to t("views.audits.parent_audit"), admin_audit_path(audit.parent_id) %>
+          <%# end %>
+          <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_audit_path(audit) %> |
+          <%= link_to t("views.audits.send_emails"), new_email_admin_audit_path(audit) %> |
+          <% unless audit.associations_audits.blank? %>
+            <%= link_to(t("views.audits.relative_audits"), association_audits_admin_audit_path(audit)) %> |
+          <%end%>
+          <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_audit_path(audit) %> |
+          <%= link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_audit_path(audit), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
+<%# end -%>

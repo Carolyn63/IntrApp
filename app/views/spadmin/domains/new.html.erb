@@ -1,0 +1,20 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", spadmin_domains_path  %>
+			</li>
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.add"))}", new_spadmin_domain_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<br>
+		<div class="inner">
+			<% form_for :domain, :url => spadmin_domains_path, :html => { :class => :form } do |f| -%>
+			<%= render :partial => "form", :locals => {:f => f} %>
+			<% end -%>
+		</div>
+	</div>
+</div>

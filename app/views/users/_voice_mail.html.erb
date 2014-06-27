@@ -1,0 +1,96 @@
+<%
+is_ie = client_browser_name=="IE" ? true : false;
+
+uid = params['uid']
+filter = params['vm_filter']
+action = params['vm_action']
+
+vm_filter = filter.gsub(/^vm_(\w+)$/,"\\1").to_s
+vm_id = params['vm_id']
+logger.info "vm_filter: #{vm_filter}"
+logger.info "vm_action: #{action}"
+
+vm_ippbx = PortalIppbxController.new
+
+if action.blank?
+	if vm_filter=="new"
+		@vms = vm_ippbx.vm_get_new(uid)
+	elsif vm_filter=="all"
+		@vms = vm_ippbx.vm_get_all(uid)
+	elsif vm_filter=="saved"
+		logger.info "saved: #{vm_filter}"
+		@vms = vm_ippbx.vm_get_seen(uid)
+	end
+elsif action=='play'
+	if vm_filter=="new"
+		@vms = vm_ippbx.vm_get_new(uid)
+	else
+		@vms = vm_ippbx.vm_set_seen(uid,vm_filter,vm_id)
+	end
+elsif action=='delete'
+	@vms = vm_ippbx.vm_delete_one(uid,vm_filter,vm_id)
+end
+%>
+<%unless @vms.blank?%>
+<div>
+	<table align="left" cellspacing="10" cellpadding="0" border="0">
+		<%count = 1%>
+		<% @vms.each do |vm| -%>
+		<tr valign="top" >
+			<td><%=count%></td>
+			<td align="left" style="width:150px;"><%=vm['callerNumber']%></td>
+			<td align="left"><a href="javascript:void(0)" id="vm_play" vm_filter="<%=filter%>" uid="<%=uid%>" vm_id="<%=vm['uid']%>" vm_url="<%=vm['filePath']%>">play</a></td>
+			<td align="left"><a href="javascript:void(0)" id="vm_delete" vm_filter="<%=filter%>" uid="<%=uid%>" vm_id="<%=vm['uid']%>">delete</a></td>
+			<td align="left" nowrap="nowrap"><%=vm['callTime']%></td>
+			<%count += 1%>
+		</tr>
+		<%end%>
+	</table>
+</div>
+<% else %>
+<div style="color:red;font-size:12px;margin-top:20px;" align="center"><%=t("views.labels.no_voicemail")%></div>
+<% end %>
+
+<script type="text/javascript">
+
+$(function(){
+/*
+	$('a#vm_play').click(function() {
+		var div_id = 'vm_div';
+		var uid = $(this).attr('uid');
+		var vm_filter = $(this).attr('vm_filter');
+		var vm_id = $(this).attr('vm_id');
+		$('div#' + div_id).load('voice_mail', {uid:uid, vm_filter:vm_filter,vm_id:vm_id,vm_action:'play'});
+		return false;
+	});
+*/
+
+	$('a#vm_play').click(function() {
+		var div_id = 'vm_div';
+		var uid = $(this).attr('uid');
+		var vm_filter = $(this).attr('vm_filter');
+		var vm_id = $(this).attr('vm_id');
+		var vm_url = $(this).attr('vm_url');
+		$('div#vm_player_div').show();
+<% if is_ie %>
+		$('div#vm_player_div').html('<object id="vm_player" width="280" height="40" classid="CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701" standby="Loading Microsoft Windows Media Player components..." type="application/x-oleobject"><param name="fileName" value="'+vm_url+'"><param name="animationatStart" value="true"><param name="transparentatStart" value="true"><param name="autostart" value="true"><param name="showcontrols" value="true"><param name="ShowAudioControls" value="true"><param name="showstatusbar" value="false"><param name="loop" value="false"></object>');
+<% else %>
+		$('audio#vm_player').attr('autostart','true');
+		$('audio#vm_player').attr('src',vm_url);
+<% end %>
+		$('div#' + div_id).load('voice_mail', {uid:uid, vm_filter:vm_filter,vm_id:vm_id,vm_action:'play'});
+		return false;
+	});
+
+	$('a#vm_delete').click(function() {
+		var div_id = 'vm_div';
+		var uid = $(this).attr('uid');
+		var vm_filter = $(this).attr('vm_filter');
+		var vm_id = $(this).attr('vm_id');
+		$('div#' + div_id).html('<div style="padding-left:114px;"><img src="/images/loading.gif" width="32" height="32" /></div>').load('voice_mail', {uid:uid, vm_filter:vm_filter,vm_id:vm_id,vm_action:'delete'});
+		return false;
+	});
+
+});
+
+</script>

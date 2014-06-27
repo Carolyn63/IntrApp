@@ -1,0 +1,180 @@
+5c5
+<     email_is_too_short: "Email is too short (minimum is 6 characters)"
+---
+>     email_is_too_short: "Email address is too short (minimum is 6 characters)"
+7c7
+<     email_should_look_like_email: "Email should look like an email address."
+---
+>     email_should_look_like_email: "Email address should look like an email address (e.g., someone@company.com)."
+9c9
+<     login_is_too_short: "Login is too short (minimum is 3 characters)"
+---
+>     login_is_too_short: "Username is too short (minimum is 3 characters)"
+11c11
+<     login_should_use_only_letters: "Login should use only letters, numbers, spaces, and .-_@ please."
+---
+>     login_should_use_only_letters: "Username should use only letters, numbers, spaces, and .-_@ please."
+17c17
+<     firstname_is_too_short: "Firstname is too short (minimum is 1 characters)"
+---
+>     firstname_is_too_short: "Firstname is too short (minimum is 1 character)"
+21c21
+<     lastname_is_too_short: "Lastname is too short (minimum is 1 characters)"
+---
+>     lastname_is_too_short: "Lastname is too short (minimum is 1 character)"
+23c23
+<     ondeego_email_cant_be_blank: "Ondeego email can't be blank"
+---
+>     ondeego_email_cant_be_blank: "AppCentral email address can't be blank"
+25c25
+<     ondeego_email_is_too_short: "Ondeego email is too short (minimum is 6 characters)"
+---
+>     ondeego_email_is_too_short: "AppCentral email address is too short (minimum is 6 characters)"
+27c27
+<     ondeego_email_should_like_email: "Ondeego email should look like an email name."
+---
+>     ondeego_email_should_like_email: "AppCentral email address should look like an email address (e.g., someone@company.com)."
+29c29
+<     ondeego_phone_cant_blank: "Ondeego phone can't be blank"
+---
+>     ondeego_phone_cant_blank: "AppCentral phone number can't be blank"
+31c31
+<     ondeego_phone_short: "Ondeego phone is too short (minimum is 7 characters)"
+---
+>     ondeego_phone_short: "AppCentral phone number is too short (minimum is 7 characters)"
+35c35
+<     job_title_is_short: "Job title is too short (minimum is 1 characters)"
+---
+>     job_title_is_short: "Job title is too short (minimum is 1 character)"
+45c45
+<     company_email_name_short: "Company email name is too short (minimum is 1 characters)"
+---
+>     company_email_name_short: "Company email name is too short (minimum is 1 character)"
+51,54c51,54
+<     email_is_too_short: "Email is too short (minimum is 6 characters)"
+<     email_should_look_like_email: "Email should look like an email address."
+<     login_is_too_short: "Login is too short (minimum is 3 characters)"
+<     login_should_use_only_letters: "Login should use only letters, numbers, spaces, and .-_@ please."
+---
+>     email_is_too_short: "Email address is too short (minimum is 6 characters)"
+>     email_should_look_like_email: "Email address should look like an email address (e.g., someone@company.com)."
+>     login_is_too_short: "Username is too short (minimum is 3 characters)"
+>     login_should_use_only_letters: "Username can only use letters, numbers, spaces, and .-_@"
+62c62
+<     firstname_is_too_short: "Firstname is too short (minimum is 1 characters)"
+---
+>     firstname_is_too_short: "Firstname is too short (minimum is 1 character)"
+64c64
+<     lastname_is_too_short: "Lastname is too short (minimum is 1 characters)"
+---
+>     lastname_is_too_short: "Lastname is too short (minimum is 1 character)"
+74,79c74,79
+<     name_is_too_short: "Name is too short (minimum is 1 characters)"
+<     ondeego_email_cant_be_blank: "Ondeego email can't be blank"
+<     ondeego_email_is_too_short: "Ondeego email is too short (minimum is 6 characters)"
+<     ondeego_email_should_like_email: "Ondeego email should look like an email name."
+<     ondeego_phone_cant_blank: "Ondeego phone can't be blank"
+<     ondeego_phone_short: "Ondeego phone is too short (minimum is 7 characters)"
+---
+>     name_is_too_short: "Name is too short (minimum is 1 character)"
+>     ondeego_email_cant_be_blank: "AppCentral email address can't be blank"
+>     ondeego_email_is_too_short: "AppCentral email address is too short (minimum is 6 characters)"
+>     ondeego_email_should_like_email: "AppCentral email address should look like an email address (e.g., someone@company.com)"
+>     ondeego_phone_cant_blank: "AppCentral phone can't be blank"
+>     ondeego_phone_short: "AppCentral phone is too short (minimum is 7 characters)"
+81c81
+<     job_title_is_short: "Job title is too short (minimum is 1 characters)"
+---
+>     job_title_is_short: "Job title is too short (minimum is 1 character)"
+86c86
+<     company_email_name_short: "Company email name is too short (minimum is 1 characters)"
+---
+>     company_email_name_short: "Company email name is too short (minimum is 1 character)"
+92c92
+<     bad_data: "You have passed bad data to system!"
+---
+>     bad_data: "Error.  You probably used a URL for a user other than the one currently logged-in."
+102c102
+<     problem_with_ondeego_request: "Problem with request to AppCentral."
+---
+>     problem_with_ondeego_request: "AppCentral request failed."
+104c104
+<     not_any_company: "You don't have any company"
+---
+>     not_any_company: "You aren't the admin for a company, so you cannot invite people to be employees."
+110c110
+<     employee_recruit_failed: "Employee recruit failed"
+---
+>     employee_recruit_failed: "Employee invitation failed"
+112c112
+<     employees_delete_failed: "Failed delete employees"
+---
+>     employees_delete_failed: "Delete employees failed"
+114c114
+<     employee_delete_failed: "Failed delete employee"
+---
+>     employee_delete_failed: "Delete employee failed"
+116c116
+<     your_account_blocked: "Login failed! You account blocked"
+---
+>     your_account_blocked: "Login failed. You account is blocked."
+120c120
+<     you_must_be_logged: "You must be logged in to access this page"
+---
+>     you_must_be_logged: "You must be logged-in to access this page"
+122c122
+<     you_must_be_logged_out: "You must be logged out to access this page"
+---
+>     you_must_be_logged_out: "You must be logged-out to access this page"
+124c124
+<     error_connect_to_sogo: "Error connect to Sogo."
+---
+>     error_connect_to_sogo: "Error creating an account on Sogo."
+126c126
+<     not_connect_to_sogo: "Your company not connect with Sogo."
+---
+>     not_connect_to_sogo: "Your company has not created a Sogo company account."
+132c132
+<     failed_delete_company: "Failed delete company."
+---
+>     failed_delete_company: "Delete company failed."
+136c136
+<     integrate_with_appcentral_failed: "Sorry, integrate with AppCentral failed:"
+---
+>     integrate_with_appcentral_failed: "Sorry, integration with AppCentral failed:"
+138c138
+<     company_not_connect_with_appcentral: "Your company not connect with AppCentral. Please, report about this company admin"
+---
+>     company_not_connect_with_appcentral: "Your company does not have an AppCentral account. Ask your company's admin to create an AppCentral account for your company."
+140c140
+<     appcentral_not_use: "AppCentral doesn't use now"
+---
+>     appcentral_not_use: "This is a development environment, so AppCentral is not in use now."
+142c142
+<     error_accept_invite: "Error accept invite."
+---
+>     error_accept_invite: "Error accepting invitation."
+146c146
+<     login_failed: "Login failed!"
+---
+>     login_failed: "Login failed."
+148c148
+<     error_send_friendship_reqeust: "Error send friendship reqeust."
+---
+>     error_send_friendship_reqeust: "Error sending friendship request."
+150c150
+<     error_remove_friendship: "Error remove friendship."
+---
+>     error_remove_friendship: "Error removing friendship."
+152c152
+<     cant_find_user: "Can't find user with an id"
+---
+>     cant_find_user: "Can't find user with the id specified."
+154c154
+<     problem_with_sogo_account: "<br/>You have some problem with Sogo account, you may connect to Sogo later on Manage Invitage page. <br/>"
+---
+>     problem_with_sogo_account: "<br/>There is a problem creating the Sogo account. Create a Sogo account later on the Manage Invitations page. <br/>"
+156c156
+<     sogo_not_use: "Sogo doesn't use now"
+---
+>     sogo_not_use: "This is a development environment, so Sogo is not available now."

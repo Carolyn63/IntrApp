@@ -1,0 +1,26 @@
+<% if recently_user.company_pending == 0 %>
+<li>
+	<div class="img-box img-square-box-logo">
+		<%= image_tag recently_user.avatar.url(:medium), :class => "img-square-box-logo" %>
+	</div>
+	<div class="right-box">
+		<p class="name"><b><%= link_to recently_user.name, user_path(recently_user) %></b>&nbsp;<%#= link_to "<i><b>#{t("views.see_full_profile")}&gt;&gt;</b></i>", user_path(recently_user.id), :class => 'orange-color fz10'  %></p>
+		<% company = recently_user.top_company %>
+		<p class="fz10">
+			<span><i><%= company.blank? ? "&nbsp;" : company.name %></i></span>&nbsp;
+
+				<% 
+					if !company.blank?
+						if !company.employee(recently_user).blank?%>
+					 <%= join_fields_with_pipe(company.employee(recently_user).department_name , recently_user.job_title ) %>
+				<% 
+						end
+					end %>
+		</p>
+		<p class="description">
+			<%= recently_user.description %>
+		</p>
+	</div>
+	<div class="clear"></div>
+</li>
+<% end %>

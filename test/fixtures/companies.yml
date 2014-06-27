@@ -1,0 +1,67 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+company_001:
+  id: 1
+  user_id: 1
+  name: "Apple"
+  address: "USA"
+  city: "New Your"
+  phone: "55566183555"
+  company_type: "Parther"
+  privacy: <%= Company::Privacy::PUBLIC %>
+  industry: "IT"
+  size: "1"
+  description: "blabblabblabblab"
+  team: "Ben"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  is_ondeego_connect: "1"
+
+company_002:
+  id: 2
+  user_id: 1
+  name: "Apple1"
+  address: "USA"
+  city: "New Your"
+  phone: "55566183555"
+  company_type: "Parther"
+  privacy: <%= Company::Privacy::PRIVATE %>
+  industry: "IT"
+  size: "1"
+  description: "blabblabblabblab"
+  team: "Ben"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+
+company_003:
+  id: 3
+  user_id: 2
+  name: "Other Apple1"
+  address: "USA"
+  city: "New Your"
+  phone: "55566183555"
+  company_type: "Parther"
+  privacy: <%= Company::Privacy::PRIVATE %>
+  industry: "IT"
+  size: "1"
+  description: "blabblabblabblab"
+  team: "Ben"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+
+destroy_company:
+  id: 4
+  user_id: 7
+  name: "Destroy"
+  address: "USA"
+  city: "New Your"
+  phone: "55566183555"
+  company_type: "Parther"
+  privacy: <%= Company::Privacy::PRIVATE %>
+  industry: "IT"
+  size: "1"
+  description: "blabblabblabblab"
+  team: "Ben"
+  perishable_token: <%= Authlogic::Random.friendly_token %>
+  is_ondeego_connect: "1"

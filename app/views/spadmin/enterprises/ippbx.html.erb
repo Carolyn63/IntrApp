@@ -1,0 +1,60 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li>
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.portal_ents"))}", spadmin_enterprises_path   %>
+			</li>
+			<li class="first active" >
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.ippbx_ents"))}", ippbx_spadmin_enterprises_path  %>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<br>
+		<div class="admin-filter">
+			<% form_tag "", {:method => :get} do %> <span>&nbsp;</span>
+			<span><%= t("views.labels.name")%>:</span><%= text_field_tag("name", params[:name], :id =>"spadmin_enterprises_search", :class => "text_border") %> <span><%= t("views.labels.emailId")%>:</span><%= text_field_tag("emailId", params[:emailId], :id =>"spadmin_enterprises_email", :class => "text_border") %> <span><%= t("views.labels.city")%>:</span><%= text_field_tag("city", params[:city], :id =>"spadmin_enterprises_city", :class => "text_border") %> <span><%= t("views.labels.activeStatus") %>:</span><%= select_tag('activeStatus', options_for_select([["all",""],["active","true"],["inactive","false"]]))%> <span><%= submit_tag t("views.buttons.search") %></span>
+			<% end %>
+		</div>
+		<div class="inner">
+			<table id="sortableTable" class="tablesorter">
+				<thead>
+					<tr>
+						<th><%= t("views.titles.name")%></th>
+						<th><%= t("views.titles.email")%></th>
+						<th><%= t("views.titles.location")%></th>
+						<th>Portal Status</th>
+						<th><%= t("views.titles.activeStatus")%></th>
+						<th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @enterprises.each do |enterprise| -%>
+					<% #@comp = Company.find_by_name(enterprise["name"]) 
+					@comp_ippbx = Ippbx.find_by_admin_type_and_uid("enterprise", enterprise["uid"])
+					@comp = Company.find_by_id(@comp_ippbx.company_id) unless @comp_ippbx.blank?
+					
+					%>
+					<% if @comp.blank? or @comp_ippbx.blank?
+									next 
+								end %>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"> <%= enterprise["name"]%> </td>
+						<td> <%= enterprise["emailId"]%> </td>
+						<td> <%= enterprise["geographicDetails"]["city"]%> </td>
+						<%unless @comp.blank?%> <td>active </td>
+						<%else%> <td>deleted</td>
+						<%end%> <td> <%= enterprise["activeStatus"]%> </td>
+						<td> <%unless @comp.blank?%>
+						<%= link_to "#{t("web-app-theme.show", :default => t("views.links.edit"))}",  edit_spadmin_enterprise_path(enterprise["uid"], :form => 1, :company_name=> enterprise["name"])%> |
+						<%end%>
+						<%= link_to "#{t("web-app-theme.edit", :default => t("views.links.delete"))}",  spadmin_enterprise_path(enterprise["uid"], :company_name=> enterprise["name"]) , :method => "delete", :confirm => t("views.notices.ippbx_delete_ent") %> </td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+		</div>
+	</div>

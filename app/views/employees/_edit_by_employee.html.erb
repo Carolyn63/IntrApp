@@ -1,0 +1,42 @@
+<% form_remote_for :employee, :url => update_by_employee_company_employee_path(@company,@employee), :html => {:method => :put, :id => "edit_by_employee_form"} do |f| -%>
+  <%= error_messages_for :employee %>
+  <div class="employees-box">
+    <h3><%= image_tag("down_grey_arrow.png") %><%= "&nbsp;&nbsp;#{t("views.employees.edit_employee_profile", :company => @employee.company.name)}" %></h3>
+     <div class="input-row">
+        <label><span><%= t("views.companies.ondeego_phone") %></span></label>
+        <%= f.text_field :phone %>
+      </div>
+      <% if @employee.owner_employee? %>
+        <div class="input-row">
+          <label><span><%= t("views.companies.department")  %></span></label>
+          <%= f.select :department_id, @company.departments.all.collect {|d| [ d.name, d.id ] }, { :include_blank => true } %>
+        </div>
+        <div class="input-row">
+          <label><span><%= t("views.companies.job_title") %></span></label>
+          <%= f.text_field :job_title %>
+        </div>
+      <%else%>
+       <div class="input-row">
+        <label><span><%= t("views.companies.department")  %></span></label>
+        <%= h(@employee.department_name) %>
+      </div>
+        <div class="input-row">
+          <label><span><%= t("views.companies.job_title") %></span></label>
+          <%= h(@employee.job_title) %>
+        </div>
+    <%end%>
+    <div class="input-row">
+      <label><span><%= t("views.companies.company_email") %></span></label>
+      <%= h(@employee.company_email) %>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="tac">
+    <%= link_to_function link_name(t("views.save")), "$('#edit_by_employee_form').hide();$('#loader').show();$('#submit').click();", :class=>"standart-button" %>
+    <%= submit_tag '', :id => "submit", :style => "display:none" %>
+  </div>
+<% end -%>
+
+<div id="loader" style="display:none">
+  <%=  image_tag "loadingAnimation.gif"%>
+</div>

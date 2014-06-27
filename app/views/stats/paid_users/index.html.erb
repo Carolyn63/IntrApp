@@ -1,0 +1,47 @@
+<div class="block">
+	<div class="secondary-navigation">
+		<ul class="wat-cf">
+			<li class="first active">
+				<%= link_to "#{t("web-app-theme.list", :default => t("views.links.list"))}", stats_paid_users_path%>
+				
+			</li>
+
+		</ul>
+	</div>
+	  <div class="content">  
+	<br>
+		<div class="admin-filter">
+			<% form_tag "", {:method => :get} do %> <span><%= t("views.titles.name")%>:</span>
+			<%= text_field_tag("search", params[:search], :id =>"stats_paid_user_search", :class => "text_border") %> <span><%= submit_tag t("views.buttons.search") %></span>
+			<% end %>
+		</div>
+  <div class="inner">
+      <table class="table">
+				
+					<tr>
+		  <%= sortable_table_header :name => t("views.titles.id"),  :sort => "id", :class => "first" %>
+          <%= sortable_table_header :name => t("views.titles.name"),  :sort => "name" %>
+          <%= sortable_table_header :name => t("views.titles.email"),  :sort => "name" %>
+         <th class="last"><%= t("views.titles.action")%></th>
+					</tr>
+				
+					<% @users.each do |user| -%>
+					<tr class="<%= cycle("odd", "even") %>">
+						<td class="first"> <%= user.id%> </td>
+						<td><%= user.name%> </td>
+                                                <td><%= user.email%> </td>
+						<td>
+							<%= link_to "#{t("web-app-theme.show", :default => t("views.links.show"))}",  stats_paid_user_path(user.id)%>
+						</td>
+		           </tr>
+					<%end%>
+
+
+			</table>
+                        <%= will_paginate @users%>
+			<div class="actions-bar wat-cf">
+				<div class="actions"></div>
+			</div>
+			</div>
+		</div>
+	</div>

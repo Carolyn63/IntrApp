@@ -1,0 +1,39 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to_collection %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> <%= "Company Application Requests" %></h2>
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <th class="first">&nbsp;</th>
+          <%= sortable_table_header :name => t("views.company_application_requests.company"),  :sort => "company" %>
+          <%= sortable_table_header :name => t("views.company_application_requests.application"),  :sort => "application" %>
+          <%= sortable_table_header :name => t("views.company_application_requests.requested_at"),  :sort => "requested_at" %>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% collection.each do |request| -%>
+          <%if request.order_id.blank?%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="first">&nbsp;</td>
+            <td><%= link_to request.company.name, admin_company_path(request.company) %></td>
+            <td><%= link_to request.application.name, admin_application_path(request.application) -%>  </td>
+            <td><%= request.requested_at.to_s(:long) %></td>
+            <td class="last">
+              <%= link_to t("views.company_application_requests.approve"), approve_admin_company_application_request_path(request), :method => :put %> |
+              <%= link_to t("views.company_application_requests.reject"), reject_admin_company_application_request_path(request), :method => :put %>
+            </td>
+          </tr>
+<% end -%>
+        <% end -%>
+      </table>
+      <%= will_paginate collection  %>
+      <div class="actions-bar wat-cf">
+        <div class="actions"></div>
+      </div>
+    </div>
+  </div>
+</div>

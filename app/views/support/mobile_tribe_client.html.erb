@@ -1,0 +1,7 @@
+<%= link_to(link_name(t("views.click_here_to_lanch")), "#{property(:mobile_client_link)}?TB_iframe=true&width=500&height=400", :id => "mt_client", :title => t("views.mobile_tribe_client.title"), :class=>"thickbox", :style => "display:none") %>
+<!--iframe src="<%=property(:mobile_client_link)%>" width="100%" height="100%">
+  Your browser not support iframe
+</iframe-->
+<script type="text/javascript">
+  $('#mt_client').click();
+</script>

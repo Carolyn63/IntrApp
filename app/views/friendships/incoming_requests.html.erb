@@ -1,0 +1,21 @@
+<div class="content left-column">
+  <div class="clear"></div>
+  <%= render :partial => "nav_menu" %>
+  <div class="right-wide-side employees-container invite">
+    <% form_tag "", :id => "form_friendships_action" do %>
+      <div class="employees-box">
+        <h3><%= image_tag("down_grey_arrow.png") %>&nbsp;&nbsp;<%= t("helpers.application.income_requests") %></h3>
+        <%= render :partial => "friendships", :object => @incoming_requests %>
+        <div class="clear"></div>
+      </div>
+      <% unless @incoming_requests.blank? %>
+        <div class="button-box">
+          <%= link_to_function link_name(t("views.accept")), "SubmitFriendshipForm('#{accept_all_user_friendships_path(current_user)}')", :class=>"standart-button "%>
+          <%= link_to_function link_name(t("views.reject")), "SubmitFriendshipForm('#{ reject_all_user_friendships_path(current_user)}')", :class=>"standart-button standart-button-orange"%>
+          <%= submit_tag "", :style => "display:none" %>
+        </div>
+      <% end %>
+    <%end%>
+  </div>
+  <div class="clear"></div>
+</div>

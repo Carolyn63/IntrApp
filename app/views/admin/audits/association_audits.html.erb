@@ -1,0 +1,48 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_audits_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_audit_path %></li>
+      <li class="active"><%= link_to t("views.audits.relative_audits"), association_audits_admin_audit_path(@audit) %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      <p>
+        <b><%= t("views.audits.type") %>:</b>
+        <%= @audit.auditable_type %>
+        <br/>
+        <b><%= t("views.audits.deleted_object_id") %>:</b>
+        <%= @audit.auditable_id %>
+        <br/>
+        <b><%= t("views.audits.name") %>:</b>
+        <%= @audit.name %>
+        <br/>
+        <b><%= t("views.audits.status") %>:</b>
+        <%= @audit.status %>
+        <% unless @audit.parent_id.blank? %>
+          <br/>
+          <b><%= t("views.audits.parent") %>:</b>
+          <%= link_to(@audit.parent_id, admin_audit_path(@audit.parent_id)) %>
+        <%end%>
+      </p>
+    </div>
+    <h2 class="title"><%= t("views.audits.relative_audits") %></h2>
+    <div class="admin-filter">
+      <% form_tag "", {:method => :get} do %>
+        <span><%= t("views.audits.type") %>:</span>
+        <%= select("", "", Audit::Types::LIST, {:selected => params[:type], :include_blank => true}, {:name => "type", :onchange => "this.form.submit();"}) %>
+        <span><%= t("views.audits.status") %>:</span>
+        <%= select("", "", Audit::Statuses::LIST, {:selected => params[:status].blank? ? nil : params[:status].to_i, :include_blank => true}, {:name => "status", :onchange => "this.form.submit();"}) %>
+      <% end %>
+    </div>
+    <div class="inner">
+      <%= render :partial => "audits", :locals => {:audits => @audits} %>
+    </div>
+    <%= will_paginate @audits, :type => params[:type], :status => params[:status] %>
+    <div class="actions-bar wat-cf">
+      <div class="actions">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+module Spadmin::SpprofilesHelper
+end

@@ -1,0 +1,222 @@
+ActionController::Routing::Routes.draw do |map|
+  # The priority is based upon order of creation: first created -> highest priority.
+
+  # Sample of regular route:
+  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
+  # Keep in mind you can assign values other than :controller and :action
+
+  # Sample of named route:
+  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
+  # This route can be invoked with purchase_url(:id => product.id)
+
+  # Sample resource route (maps HTTP verbs to controller actions automatically):
+  #   map.resources :products
+
+  # Sample resource route with options:
+  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+
+  # Sample resource route with sub-resources:
+  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
+  
+  # Sample resource route with more complex sub-resources
+  #   map.resources :products do |products|
+  #     products.resources :comments
+  #     products.resources :sales, :collection => { :recent => :get }
+  #   end
+
+  # Sample resource route within a namespace:
+  #   map.namespace :admin do |admin|
+  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
+  #     admin.resources :products
+  #   end
+
+  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
+  # map.root :controller => "welcome"
+
+  map.root :controller => 'home'
+
+  #TODO Remove this
+  #map.resource :account, :controller => "users"
+
+
+  map.resource :support, :controller => :support, :only => :none, :collection => {:contact_us => :get, :send_contact_us_email => :post, :mobile_tribe_description => :get, :mobile_tribe_client => :get}
+  map.resource :search, :controller => 'search', :only => :index, :collection => {:users => :get, :companies => :get}
+
+
+  map.resources :employees, :collection => {:people => :get, :new_recruit => :get, :recruit => :post, :invitation => :get, :company_department => :get, :check_email_name => :get}
+  map.resources :password_resets, :only => [ :new, :create, :edit, :update ]
+  #map.resources :documents, :member => {:client_configuration => :get}
+  # See how all your routes lay out with "rake routes"
+
+  map.namespace :api do |api|
+    api.namespace :v1 do |v1|
+      v1.resources :users, :member => {:contacts => :get, :friends => :get}
+    end
+    api.namespace :v2 do |v2|
+      v2.resources :companies, :only => [:index], :collection => {:create_success => :get, :create_fail => :get}
+      v2.resources :employees, :only => [:index], :collection => {:create_success => :get, :create_fail => :get,
+                                                                  :login_fail => :get}
+      v2.resources :users, :collection => {:contacts => :get, :friends => :get}
+    end
+  end
+  
+  map.namespace :ipn do |ipn|
+    ipn.resources :amazon
+    ipn.resources :paypal
+  end
+
+
+  
+  map.namespace :sysadmin do |sysadmin|
+    sysadmin.resources :serviceproviders, :collection => {:finish => :get, :next => :get,:ippbx => :get}
+    sysadmin.resources :routingactions
+    sysadmin.resources :pstns
+    sysadmin.resources :gatewaygroups
+    sysadmin.resources :prompts
+    sysadmin.resources :features
+    sysadmin.resources :publicnumbers, :collection => {:assign_unassign => :get}, :member => {:assign => :get, :unassign => :get}
+    sysadmin.resources :adminprofiles, :member => {:change_password => :put}
+    sysadmin.resources :logins
+    sysadmin.resources :logouts
+  end
+
+  map.namespace :spadmin do |spadmin|
+    spadmin.resources :features
+    spadmin.resources :domains
+    spadmin.resources :rdpgs
+    spadmin.resources :enterprises, :collection => {:finish => :get, :next => :get,:ippbx => :get}
+    spadmin.resources :publicnumbers, :member => {:assign => :get, :unassign => :get, :employees => :get, :employee_assign => :get, :employee_unassign => :get, :employee_update => :put}
+    spadmin.resources :spprofiles
+    spadmin.resources :adminprofiles, :member => {:change_password => :put}
+    spadmin.resources :logins
+    spadmin.resources :logouts
+  end
+
+
+  map.namespace :entadmin do |entadmin|
+    entadmin.resources :users, :collection => {:ippbx => :get}
+    entadmin.resources :companies, :member => {:employees => :get}
+    entadmin.resources :features
+    entadmin.resources :entprofiles
+    entadmin.resources :adminprofiles, :member => {:change_password => :put}
+    entadmin.resources :logins
+    entadmin.resources :logouts
+  end
+  
+  map.resources :users, :member => {:contacts => :get, :friends => :get, :friendship_request => :get, :friendship_delete => :get, :remove_mt_association => :put, :addippbx => :get, :removeippbx => :get, :client_configuration => :get,:terms => :get, :service_terms=>:get, :services => :get, :payments => :get,:thanks=>:get, :payment_requests => :get, :generate_user_payment_requests => :put}, :collection => {:confirmation=>:get, :spiceworks => :get, :payment_thanks => :post, :linkedin_signup => :get, :linkedin_signin => :get} do |user|
+    user.resources :companies, :collection => {:application => :get}
+    user.resources :applications, :only => [:index, :show],
+                                  :collection => {:company_catalog => :get, :my_applications => :get},
+                                  :member => {:send_bin_file => :get,:bin_file_download => :get, :assign_employees_or_departments => :post, :send_request => :put, :send_employee_request => :put, :add_user_ippbx => :put, :remove_user_ippbx => :put, :send_cancel_request => :put, :remove_application => :put, :download_application => :get,:download_link => :get, :send_download_link => :get, :device_bin_file_download => :get}
+   user.resources :orders, :collection =>{:track_order => :get,:payments => :get, :cart => :get, :wish_list => :get, :checkout_whishlist=>:get},
+                            :member => {:create_app_order => :put }
+    
+    user.resources :dashboard, :controller => "dashboard", :collection => {:ondeego_login_failed => :get}
+    user.resources :employers, :member => {:accept => :get, :reject => :get, :quit => :get}
+    user.resources :friendships, :member => {:accept => :get, :reject => :get},
+                                 :collection => {:accept_all => :post, :reject_all => :post, :resend_all => :post,
+                                                 :destroy_all => :post, :incoming_requests => :get,
+                                                 :outcoming_requests => :get, :rejected_outcoming_requests => :get}
+    user.resource  :ondeego, :controller => "ondeego", :only => :none, :collection => {:company_create => :get, :employee_create => :get, :login => :get}
+    user.resource  :sogo, :controller => "sogo", :only => :none, :collection => {:login => :get}
+    #user.resource  :sogo, :controller => "sogo", :only => :none, :collection => {:login => :get}
+  end
+
+    map.resources :company_stats,:member => {:cost_trend_app => :get, :cost_trend_department => :get, :top_apps_cost => :get, :top_department_cost => :get,
+										  :top_employee_cost => :get, :app_seats_report => :get, :cost_apps_user => :get
+                                         } do |company_stat|
+	end
+   
+
+
+  map.namespace :useradmin do |useradmin|
+    useradmin.resources :callcontrols, :collection => {:update_call_control_others => :put, :update_call_block => :put, :update_call_fwdbusy => :put, :update_call_fwdnoans => :put, :update_call_fwduncondition => :put, :edit_call_block => :post, :edit_call_fwdbusy => :post, :edit_call_fwdnoans => :post, :edit_call_fwduncondition => :post}
+    useradmin.resources :profiles, :member => {:change_password => :put}
+    useradmin.resources :logins
+    useradmin.resources :logouts
+  end
+  	map.resources :companies, :member => {:profile => :get, :addippbx => :get, :removeippbx => :get, :stats => :get} do |company|
+			company.resources :employees, 
+				:member => {:invite => :get, :edit_by_employee => :get, :update_by_employee => :put, :sogo_connect => :get, :devices => :get, :update_devices => :put}, 
+				:collection => {:invite_all => :post, :destroy_all => :post}
+			company.resources :departments, :member => {:edit_by_department => :get, :update_by_department => :put},  :collection => {:destroy_all => :post}
+			company.resources :application_requests, :only => [:index],
+				:member => {:approve => :put, :reject => :put, :resend_company_request => :put, :resend_employee_request => :put},
+				:collection => {:incoming_employee_requests => :get, :employee_requests => :get}
+			company.resources :company_applications, 
+				:member => {:add_downloadable_apps => :get, :update_downloadable_apps => :put, :remove_downloadable_apps => :get, :delete_downloadable_apps => :put, :create_plan => :put, :list_plan =>:get, :new_plan =>:get, :edit_plan =>:get, :update_plan => :put, :delete_plan => :put}
+				
+		end
+   map.namespace :admin do |admin|
+    admin.resources :users, :member => {:block => :put, :unblock => :put, :info => :get}
+    admin.resources :companies, :member => {:employees => :get, :invite => :get}
+    admin.resources :linkedin_companies
+    admin.resources :linkedin_users
+    admin.resources :audits, :except => [:new, :create], :member => {:association_audits => :get, :send_emails => :post, :new_email => :get}
+    admin.resources :help_urls
+    admin.resources :applications, :member => {:binfile => :get, :update_binfile => :put, :deletefile => :get, :delete_binfile => :put , :add_downloadable_apps => :get, :update_downloadable_apps => :put, :remove_downloadable_apps => :get, :delete_downloadable_apps => :put}
+    admin.resources :devices
+    admin.resources :categories
+    admin.resources :application_types
+    admin.resources :company_application_requests, :member => {:approve => :put, :reject => :put}
+    admin.resources :services
+    admin.resources :application_plans
+    admin.resources :industries
+    admin.resources :countries
+    admin.resources :user_payment_requests, :member => {:cancel_paypal => :put, :refund_paypal => :put, :cancel_amazon => :put, :refund_amazon => :put}
+    admin.resources :stats, :collection => {:registered_linkedin_companies => :get, :registered_linkedin_users => :get, :paid_users => :get, :registered_users => :get, :payments => :get, :cancel_paypal => :get, :refund_paypal => :get, :download => :get}
+    admin.namespace :scripts do |script|
+     script.resources :retrievelinkedin, :collection => {:retrieve_companies => :get, :retrieve_users => :get}
+     script.resources :updatedbs, :collection => {:updateuser => :get, :updateemployee => :get,:updatecompany => :get, :updatedepartment => :get, :updatefriendship => :get, :updatesogo => :get, :updatec2call => :get}
+     script.resources :test
+    end
+=begin
+    admin.namespace :scripts do |script|
+     script.resources :updatedbs, :collection => {:updateuser => :get, :updateemployee => :get,:updatecompany => :get, :updatedepartment => :get, :updatefriendship => :get, :updatesogo => :get, :updatec2call => :get}
+     script.resources :test
+    end
+=end
+  end
+  
+  	map.resource :user_session, :collection => {:merge => :get,:do_login => :get, :merge_user3p => :post, :signin => :get, :spiceworks => :get}
+  
+  map.sysadmin '/sysadmin', :controller => 'sysadmin/serviceproviders', :action => 'index'
+  map.spadmin '/spadmin', :controller => 'spadmin/enterprises', :action => 'index'
+  #map.entadmin '/entadmin', :controller => 'entadmin/users', :action => 'index'
+  map.useradmin '/useradmin', :controller => 'useradmin/profiles', :action => 'index'
+  map.logout '/logout', :controller => 'user_sessions', :action => 'destroy'
+  map.login '/login', :controller => 'user_sessions', :action => 'new'
+  map.login '/signin', :controller => 'user_sessions', :action => 'signin'
+  map.login '/spiceworks', :controller => 'user_sessions', :action => 'spiceworks'
+  map.signup '/signup', :controller => 'users', :action => 'new'
+  map.invitation '/invitation', :controller => 'employees', :action => 'invitation'
+  map.admin '/admin', :controller => 'admin/users', :action => 'index'
+  #map.stats '/stats', :controller => 'stats/registered_users', :action => 'index'
+  map.stats 'admin/stats', :controller => 'stats/registered_linkedin_companies', :action => 'index'
+  map.terms '/terms', :controller => 'users', :action => 'terms'
+  map.service_terms '/service_terms', :controller => 'users', :action => 'service_terms'
+  map.code_image '/code_image', :controller => 'users', :action => 'code_image'
+   map.code_image '/refresh_code_image', :controller => 'users', :action => 'refresh_code_image'
+
+  #map.contacts '/contacts/:id', :controller => 'users', :action => 'contacts', :method => :any
+  #map.contacts '/contacts/:id.:format', :controller => 'users', :action => 'contacts', :method => :any
+  map.voip_delete_sid '/voip/delete_sid', :controller => 'voip', :action => 'delete_sid'
+  map.voip_event_code '/voip/event_code', :controller => 'voip', :action => 'get_voip_event_code'
+  map.voip_voice_mail '/user/vm_get_all', :controller => 'portal_ippbx', :action => 'vm_get_all', :method => :get
+  map.voip_voice_mail '/user/vm_get_new', :controller => 'portal_ippbx', :action => 'vm_get_new', :method => :get
+  map.voip_voice_mail '/user/vm_get_seen', :controller => 'portal_ippbx', :action => 'vm_get_seen', :method => :get
+  map.voip_voice_mail '/user/vm_get_one', :controller => 'portal_ippbx', :action => 'vm_get_one', :method => :get
+  map.voip_voice_mail '/user/vm_delete_one', :controller => 'portal_ippbx', :action => 'vm_delete_one', :method => :delete
+  map.voip_voice_mail '/user/vm_set_seen', :controller => 'portal_ippbx', :action => 'vm_set_seen', :method => :put
+  map.voip '/voip', :controller => 'voip', :action => 'index'
+
+  map.dgdata '/digidata', :controller => 'cloud_storage', :action => 'index'
+  
+  map.hips '/hips/portal/voip/v1/callcontrol/click2call/ps/response', :controller => 'hips', :action => 'index', :method => :put
+  map.confirm '/confirm', :controller => 'reg_confirm', :action => 'index', :method => :get
+  # Install the default routes as the lowest priority.
+  # Note: These default routes make all actions in every controller accessible via GET requests. You should
+  # consider removing or commenting them out if you're using named routes and resources.
+  map.connect ':controller/:action/:id'
+  map.connect ':controller/:action/:id.:format'    
+end

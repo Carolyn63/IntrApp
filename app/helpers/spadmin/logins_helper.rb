@@ -1,0 +1,2 @@
+module Spadmin::LoginsHelper
+end
